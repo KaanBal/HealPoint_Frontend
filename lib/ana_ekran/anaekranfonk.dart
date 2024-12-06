@@ -61,7 +61,7 @@ class _DoctorCardState extends State<DoctorCard> {
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 180.0),
+                      padding: const EdgeInsets.only(right: 140.0),
                       child: Text(
                         widget.name,
                         style: const TextStyle(
