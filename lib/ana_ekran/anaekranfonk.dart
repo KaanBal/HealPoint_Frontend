@@ -16,7 +16,7 @@ class DoctorCard extends StatefulWidget {
   final String price;
   bool favourite;
 
-  DoctorCard({
+  DoctorCard({super.key, 
     required this.name,
     required this.specialization,
     required this.rating,
