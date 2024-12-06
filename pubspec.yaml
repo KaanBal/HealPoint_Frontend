@@ -58,15 +58,15 @@ flutter:
   fonts:
     - family: PtSans
       fonts:
-        - asset: fonts/PtSans-Regular.ttf
+        - asset: assets/fonts/PtSans-Regular.ttf
 
     - family: Vollkorn
       fonts:
-        - asset: fonts/Vollkorn-Regular.ttf
+        - asset: assets/fonts/Vollkorn-Regular.ttf
 
     - family: ABeeZee
       fonts:
-        - asset: fonts/ABeeZee-Regular.ttf
+        - asset: assets/fonts/ABeeZee-Regular.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

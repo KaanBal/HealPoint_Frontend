@@ -53,7 +53,7 @@ class _AnaEkranState extends State<AnaEkran> {
                 return SearchBar(
                   hintText: "Ara",
                   controller: controller,
-                  padding: const MaterialStatePropertyAll<EdgeInsets>(
+                  padding: const WidgetStatePropertyAll<EdgeInsets>(
                       EdgeInsets.symmetric(horizontal: 16.0)),
                   onTap: () {
                     controller.openView();
