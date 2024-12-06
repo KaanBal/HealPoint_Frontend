@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
-import 'girisekranfonks.dart'; // Fonksiyonların olduğu dosyayı içeri aktar
+import 'girisekranfonks.dart';
 
 class GirisEkrani extends StatefulWidget {
   const GirisEkrani({super.key});

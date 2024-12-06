@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/ana_ekran/ana_ekran.dart';
+import 'package:yazilim_projesi/doktor_bilgi/doktor_bilgi_fonks.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
+
+import 'doktor_bilgi/doktor_bilgi.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +16,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Ayberk",
       debugShowCheckedModeBanner: false,
 
       theme: ThemeData(
@@ -20,7 +23,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const GirisEkrani(),
+      home: const AnaEkran(),
 
     );
   }

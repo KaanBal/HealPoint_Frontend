@@ -27,7 +27,7 @@ class _AnaEkranState extends State<AnaEkran> {
               children: [
                 const Text(
                   'Selam Kaan ',
-                  style: TextStyle(fontSize: 25, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 22, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 InkWell(
@@ -44,7 +44,7 @@ class _AnaEkranState extends State<AnaEkran> {
             ),
             Text(
               "Sağlıklı Günler",
-              style: TextStyle(fontSize: 18, fontFamily: "PtSans", color: gri),
+              style: TextStyle(fontSize: 17, fontFamily: "PtSans", color: gri),
             ),
             const SizedBox(height: 15),
             // Arama Çubuğu
@@ -85,7 +85,7 @@ class _AnaEkranState extends State<AnaEkran> {
             const SizedBox(height: 30),
             const Text(
               'Yaklaşan Randevular ',
-              style: TextStyle(fontSize: 24, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 22, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
             InkWell(
@@ -110,6 +110,7 @@ class _AnaEkranState extends State<AnaEkran> {
                   children: [
                     const CircleAvatar(
                       radius: 35,
+                      backgroundImage: NetworkImage('https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg='),
                     ),
                     const SizedBox(width: 15),
                     Column(
@@ -117,11 +118,11 @@ class _AnaEkranState extends State<AnaEkran> {
                       children: [
                         const Text(
                           'Prof. Dr. Mehmet Eriş',
-                          style: TextStyle(fontSize: 18, fontFamily: "PtSans", fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 17, fontFamily: "PtSans", fontWeight: FontWeight.bold),
                         ),
                         Text(
                           'Üroloji',
-                          style: TextStyle(fontSize: 16, fontFamily: "PtSans", color: gri),
+                          style: TextStyle(fontSize: 15, fontFamily: "PtSans", color: gri),
                         ),
                         const SizedBox(height: 20),
                         Row(
@@ -134,7 +135,7 @@ class _AnaEkranState extends State<AnaEkran> {
                             const SizedBox(width: 10),
                             Text(
                               'June 12, 9:30 AM',
-                              style: TextStyle(fontSize: 19, fontFamily: "PtSans", color: gri),
+                              style: TextStyle(fontSize: 18, fontFamily: "PtSans", color: gri),
                             ),
                           ],
                         ),
@@ -148,7 +149,7 @@ class _AnaEkranState extends State<AnaEkran> {
 
             const Text(
               'Popüler Doktorlar',
-              style: TextStyle(fontSize: 24, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 22, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
             Expanded(
@@ -201,7 +202,7 @@ class _AnaEkranState extends State<AnaEkran> {
                       print('Doctor 4 tıklandı');
                     },
                     child: DoctorCard(
-                      name: 'Dr.  Ahmet Eriş',
+                      name: 'Dr. Ahmet Eriş',
                       specialization: 'Estetisyen',
                       rating: '4.9',
                       reviews: '2435',
