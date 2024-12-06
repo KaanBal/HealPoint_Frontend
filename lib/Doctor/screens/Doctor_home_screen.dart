@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class DoctorHomeScreen extends StatefulWidget {
+  const DoctorHomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<DoctorHomeScreen> createState() => _DoctorHomeScreen();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _DoctorHomeScreen extends State<DoctorHomeScreen> {
 
   void _loadData() async {
     setState(() {});
