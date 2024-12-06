@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yazilim_projesi/anasayfa.dart';
+import 'package:yazilim_projesi/ana_ekran/ana_ekran.dart';
+import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Anasayfa(),
+      home: const GirisEkrani(),
 
     );
   }

@@ -46,17 +46,37 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  card_slider: ^1.0.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:
+  generate: true
+
+  fonts:
+    - family: PtSans
+      fonts:
+        - asset: fonts/PtSans-Regular.ttf
+
+    - family: Vollkorn
+      fonts:
+        - asset: fonts/Vollkorn-Regular.ttf
+
+    - family: ABeeZee
+      fonts:
+        - asset: fonts/ABeeZee-Regular.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - resimler/search.png
+    - resimler/menu.png
+    - resimler/calendar.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
