@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
-class DoctorInfoScreen extends StatelessWidget {
-  const DoctorInfoScreen({Key? key}) : super(key: key);
+class DoctorScreen extends StatelessWidget {
+  const DoctorScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class DoctorInfoScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Doktor Bilgisi'),
         centerTitle: true,
-        backgroundColor: koyuKirmizi,
+        backgroundColor: acikKirmizi,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -27,20 +27,20 @@ class DoctorInfoScreen extends StatelessWidget {
                 CircleAvatar(
                   radius: 35,
                   backgroundImage: NetworkImage(
-                      'https://via.placeholder.com/150'), // Doktor fotoğrafı
+                      'https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg='), // Doktor fotoğrafı
                 ),
-                SizedBox(width: 16),
+                SizedBox(width: 20),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Dr. William Anderson',
                       style:
-                      TextStyle(fontSize: 18,fontFamily: "ABeeZee" ,fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 21,fontFamily: "ABeeZee" ,fontWeight: FontWeight.bold),
                     ),
                     Text(
                       'Ürolog',
-                      style: TextStyle(fontSize: 16,fontFamily: "PtSans", color: Colors.grey),
+                      style: TextStyle(fontSize: 19,fontFamily: "PtSans", color: Colors.grey),
                     ),
                     SizedBox(height: 8),
                     Row(
@@ -60,31 +60,31 @@ class DoctorInfoScreen extends StatelessWidget {
             // Doktor Hakkında Bilgi
             const Text(
               'Doktor Hakkında',
-              style: TextStyle(fontSize: 16,fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 19,fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             const Text(
               'Dr. Anderson is a highly respected and experienced psychiatrist known for his compassionate care and comprehensive approach to mental health. With over 15 years of experience in the field, Dr. Anderson...',
-              style: TextStyle(fontSize: 14,fontFamily: "PtSans", color: Colors.black87),
+              style: TextStyle(fontSize: 17,fontFamily: "PtSans", color: Colors.black87),
             ),
             const SizedBox(height: 35),
 
             // Çalışma Saatleri
             const Text(
               'Çalışma Saatleri',
-              style: TextStyle(fontSize: 16,fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 19,fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             const Text(
               'Pazartesi - Cuma, 08:00  - 18:00 ',
-              style: TextStyle(fontSize: 14,fontFamily: "ABeeZee", color: Colors.black87),
+              style: TextStyle(fontSize: 17,fontFamily: "ABeeZee", color: Colors.black87),
             ),
             const SizedBox(height: 35),
 
             // Uygun Saatler
             const Text(
               'Uygun Saatler:',
-              style: TextStyle(fontSize: 16,fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 19,fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Row(
@@ -98,7 +98,7 @@ class DoctorInfoScreen extends StatelessWidget {
                   backgroundColor: acikKirmizi,
                   foregroundColor: beyaz,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+                    borderRadius: BorderRadius.circular(15.0),
                   ),
                 ),
                 child: Text(time),
@@ -126,10 +126,4 @@ class DoctorInfoScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(const MaterialApp(
-    home: DoctorInfoScreen(),
-  ));
 }
