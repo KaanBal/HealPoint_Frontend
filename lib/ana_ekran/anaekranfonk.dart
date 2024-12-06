@@ -33,8 +33,9 @@ class _DoctorCardState extends State<DoctorCard> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      padding: const EdgeInsets.only(left: 5.0,right: 5.0),
       child: Container(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           color: beyaz,
           borderRadius: BorderRadius.circular(20),
@@ -51,6 +52,7 @@ class _DoctorCardState extends State<DoctorCard> {
           children: [
             const CircleAvatar(
               radius: 30,
+              backgroundImage: NetworkImage('https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg='),
             ),
             const SizedBox(width: 10),
             Column(
@@ -59,11 +61,11 @@ class _DoctorCardState extends State<DoctorCard> {
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 100.0),
+                      padding: const EdgeInsets.only(right: 180.0),
                       child: Text(
                         widget.name,
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: 17,
                           fontFamily: "PtSans",
                           fontWeight: FontWeight.bold,
                         ),
