@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class GirisEkranFonks {
-  int a;
 
   void showAlertDialog(BuildContext context, String baslik, String mesaj) {
     showDialog(
