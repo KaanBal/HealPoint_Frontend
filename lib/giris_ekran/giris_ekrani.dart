@@ -11,7 +11,6 @@ class GirisEkrani extends StatefulWidget {
 
 class _GirisEkraniState extends State<GirisEkrani> {
   int selectedIndex = 0;
-  int a = 5;
   final TextEditingController telefonController = TextEditingController();
   final TextEditingController sifreController = TextEditingController();
 
