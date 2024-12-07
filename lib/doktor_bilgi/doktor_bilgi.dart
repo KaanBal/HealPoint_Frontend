@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
-class DoctorScreen extends StatelessWidget {
-  const DoctorScreen({Key? key}) : super(key: key);
+class DoctorBilgiEkran extends StatelessWidget {
+  const DoctorBilgiEkran({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,10 @@ class DoctorScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Doktor Bilgisi'),
+        title: const Text(
+            'Doktor Bilgisi',
+          style: TextStyle(fontFamily: "ABeeZee"),
+        ),
         centerTitle: true,
         backgroundColor: acikKirmizi,
       ),
@@ -21,39 +24,43 @@ class DoctorScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Doktor Profili ve Bilgiler
-            const Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  radius: 35,
-                  backgroundImage: NetworkImage(
-                      'https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg='), // Doktor fotoğrafı
-                ),
-                SizedBox(width: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Dr. William Anderson',
-                      style:
-                      TextStyle(fontSize: 21,fontFamily: "ABeeZee" ,fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      'Ürolog',
-                      style: TextStyle(fontSize: 19,fontFamily: "PtSans", color: Colors.grey),
-                    ),
-                    SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Icon(Icons.star, color: Colors.yellow, size: 20),
-                        SizedBox(width: 4),
-                        Text('4.7', style: TextStyle(fontSize: 16)),
-                        SizedBox(width: 8),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+            const Card(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(width: 10),
+                  CircleAvatar(
+                    radius: 35,
+                    backgroundImage: NetworkImage(
+                        'https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg='), // Doktor fotoğrafı
+                  ),
+                  SizedBox(width: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10),
+                      Text(
+                        'Dr. William Anderson',
+                        style:
+                        TextStyle(fontSize: 21,fontFamily: "ABeeZee" ,fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        'Ürolog',
+                        style: TextStyle(fontSize: 19,fontFamily: "PtSans", color: Colors.grey),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Icon(Icons.star, color: Colors.yellow, size: 20),
+                          SizedBox(width: 5),
+                          Text('4.7', style: TextStyle(fontSize: 16)),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                    ],
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 30),
 
@@ -74,19 +81,19 @@ class DoctorScreen extends StatelessWidget {
               'Çalışma Saatleri',
               style: TextStyle(fontSize: 19,fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             const Text(
               'Pazartesi - Cuma, 08:00  - 18:00 ',
               style: TextStyle(fontSize: 17,fontFamily: "ABeeZee", color: Colors.black87),
             ),
-            const SizedBox(height: 35),
+            const SizedBox(height: 30),
 
             // Uygun Saatler
             const Text(
               'Uygun Saatler:',
               style: TextStyle(fontSize: 19,fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: ['08:00  ', '10:00  ', '12:00  ']
