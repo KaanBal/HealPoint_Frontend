@@ -34,41 +34,91 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Appoinments List"),
-        ),
-        body: ListView.builder(
-          itemCount: appointments.length,
-          itemBuilder: (context, index) {
-            final appointment = appointments[index];
-            return Card(
-              margin: const EdgeInsets.all(10),
-              child: ListTile(
-                title: Text(
-                  "Hasta İsmi: ${appointment.patient.Patient_name
-                      + " "
-                      + appointment.patient.Patient_surname}",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(appointment.appointment_time),
-                    Text(appointment.Appointment_status.toString().split('.').last),
-                    Text("${appointment.Appointment_text}"),
-                  ],
-                ),
-                leading: const Icon(
-                  Icons.calendar_today,
-                  color: Colors.blue,
-                ),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
-                ),
+      appBar: AppBar(
+        title: const Text("Appointments List"),
+      ),
+      body: ListView.builder(
+        itemCount: appointments.length,
+        itemBuilder: (context, index) {
+          final appointment = appointments[index];
+          return Card(
+            margin: const EdgeInsets.all(10),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Üst satır: Zaman ve Durum
+                  Row(
+                    children: [
+                      // Appointment Time Chip
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: Colors.blue.shade100,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          appointment.appointment_time,
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: getStatusColor(
+                            appointment.Appointment_status.toString().split('.').last,
+                          ).withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          appointment.Appointment_status.toString().split('.').last,
+                          style: TextStyle(
+                            color: getStatusColor(
+                              appointment.Appointment_status.toString().split('.').last,
+                            ),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Hasta İsmi: ${appointment.patient.Patient_name} ${appointment.patient.Patient_surname}",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    "${appointment.Appointment_text}",
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                ],
               ),
-            );
-          },
-        ));
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Color getStatusColor(String status) {
+    switch (status) {
+      case "AKTIF":
+        return Colors.green; // Aktif durumlar için yeşil
+      case "IPTAL":
+        return Colors.red; // İptal durumlar için kırmızı
+      case "TAMAMLANDI":
+        return Colors.blue; // Tamamlandı durumlar için mavi
+      default:
+        return Colors.grey; // Bilinmeyen durumlar için gri
+    }
   }
 }
