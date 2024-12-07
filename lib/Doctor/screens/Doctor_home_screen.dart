@@ -112,13 +112,11 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
   Color getStatusColor(String status) {
     switch (status) {
       case "AKTIF":
-        return Colors.green; // Aktif durumlar için yeşil
+        return Colors.green;
       case "IPTAL":
-        return Colors.red; // İptal durumlar için kırmızı
-      case "TAMAMLANDI":
-        return Colors.blue; // Tamamlandı durumlar için mavi
+        return Colors.red;
       default:
-        return Colors.grey; // Bilinmeyen durumlar için gri
+        return Colors.blue; 
     }
   }
 }
