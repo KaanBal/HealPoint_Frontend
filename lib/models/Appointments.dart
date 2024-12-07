@@ -10,8 +10,6 @@ class Appointments {
   final String appointment_time;
   final AppointmentStatus Appointment_status;
   final String? Appointment_text;
-  final DateTime createdAt;
-  final DateTime updatedAt;
   final Patients patient;
   final Doctors doctor;
 
@@ -21,8 +19,6 @@ class Appointments {
     required this.appointment_time,
     required this.Appointment_status,
     this.Appointment_text,
-    required this.createdAt,
-    required this.updatedAt,
     required this.patient,
     required this.doctor,
   });
@@ -36,8 +32,6 @@ class Appointments {
       Appointment_status: AppointmentStatus.values.firstWhere((e) =>
           e.toString() == 'AppointmentStatus.${json['Appointment_status']}'),
       Appointment_text: json['Appointment_text'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
       patient: Patients.fromJson(json['patient']),
       doctor: Doctors.fromJson(json['doctor']),
     );
