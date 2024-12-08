@@ -5,16 +5,14 @@ import 'package:yazilim_projesi/models/Reviews.dart';
 class Doctors {
   final String Doctor_tc;
   final String Doctor_name;
-  final String branch;
-  final String Doctor_surname;
-  final String Doctor_phonenumber;
-  final String Doctor_password;
-  final String Doctor_email;
-  final String city;
-  final String district;
-  final String address;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final String? branch;
+  final String? Doctor_surname;
+  final String? Doctor_phonenumber;
+  final String? Doctor_password;
+  final String? Doctor_email;
+  final String? city;
+  final String? district;
+  final String? address;
   final List<Patients>? patients;
   final List<Payments>? payments;
   final List<Reviews>? reviews;
@@ -22,16 +20,14 @@ class Doctors {
    Doctors({
     required this.Doctor_tc,
     required this.Doctor_name,
-    required this.branch,
-    required this.Doctor_surname,
-    required this.Doctor_phonenumber,
-    required this.Doctor_password,
-    required this.Doctor_email,
-    required this.city,
-    required this.district,
-    required this.address,
-    required this.createdAt,
-    required this.updatedAt,
+     this.branch,
+     this.Doctor_surname,
+     this.Doctor_phonenumber,
+     this.Doctor_password,
+     this.Doctor_email,
+     this.city,
+     this.district,
+     this.address,
     this.patients,
     this.payments,
     this.reviews,
@@ -51,8 +47,6 @@ class Doctors {
       city: json['city'],
       district: json['district'],
       address: json['address'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
       patients: json['patients'] != null
           ? List<Patients>.from(
               json['patients'].map((pat) => Patients.fromJson(pat)))

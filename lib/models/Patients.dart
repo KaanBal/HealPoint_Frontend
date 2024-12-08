@@ -6,11 +6,9 @@ class Patients {
   final String Patient_name;
   final String Patient_surname;
   final String? Patient_gender;
-  final String patientPhoneNumber;
-  final String patientEmail;
-  final String Patient_password;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final String? patientPhoneNumber;
+  final String? patientEmail;
+  final String? Patient_password;
   final List<Doctors>? doctors;
   final List<Appointments>? appointments;
 
@@ -19,11 +17,9 @@ class Patients {
     required this.Patient_name,
     required this.Patient_surname,
     this.Patient_gender,
-    required this.patientPhoneNumber,
-    required this.patientEmail,
-    required this.Patient_password,
-    required this.createdAt,
-    required this.updatedAt,
+    this.patientPhoneNumber,
+    this.patientEmail,
+    this.Patient_password,
     this.doctors,
     this.appointments,
   });
@@ -38,8 +34,6 @@ class Patients {
       patientPhoneNumber: json['patientPhoneNumber'],
       patientEmail: json['patientEmail'],
       Patient_password: json['Patient_password'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
       doctors: json['doctors'] != null
           ? List<Doctors>.from(
               json['doctors'].map((doc) => Doctors.fromJson(doc)))
