@@ -14,10 +14,46 @@ Future<void> ara(String aramaKelimesi) async {
 }
 
 class _AnaEkranState extends State<AnaEkran> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: beyaz,
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: acikKirmizi,
+              ),
+              child: const Text(
+                'Sağlıklı Günler',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.calendar_month_outlined),
+              title: const Text('Geçmiş Randevular'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Profilim'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.only(top: 50.0, right: 16.0, left: 16.0, bottom: 16.0),
         child: Column(
@@ -32,7 +68,7 @@ class _AnaEkranState extends State<AnaEkran> {
                 const Spacer(),
                 InkWell(
                   onTap: () {
-                    print("Image pressed!");
+                    _scaffoldKey.currentState?.openEndDrawer();
                   },
                   child: Image.asset(
                     'resimler/menu.png',
@@ -47,42 +83,22 @@ class _AnaEkranState extends State<AnaEkran> {
               style: TextStyle(fontSize: 17, fontFamily: "PtSans", color: gri),
             ),
             const SizedBox(height: 15),
-            // Arama Çubuğu
-            SearchAnchor(
-              builder: (BuildContext context, SearchController controller) {
-                return SearchBar(
-                  hintText: "Ara",
-                  controller: controller,
-                  padding: const WidgetStatePropertyAll<EdgeInsets>(
-                      EdgeInsets.symmetric(horizontal: 16.0)),
-                  onTap: () {
-                    controller.openView();
-                  },
-                  onChanged: (_) {
-                    controller.openView();
-                  },
-                  leading: Image.asset(
-                    "resimler/search.png",
-                    width: 30,
-                    height: 30,
-                  ),
-                );
-              },
-              suggestionsBuilder: (BuildContext context, SearchController controller) {
-                return List<ListTile>.generate(5, (int index) {
-                  final String item = 'item $index';
-                  return ListTile(
-                    title: Text(item),
-                    onTap: () {
-                      setState(() {
-                        controller.closeView(item);
-                      });
-                    },
-                  );
-                });
-              },
+            ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: acikKirmizi,
+                foregroundColor: beyaz,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              ),
+              child: const Text(
+                "Randevu Al",
+                style: TextStyle(fontFamily: "ABeeZee"),
+              ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 15),
             const Text(
               'Yaklaşan Randevular ',
               style: TextStyle(fontSize: 22, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
@@ -110,7 +126,9 @@ class _AnaEkranState extends State<AnaEkran> {
                   children: [
                     const CircleAvatar(
                       radius: 35,
-                      backgroundImage: NetworkImage('https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg='),
+                      backgroundImage: NetworkImage(
+                        'https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg=',
+                      ),
                     ),
                     const SizedBox(width: 15),
                     Column(
@@ -146,7 +164,6 @@ class _AnaEkranState extends State<AnaEkran> {
               ),
             ),
             const SizedBox(height: 30),
-
             const Text(
               'Popüler Doktorlar',
               style: TextStyle(fontSize: 22, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
@@ -155,78 +172,63 @@ class _AnaEkranState extends State<AnaEkran> {
             Expanded(
               child: ListView(
                 children: [
-                  InkWell(
-                    onTap: () {
-                      print('Doctor 1 tıklandı');
-                    },
-                    child: DoctorCard(
-                      name: 'Dr. Ahmet Eriş',
-                      specialization: 'Estetisyen',
-                      rating: '4.9',
-                      reviews: '2435',
-                      price: '\$25/hr',
-                      favourite: true,
-                    ),
+                  DoctorCard(
+                    name: 'Dr. Ayşe Demir',
+                    specialization: 'Kardiyolog',
+                    rating: '4.9',
+                    reviews: '2435',
+                    price: '\$25/hr',
+                    favourite: true,
                   ),
                   const SizedBox(height: 20),
-                  InkWell(
-                    onTap: () {
-                      print('Doctor 2 tıklandı');
-                    },
-                    child: DoctorCard(
-                      name: 'Dr. Ahmet Eriş',
-                      specialization: 'Estetisyen',
-                      rating: '4.8',
-                      reviews: '1930',
-                      price: '\$30/hr',
-                      favourite: true,
-                    ),
+                  DoctorCard(
+                    name: 'Dr. Mehmet Can',
+                    specialization: 'Diyetisyen',
+                    rating: '4.8',
+                    reviews: '1930',
+                    price: '\$30/hr',
+                    favourite: true,
                   ),
                   const SizedBox(height: 20),
-                  InkWell(
-                    onTap: () {
-                      print('Doctor 3 tıklandı');
-                    },
-                    child: DoctorCard(
-                      name: 'Dr. Ahmet Eriş',
-                      specialization: 'Estetisyen',
-                      rating: '4.9',
-                      reviews: '2435',
-                      price: '\$25/hr',
-                      favourite: true,
-                    ),
+                  DoctorCard(
+                    name: 'Dr. Zeynep Arda',
+                    specialization: 'Fizyoterapist',
+                    rating: '4.7',
+                    reviews: '1750',
+                    price: '\$20/hr',
+                    favourite: false,
                   ),
                   const SizedBox(height: 20),
-                  InkWell(
-                    onTap: () {
-                      print('Doctor 4 tıklandı');
-                    },
-                    child: DoctorCard(
-                      name: 'Dr. Ahmet Eriş',
-                      specialization: 'Estetisyen',
-                      rating: '4.9',
-                      reviews: '2435',
-                      price: '\$25/hr',
-                      favourite: true,
-                    ),
+                  DoctorCard(
+                    name: 'Dr. Zeynep Arda',
+                    specialization: 'Fizyoterapist',
+                    rating: '4.7',
+                    reviews: '1750',
+                    price: '\$20/hr',
+                    favourite: false,
                   ),
                   const SizedBox(height: 20),
-                  InkWell(
-                    onTap: () {
-                      print('Doctor 5 tıklandı');
-                    },
-                    child: DoctorCard(
-                      name: 'Dr. Ahmet Eriş',
-                      specialization: 'Estetisyen',
-                      rating: '4.9',
-                      reviews: '2435',
-                      price: '\$25/hr',
-                      favourite: true,
-                    ),
+                  DoctorCard(
+                    name: 'Dr. Zeynep Arda',
+                    specialization: 'Fizyoterapist',
+                    rating: '4.7',
+                    reviews: '1750',
+                    price: '\$20/hr',
+                    favourite: false,
                   ),
+                  const SizedBox(height: 20),
+                  DoctorCard(
+                    name: 'Dr. Zeynep Arda',
+                    specialization: 'Fizyoterapist',
+                    rating: '4.7',
+                    reviews: '1750',
+                    price: '\$20/hr',
+                    favourite: false,
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

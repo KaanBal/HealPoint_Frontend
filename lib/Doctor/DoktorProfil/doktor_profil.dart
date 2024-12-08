@@ -1,6 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
+// Global showEditDialog function
+void showEditDialog(BuildContext context, String title, String initialValue, ValueChanged<String> onEdit) {
+  final TextEditingController controller = TextEditingController(text: initialValue);
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Düzenle: $title"),
+      content: TextField(
+        controller: controller,
+        decoration: InputDecoration(hintText: "Yeni $title girin"),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text(
+            "İptal",
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            onEdit(controller.text);
+            Navigator.of(context).pop();
+          },
+          child: const Text(
+            "Kaydet",
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 class DoktorProfil extends StatefulWidget {
   const DoktorProfil({super.key});
 
@@ -16,6 +53,10 @@ class _DoktorProfilState extends State<DoktorProfil> {
   String phone = "+62 812345678";
   String email = "aseps.career@gmail.com";
   String sifre = "1234";
+  String about =
+      "Dr. Anderson is a highly respected and experienced psychiatrist known for his compassionate care and comprehensive approach to mental health. With over 15 years of experience in the field, Dr. Anderson..."
+      "Dr. Anderson is a highly respected and experienced psychiatrist known for his compassionate care and comprehensive approach to mental health. With over 15 years of experience in the field, Dr. Anderson..."
+      "Dr. Anderson is a highly respected and experienced psychiatrist known for his compassionate care and comprehensive approach to mental health. With over 15 years of experience in the field, Dr. Anderson...";
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +102,15 @@ class _DoktorProfilState extends State<DoktorProfil> {
         ),
         body: TabBarView(
           children: [
-            const SingleChildScrollView(
-              child: AboutSection(),
+            SingleChildScrollView(
+              child: AboutSection(
+                aboutText: about,
+                onEdit: (newValue) {
+                  setState(() {
+                    about = newValue;
+                  });
+                },
+              ),
             ),
             SingleChildScrollView(
               child: Column(
@@ -192,42 +240,6 @@ class _DoktorProfilState extends State<DoktorProfil> {
     );
   }
 
-  void showEditDialog(BuildContext context, String title, String initialValue, ValueChanged<String> onEdit) {
-    final TextEditingController controller = TextEditingController(text: initialValue);
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Düzenle: $title"),
-        content: TextField(
-          controller: controller,
-          decoration: InputDecoration(hintText: "Yeni $title girin"),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text(
-                "İptal",
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              onEdit(controller.text);
-              Navigator.of(context).pop();
-            },
-            child: const Text(
-                "Kaydet",
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Card contactStatus() {
     return Card(
       margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -263,36 +275,57 @@ class _DoktorProfilState extends State<DoktorProfil> {
   }
 }
 
-
 class AboutSection extends StatelessWidget {
-  const AboutSection({super.key});
+  final String aboutText;
+  final ValueChanged<String> onEdit;
+
+  const AboutSection({super.key, required this.aboutText, required this.onEdit});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.4,
-      width: MediaQuery.of(context).size.width * 1,
-      child: SingleChildScrollView(
-        child: Card(
-          margin: const EdgeInsets.only(
-            top: 20,
-            bottom: 20,
-            right: 20,
-            left: 20,
-          ),
-          color: beyaz,
-          child: Container(
-            padding: const EdgeInsets.all(30),
-            child: const Text(
-              "Dr. Anderson is a highly respected and experienced psychiatrist known for his compassionate care and comprehensive approach to mental health. With over 15 years of experience in the field, Dr. Anderson..."
-                  "Dr. Anderson is a highly respected and experienced psychiatrist known for his compassionate care and comprehensive approach to mental health. With over 15 years of experience in the field, Dr. Anderson..."
-                  "Dr. Anderson is a highly respected and experienced psychiatrist known for his compassionate care and comprehensive approach to mental health. With over 15 years of experience in the field, Dr. Anderson..."
-                  "Dr. Anderson is a highly respected and experienced psychiatrist known for his compassionate care and comprehensive approach to mental health. With over 15 years of experience in the field, Dr. Anderson...",
-              style: TextStyle(color: Colors.black),
+    return Column(
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.4,
+          child: Card(
+            margin: const EdgeInsets.all(20),
+            color: beyaz,
+            child: Container(
+              padding: const EdgeInsets.all(30),
+              child: Text(
+                aboutText,
+                style: const TextStyle(color: Colors.black),
+              ),
             ),
           ),
         ),
-      ),
+        Card(
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Düzenle",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.edit, color: Colors.red),
+                  onPressed: () {
+                    showEditDialog(context, "Hakkında", aboutText, onEdit);
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
