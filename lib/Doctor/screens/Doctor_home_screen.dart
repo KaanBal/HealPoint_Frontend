@@ -116,7 +116,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
       case "IPTAL":
         return Colors.red;
       default:
-        return Colors.blue; 
+        return Colors.blue;
     }
   }
 }
