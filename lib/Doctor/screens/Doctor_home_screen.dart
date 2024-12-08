@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:yazilim_projesi/models/Appointments.dart';
+import 'package:yazilim_projesi/renkler/renkler.dart';
 
 class DoctorHomeScreen extends StatefulWidget {
   const DoctorHomeScreen({super.key});
@@ -34,14 +35,21 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: beyaz,
       appBar: AppBar(
-        title: const Text("Appointments List"),
+        backgroundColor: beyaz,
+        centerTitle: true,
+        title: const Text(
+            "Appointments List",
+          style: TextStyle(fontFamily: "ABeeZee"),
+        ),
       ),
       body: ListView.builder(
         itemCount: appointments.length,
         itemBuilder: (context, index) {
           final appointment = appointments[index];
           return Card(
+            color: beyaz,
             margin: const EdgeInsets.all(10),
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -93,12 +101,12 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                   Text(
                     "Hasta İsmi: ${appointment.patient.Patient_name} ${appointment.patient.Patient_surname}",
                     style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
+                        fontWeight: FontWeight.bold,fontFamily: "ABeeZee", fontSize: 16),
                   ),
                   const SizedBox(height: 5),
                   Text(
                     "${appointment.Appointment_text}",
-                    style: const TextStyle(fontSize: 14, color: Colors.grey),
+                    style: const TextStyle(fontSize: 14,fontFamily: "PTSans" ,color: Colors.grey),
                   ),
                 ],
               ),
