@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
 // Global showEditDialog function
-void showEditDialog(BuildContext context, String title, String initialValue, ValueChanged<String> onEdit) {
-  final TextEditingController controller = TextEditingController(text: initialValue);
+void showEditDialog(BuildContext context, String title, String initialValue,
+    ValueChanged<String> onEdit) {
+  final TextEditingController controller =
+      TextEditingController(text: initialValue);
 
   showDialog(
     context: context,
@@ -38,15 +40,14 @@ void showEditDialog(BuildContext context, String title, String initialValue, Val
   );
 }
 
-class DoktorProfil extends StatefulWidget {
-  const DoktorProfil({super.key});
+class DoctorProfil extends StatefulWidget {
+  const DoctorProfil({super.key});
 
   @override
-  State<DoktorProfil> createState() => _DoktorProfilState();
+  State<DoctorProfil> createState() => _DoctorProfilState();
 }
 
-class _DoktorProfilState extends State<DoktorProfil> {
-  // Initial values for editable fields
+class _DoctorProfilState extends State<DoctorProfil> {
   String city = "Adana";
   String district = "Sarıçam";
   String address = "156.sokak ahmetağa mah.";
@@ -198,7 +199,8 @@ class _DoktorProfilState extends State<DoktorProfil> {
                 address = newValue;
               });
             }),
-            buildEditableTile("Telefon No", phone, Icons.phone_android, (newValue) {
+            buildEditableTile("Telefon No", phone, Icons.phone_android,
+                (newValue) {
               setState(() {
                 phone = newValue;
               });
@@ -219,18 +221,21 @@ class _DoktorProfilState extends State<DoktorProfil> {
     );
   }
 
-  Widget buildEditableTile(String title, String value, IconData icon, ValueChanged<String> onEdit) {
+  Widget buildEditableTile(
+      String title, String value, IconData icon, ValueChanged<String> onEdit) {
     return ListTile(
       iconColor: Colors.black,
       textColor: Colors.black,
       leading: Icon(icon),
       title: Text(
         title,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontFamily: "ABeeZee", fontSize: 15),
+        style: const TextStyle(
+            fontWeight: FontWeight.bold, fontFamily: "ABeeZee", fontSize: 15),
       ),
       subtitle: Text(
         value,
-        style: const TextStyle(color: Colors.black, fontFamily: "ABeeZee", fontSize: 13),
+        style: const TextStyle(
+            color: Colors.black, fontFamily: "ABeeZee", fontSize: 13),
       ),
       dense: true,
       trailing: IconButton(
@@ -249,11 +254,13 @@ class _DoktorProfilState extends State<DoktorProfil> {
         textColor: Colors.black,
         title: const Text(
           "Abonelik Durumu",
-          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "ABeeZee", fontSize: 15),
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontFamily: "ABeeZee", fontSize: 15),
         ),
         subtitle: const Text(
           "Aktif",
-          style: TextStyle(color: Colors.black, fontFamily: "ABeeZee", fontSize: 13),
+          style: TextStyle(
+              color: Colors.black, fontFamily: "ABeeZee", fontSize: 13),
         ),
         trailing: TextButton(
           onPressed: () {
@@ -279,7 +286,8 @@ class AboutSection extends StatelessWidget {
   final String aboutText;
   final ValueChanged<String> onEdit;
 
-  const AboutSection({super.key, required this.aboutText, required this.onEdit});
+  const AboutSection(
+      {super.key, required this.aboutText, required this.onEdit});
 
   @override
   Widget build(BuildContext context) {
