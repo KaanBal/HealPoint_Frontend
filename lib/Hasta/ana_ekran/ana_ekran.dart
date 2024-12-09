@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 import 'anaekranfonk.dart';
 
@@ -15,6 +19,24 @@ Future<void> ara(String aramaKelimesi) async {
 
 class _AnaEkranState extends State<AnaEkran> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  List<Doctors> doctors = [];
+
+  void _loadData() async {
+    const String jsonFile = 'assets/MockData/doctors.json';
+    final dataString = await rootBundle.loadString(jsonFile);
+    final List<dynamic> dataJson = jsonDecode(dataString);
+
+    doctors = dataJson.map((json) => Doctors.fromJson(json)).toList();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    _loadData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +77,8 @@ class _AnaEkranState extends State<AnaEkran> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 50.0, right: 16.0, left: 16.0, bottom: 16.0),
+        padding: const EdgeInsets.only(
+            top: 50.0, right: 16.0, left: 16.0, bottom: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -63,7 +86,10 @@ class _AnaEkranState extends State<AnaEkran> {
               children: [
                 const Text(
                   'Selam Kaan ',
-                  style: TextStyle(fontSize: 22, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontFamily: "ABeeZee",
+                      fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 InkWell(
@@ -91,7 +117,8 @@ class _AnaEkranState extends State<AnaEkran> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
               child: const Text(
                 "Randevu Al",
@@ -101,7 +128,10 @@ class _AnaEkranState extends State<AnaEkran> {
             const SizedBox(height: 15),
             const Text(
               'Yaklaşan Randevular ',
-              style: TextStyle(fontSize: 22, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 22,
+                  fontFamily: "ABeeZee",
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
             InkWell(
@@ -136,11 +166,15 @@ class _AnaEkranState extends State<AnaEkran> {
                       children: [
                         const Text(
                           'Prof. Dr. Mehmet Eriş',
-                          style: TextStyle(fontSize: 17, fontFamily: "PtSans", fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontFamily: "PtSans",
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
                           'Üroloji',
-                          style: TextStyle(fontSize: 15, fontFamily: "PtSans", color: gri),
+                          style: TextStyle(
+                              fontSize: 15, fontFamily: "PtSans", color: gri),
                         ),
                         const SizedBox(height: 20),
                         Row(
@@ -153,7 +187,10 @@ class _AnaEkranState extends State<AnaEkran> {
                             const SizedBox(width: 10),
                             Text(
                               'June 12, 9:30 AM',
-                              style: TextStyle(fontSize: 18, fontFamily: "PtSans", color: gri),
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: "PtSans",
+                                  color: gri),
                             ),
                           ],
                         ),
@@ -166,69 +203,27 @@ class _AnaEkranState extends State<AnaEkran> {
             const SizedBox(height: 30),
             const Text(
               'Popüler Doktorlar',
-              style: TextStyle(fontSize: 22, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 22,
+                  fontFamily: "ABeeZee",
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
             Expanded(
-              child: ListView(
-                children: [
-                  DoctorCard(
-                    name: 'Dr. Ayşe Demir',
-                    specialization: 'Kardiyolog',
-                    rating: '4.9',
-                    reviews: '2435',
-                    price: '\$25/hr',
+              child: ListView.builder(
+                itemCount: doctors.length,
+                itemBuilder: (context, index) {
+                  final doctor = doctors[index];
+                  return DoctorCard(
+                    name: doctor.Doctor_name,
+                    specialization: doctor.branch ?? "",
+                    rating: "",
+                    reviews: doctor.reviews?.length.toString() ?? "0",
                     favourite: true,
-                  ),
-                  const SizedBox(height: 20),
-                  DoctorCard(
-                    name: 'Dr. Mehmet Can',
-                    specialization: 'Diyetisyen',
-                    rating: '4.8',
-                    reviews: '1930',
-                    price: '\$30/hr',
-                    favourite: true,
-                  ),
-                  const SizedBox(height: 20),
-                  DoctorCard(
-                    name: 'Dr. Zeynep Arda',
-                    specialization: 'Fizyoterapist',
-                    rating: '4.7',
-                    reviews: '1750',
-                    price: '\$20/hr',
-                    favourite: false,
-                  ),
-                  const SizedBox(height: 20),
-                  DoctorCard(
-                    name: 'Dr. Zeynep Arda',
-                    specialization: 'Fizyoterapist',
-                    rating: '4.7',
-                    reviews: '1750',
-                    price: '\$20/hr',
-                    favourite: false,
-                  ),
-                  const SizedBox(height: 20),
-                  DoctorCard(
-                    name: 'Dr. Zeynep Arda',
-                    specialization: 'Fizyoterapist',
-                    rating: '4.7',
-                    reviews: '1750',
-                    price: '\$20/hr',
-                    favourite: false,
-                  ),
-                  const SizedBox(height: 20),
-                  DoctorCard(
-                    name: 'Dr. Zeynep Arda',
-                    specialization: 'Fizyoterapist',
-                    rating: '4.7',
-                    reviews: '1750',
-                    price: '\$20/hr',
-                    favourite: false,
-                  ),
-                  const SizedBox(height: 20),
-                ],
+                  );
+                },
               ),
-            ),
+            )
           ],
         ),
       ),

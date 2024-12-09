@@ -1,0 +1,129 @@
+[
+  {
+    "Doctor_name": "John",
+    "Doctor_surname": "Doe",
+    "branch": "Cardiology",
+    "city": "New York",
+    "district": "Manhattan",
+    "address": "1234 Medical St.",
+    "Doctor_tc": "12345678901",
+    "reviews": [
+      {
+        "reviewId": 0,
+        "points": 5,
+        "comment": "Very attentive and professional. Highly recommended!"
+      },
+      {
+        "reviewId": 1,
+        "points": 4,
+        "comment": "Good doctor, but the wait time could be improved."
+      }
+    ]
+  },
+  {
+    "Doctor_name": "Jane",
+    "Doctor_surname": "Smith",
+    "branch": "Dermatology",
+    "city": "Los Angeles",
+    "district": "Downtown",
+    "address": "5678 Skin Care Ave.",
+    "Doctor_tc": "12345678902",
+    "reviews": [
+      {
+        "reviewId": 2,
+        "points": 5,
+        "comment": "She was very thorough and made me feel comfortable during the appointment."
+      },
+      {
+        "reviewId": 3,
+        "points": 3,
+        "comment": "Good consultation, but the treatment didn’t work as expected."
+      }
+    ]
+  },
+  {
+    "Doctor_name": "Michael",
+    "Doctor_surname": "Johnson",
+    "branch": "Neurology",
+    "city": "Chicago",
+    "district": "Lincoln Park",
+    "address": "7890 Brainwave Blvd.",
+    "Doctor_tc": "12345678903",
+    "reviews": [
+      {
+        "reviewId": 4,
+        "points": 5,
+        "comment": "Excellent care! Dr. Johnson is very knowledgeable and caring."
+      },
+      {
+        "reviewId": 5,
+        "points": 4,
+        "comment": "I appreciated his detailed explanation, but the wait time was long."
+      }
+    ]
+  },
+  {
+    "Doctor_name": "Emily",
+    "Doctor_surname": "Davis",
+    "branch": "Pediatrics",
+    "city": "San Francisco",
+    "district": "Mission District",
+    "address": "1357 Children’s Rd.",
+    "Doctor_tc": "12345678904",
+    "reviews": [
+      {
+        "reviewId": 6,
+        "points": 5,
+        "comment": "Dr. Davis is amazing with kids. My son loved her!"
+      },
+      {
+
+        "reviewId": 7,
+        "points": 4,
+        "comment": "Great pediatrician, but the office could be more child-friendly."
+      }
+    ]
+  },
+  {
+    "Doctor_name": "David",
+    "Doctor_surname": "Martinez",
+    "branch": "Orthopedics",
+    "city": "Houston",
+    "district": "Galleria",
+    "address": "2468 Bone Health Ave.",
+    "Doctor_tc": "12345678905",
+    "reviews": [
+      {
+        "reviewId": 8,
+        "points": 5,
+        "comment": "Very skilled surgeon, I felt at ease during my procedure."
+      },
+      {
+        "reviewId": 9,
+        "points": 4,
+        "comment": "Great doctor, but the office staff could be more responsive."
+      }
+    ]
+  },
+  {
+    "Doctor_name": "Sarah",
+    "Doctor_surname": "Garcia",
+    "branch": "Endocrinology",
+    "city": "Dallas",
+    "district": "Uptown",
+    "address": "3579 Hormone Way",
+    "Doctor_tc": "12345678906",
+    "reviews": [
+      {
+        "reviewId": 10,
+        "points": 5,
+        "comment": "Dr. Garcia helped me manage my thyroid condition with great care."
+      },
+      {
+        "reviewId": 10,
+        "points": 4,
+        "comment": "Good consultation, but I would have preferred a more detailed explanation."
+      }
+    ]
+  }
+]

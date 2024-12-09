@@ -13,15 +13,14 @@ class DoctorCard extends StatefulWidget {
   final String specialization;
   final String rating;
   final String reviews;
-  final String price;
   bool favourite;
 
-  DoctorCard({super.key, 
+  DoctorCard({
+    super.key,
     required this.name,
     required this.specialization,
     required this.rating,
     required this.reviews,
-    required this.price,
     required this.favourite,
   });
 
@@ -33,7 +32,7 @@ class _DoctorCardState extends State<DoctorCard> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.only(left: 5.0,right: 5.0),
+      padding: const EdgeInsets.only(left: 5.0, right: 5.0),
       child: Container(
         padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
@@ -52,7 +51,8 @@ class _DoctorCardState extends State<DoctorCard> {
           children: [
             const CircleAvatar(
               radius: 30,
-              backgroundImage: NetworkImage('https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg='),
+              backgroundImage: NetworkImage(
+                  'https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg='),
             ),
             const SizedBox(width: 10),
             Column(
@@ -105,13 +105,6 @@ class _DoctorCardState extends State<DoctorCard> {
                       '${widget.rating} (${widget.reviews} Değerlendirme)',
                     ),
                     const SizedBox(width: 20),
-                    Text(
-                      widget.price,
-                      style: const TextStyle(
-                        fontFamily: "PtSans",
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                   ],
                 ),
               ],
@@ -124,10 +117,8 @@ class _DoctorCardState extends State<DoctorCard> {
 }
 
 class _AnaekranfonkState extends State<Anaekranfonk> {
-
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
   }
-
 }

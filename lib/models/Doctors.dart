@@ -17,24 +17,22 @@ class Doctors {
   final List<Payments>? payments;
   final List<Reviews>? reviews;
 
-   Doctors({
+  Doctors({
     required this.Doctor_tc,
     required this.Doctor_name,
-     this.branch,
-     this.Doctor_surname,
-     this.Doctor_phonenumber,
-     this.Doctor_password,
-     this.Doctor_email,
-     this.city,
-     this.district,
-     this.address,
+    this.branch,
+    this.Doctor_surname,
+    this.Doctor_phonenumber,
+    this.Doctor_password,
+    this.Doctor_email,
+    this.city,
+    this.district,
+    this.address,
     this.patients,
     this.payments,
     this.reviews,
   });
 
-
-  // JSON'dan nesneye dönüştürme
   factory Doctors.fromJson(Map<String, dynamic> json) {
     return Doctors(
       Doctor_tc: json['Doctor_tc'],
@@ -61,5 +59,4 @@ class Doctors {
           : null,
     );
   }
-
 }
