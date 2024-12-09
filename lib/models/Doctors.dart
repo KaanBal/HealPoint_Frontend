@@ -8,6 +8,7 @@ class Doctors {
   final String? branch;
   final String? Doctor_surname;
   final String? Doctor_phonenumber;
+  final String? Doctor_about;
   final String? Doctor_password;
   final String? Doctor_email;
   final String? city;
@@ -20,10 +21,11 @@ class Doctors {
   Doctors({
     required this.Doctor_tc,
     required this.Doctor_name,
+    required this.Doctor_surname,
     this.branch,
-    this.Doctor_surname,
     this.Doctor_phonenumber,
     this.Doctor_password,
+    this.Doctor_about,
     this.Doctor_email,
     this.city,
     this.district,
@@ -40,6 +42,7 @@ class Doctors {
       branch: json['branch'],
       Doctor_surname: json['Doctor_surname'],
       Doctor_phonenumber: json['Doctor_phonenumber'],
+      Doctor_about: json['Doctor_about'],
       Doctor_password: json['Doctor_password'],
       Doctor_email: json['Doctor_email'],
       city: json['city'],

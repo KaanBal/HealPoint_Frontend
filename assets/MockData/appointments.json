@@ -12,7 +12,9 @@
     },
     "doctor": {
       "Doctor_tc": "98765432101",
-      "Doctor_name": "Dr. Smith"
+      "Doctor_name": "Dr. Smith",
+      "Doctor_surname": "Doe"
+
     }
   },
   {
@@ -28,7 +30,8 @@
     },
     "doctor": {
       "Doctor_tc": "98765432102",
-      "Doctor_name": "Dr. Emily Johnson"
+      "Doctor_name": "Dr. Emily",
+      "Doctor_surname": "Johnson"
     }
   },
   {
@@ -44,7 +47,8 @@
     },
     "doctor": {
       "Doctor_tc": "98765432103",
-      "Doctor_name": "Dr. Michael Brown"
+      "Doctor_name": "Dr. Michael",
+      "Doctor_surname": "Brown"
     }
   }
 ]
