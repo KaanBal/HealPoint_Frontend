@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class KayitEkrani extends StatefulWidget {
+  const KayitEkrani({super.key});
+
   @override
   _KayitEkraniState createState() => _KayitEkraniState();
 }
