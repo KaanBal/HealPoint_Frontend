@@ -5,7 +5,7 @@ import 'package:yazilim_projesi/renkler/renkler.dart';
 void showEditDialog(BuildContext context, String title, String initialValue,
     ValueChanged<String> onEdit) {
   final TextEditingController controller =
-      TextEditingController(text: initialValue);
+  TextEditingController(text: initialValue);
 
   showDialog(
     context: context,
@@ -55,12 +55,17 @@ class _DoctorProfilState extends State<DoctorProfil> {
   String email = "aseps.career@gmail.com";
   String sifre = "1234";
   String about =
-      "Dr. Anderson is a highly respected and experienced psychiatrist known for his compassionate care and comprehensive approach to mental health. With over 15 years of experience in the field, Dr. Anderson..."
-      "Dr. Anderson is a highly respected and experienced psychiatrist known for his compassionate care and comprehensive approach to mental health. With over 15 years of experience in the field, Dr. Anderson..."
       "Dr. Anderson is a highly respected and experienced psychiatrist known for his compassionate care and comprehensive approach to mental health. With over 15 years of experience in the field, Dr. Anderson...";
 
   @override
   Widget build(BuildContext context) {
+    // Get screen size for responsiveness
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    // Font size scaling factor (80% of original size)
+    double fontScaleFactor = 0.8;
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -70,14 +75,14 @@ class _DoctorProfilState extends State<DoctorProfil> {
           titleTextStyle: const TextStyle(
             color: Colors.white,
           ),
-          toolbarHeight: 275,
+          toolbarHeight: screenHeight * 0.35, // Adjust toolbar height
           title: Padding(
-            padding: const EdgeInsets.only(top: 35.0),
+            padding: EdgeInsets.only(top: screenHeight * 0.05),
             child: Column(
               children: [
-                profilePhotos(),
-                profileName(),
-                hobbies(),
+                profilePhotos(fontScaleFactor),
+                profileName(fontScaleFactor),
+                hobbies(fontScaleFactor),
                 const Padding(
                   padding: EdgeInsets.only(top: 10.0),
                 ),
@@ -111,13 +116,14 @@ class _DoctorProfilState extends State<DoctorProfil> {
                     about = newValue;
                   });
                 },
+                fontScaleFactor: fontScaleFactor,
               ),
             ),
             SingleChildScrollView(
               child: Column(
                 children: [
-                  contactDetail(),
-                  contactStatus(),
+                  contactDetail(screenWidth, fontScaleFactor),
+                  contactStatus(screenWidth, fontScaleFactor),
                 ],
               ),
             ),
@@ -127,29 +133,29 @@ class _DoctorProfilState extends State<DoctorProfil> {
     );
   }
 
-  Padding hobbies() {
-    return const Padding(
-      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+  Padding hobbies(double fontScaleFactor) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
       child: Text(
         "Ürolog",
         style: TextStyle(
           fontFamily: "ABeeZee",
           fontWeight: FontWeight.normal,
-          fontSize: 15,
+          fontSize: MediaQuery.of(context).size.width * 0.04 * fontScaleFactor, // Dynamically adjusting font size
         ),
       ),
     );
   }
 
-  Padding profileName() {
-    return const Padding(
-      padding: EdgeInsets.only(top: 8.0),
+  Padding profileName(double fontScaleFactor) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
       child: Center(
         child: Text(
           "Dr. William Anderson",
           style: TextStyle(
             fontFamily: "ABeeZee",
-            fontSize: 18,
+            fontSize: MediaQuery.of(context).size.width * 0.045 * fontScaleFactor, // Dynamically adjusting font size
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -157,28 +163,28 @@ class _DoctorProfilState extends State<DoctorProfil> {
     );
   }
 
-  Container profilePhotos() {
+  Container profilePhotos(double fontScaleFactor) {
     return Container(
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.white,
       ),
-      width: 105,
-      height: 105,
+      width: MediaQuery.of(context).size.width * 0.3, // Dynamically adjusting image size
+      height: MediaQuery.of(context).size.width * 0.3, // Dynamically adjusting image size
       alignment: Alignment.center,
       child: const CircleAvatar(
         radius: 50,
         backgroundColor: Colors.transparent,
-        backgroundImage: NetworkImage(
-          "https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg=",
+        backgroundImage: AssetImage(
+          "resimler/doktor.png",
         ),
       ),
     );
   }
 
-  Widget contactDetail() {
+  Widget contactDetail(double screenWidth, double fontScaleFactor) {
     return Card(
-      margin: const EdgeInsets.all(20),
+      margin: EdgeInsets.all(screenWidth * 0.05), // Adjust margin based on screen width
       color: Colors.white,
       child: Container(
         padding: const EdgeInsets.all(8.0),
@@ -188,33 +194,33 @@ class _DoctorProfilState extends State<DoctorProfil> {
               setState(() {
                 city = newValue;
               });
-            }),
+            }, fontScaleFactor),
             buildEditableTile("İlçe", district, Icons.my_location, (newValue) {
               setState(() {
                 district = newValue;
               });
-            }),
+            }, fontScaleFactor),
             buildEditableTile("Adres", address, Icons.location_pin, (newValue) {
               setState(() {
                 address = newValue;
               });
-            }),
+            }, fontScaleFactor),
             buildEditableTile("Telefon No", phone, Icons.phone_android,
-                (newValue) {
-              setState(() {
-                phone = newValue;
-              });
-            }),
+                    (newValue) {
+                  setState(() {
+                    phone = newValue;
+                  });
+                }, fontScaleFactor),
             buildEditableTile("Email", email, Icons.mail, (newValue) {
               setState(() {
                 email = newValue;
               });
-            }),
+            }, fontScaleFactor),
             buildEditableTile("Şifre", sifre, Icons.security, (newValue) {
               setState(() {
                 sifre = newValue;
               });
-            }),
+            }, fontScaleFactor),
           ],
         ),
       ),
@@ -222,20 +228,22 @@ class _DoctorProfilState extends State<DoctorProfil> {
   }
 
   Widget buildEditableTile(
-      String title, String value, IconData icon, ValueChanged<String> onEdit) {
+      String title, String value, IconData icon, ValueChanged<String> onEdit, double fontScaleFactor) {
     return ListTile(
       iconColor: Colors.black,
       textColor: Colors.black,
       leading: Icon(icon),
       title: Text(
         title,
-        style: const TextStyle(
-            fontWeight: FontWeight.bold, fontFamily: "ABeeZee", fontSize: 15),
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontFamily: "ABeeZee",
+            fontSize: MediaQuery.of(context).size.width * 0.04 * fontScaleFactor), // Dynamic font size
       ),
       subtitle: Text(
         value,
-        style: const TextStyle(
-            color: Colors.black, fontFamily: "ABeeZee", fontSize: 13),
+        style: TextStyle(
+            color: Colors.black, fontFamily: "ABeeZee", fontSize: MediaQuery.of(context).size.width * 0.035 * fontScaleFactor), // Dynamic font size
       ),
       dense: true,
       trailing: IconButton(
@@ -245,34 +253,36 @@ class _DoctorProfilState extends State<DoctorProfil> {
     );
   }
 
-  Card contactStatus() {
+  Card contactStatus(double screenWidth, double fontScaleFactor) {
     return Card(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+      margin: EdgeInsets.fromLTRB(screenWidth * 0.05, 0, screenWidth * 0.05, screenWidth * 0.05), // Dynamic margin
       color: Colors.white,
       child: ListTile(
         iconColor: Colors.black,
         textColor: Colors.black,
-        title: const Text(
+        title: Text(
           "Abonelik Durumu",
           style: TextStyle(
-              fontWeight: FontWeight.bold, fontFamily: "ABeeZee", fontSize: 15),
+              fontWeight: FontWeight.bold,
+              fontFamily: "ABeeZee",
+              fontSize: MediaQuery.of(context).size.width * 0.04 * fontScaleFactor), // Dynamic font size
         ),
-        subtitle: const Text(
+        subtitle: Text(
           "Aktif",
           style: TextStyle(
-              color: Colors.black, fontFamily: "ABeeZee", fontSize: 13),
+              color: Colors.black, fontFamily: "ABeeZee", fontSize: MediaQuery.of(context).size.width * 0.035 * fontScaleFactor), // Dynamic font size
         ),
         trailing: TextButton(
           onPressed: () {
             print("Abonelik durumu görüntülendi.");
           },
-          child: const Text(
+          child: Text(
             "Görüntüle",
             style: TextStyle(
               color: Colors.red,
               fontWeight: FontWeight.bold,
               fontFamily: "ABeeZee",
-              fontSize: 14,
+              fontSize: MediaQuery.of(context).size.width * 0.035 * fontScaleFactor, // Dynamic font size
             ),
           ),
         ),
@@ -285,9 +295,10 @@ class _DoctorProfilState extends State<DoctorProfil> {
 class AboutSection extends StatelessWidget {
   final String aboutText;
   final ValueChanged<String> onEdit;
+  final double fontScaleFactor;
 
   const AboutSection(
-      {super.key, required this.aboutText, required this.onEdit});
+      {super.key, required this.aboutText, required this.onEdit, required this.fontScaleFactor});
 
   @override
   Widget build(BuildContext context) {
@@ -302,7 +313,7 @@ class AboutSection extends StatelessWidget {
               padding: const EdgeInsets.all(30),
               child: Text(
                 aboutText,
-                style: const TextStyle(color: Colors.black),
+                style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.04 * fontScaleFactor), // Dynamic font size
               ),
             ),
           ),
@@ -315,11 +326,11 @@ class AboutSection extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   "Düzenle",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14,
+                    fontSize: MediaQuery.of(context).size.width * 0.035 * fontScaleFactor, // Dynamic font size
                     fontWeight: FontWeight.bold,
                   ),
                 ),

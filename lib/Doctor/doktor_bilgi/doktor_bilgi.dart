@@ -8,7 +8,11 @@ class DoctorBilgiEkran extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranBilgisi = MediaQuery.of(context);
     final double ekranGenisligi = ekranBilgisi.size.width;
+    final double ekranYuksekligi = ekranBilgisi.size.height;
 
+    // Calculate scaled font sizes and padding based on screen width
+    double fontSize = ekranGenisligi / 22;  // Font boyutunu biraz küçülttük
+    double padding = ekranGenisligi * 0.05;
 
     final List<Map<String, String>> yorumlar = [
       {
@@ -32,13 +36,13 @@ class DoctorBilgiEkran extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Doktor Bilgisi',
-          style: TextStyle(fontFamily: "ABeeZee"),
+          style: TextStyle(fontFamily: "ABeeZee", color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: acikKirmizi,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(padding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -62,23 +66,23 @@ class DoctorBilgiEkran extends StatelessWidget {
                           Text(
                             'Dr. William Anderson',
                             style: TextStyle(
-                                fontSize: 21,
+                                fontSize: 19,  // Font boyutunu küçülttük
                                 fontFamily: "ABeeZee",
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
                             'Ürolog',
                             style: TextStyle(
-                                fontSize: 19,
+                                fontSize: 17,  // Font boyutunu küçülttük
                                 fontFamily: "PtSans",
                                 color: Colors.grey),
                           ),
                           SizedBox(height: 10),
                           Row(
                             children: [
-                              Icon(Icons.star, color: Colors.yellow, size: 20),
+                              Icon(Icons.star, color: Colors.yellow, size: 18),
                               SizedBox(width: 5),
-                              Text('4.7', style: TextStyle(fontSize: 16)),
+                              Text('4.7', style: TextStyle(fontSize: 15)),  // Font boyutunu küçülttük
                             ],
                           ),
                           SizedBox(height: 10),
@@ -104,84 +108,86 @@ class DoctorBilgiEkran extends StatelessWidget {
                 ),
               ],
             ),
-
-
-            const SizedBox(height: 30),
+            SizedBox(height: ekranYuksekligi * 0.05),
 
             // Doktor Hakkında Bilgi
-            const Text(
+            Text(
               'Doktor Hakkında',
               style: TextStyle(
-                  fontSize: 19,
+                  fontSize: fontSize * 1.1,  // Font boyutunu küçülttük
                   fontFamily: "ABeeZee",
                   fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
-            const Text(
+            SizedBox(height: 8),
+            Text(
               'Dr. Anderson is a highly respected and experienced psychiatrist known for his compassionate care and comprehensive approach to mental health. With over 15 years of experience in the field, Dr. Anderson...',
               style: TextStyle(
-                  fontSize: 17, fontFamily: "PtSans", color: Colors.black87),
+                  fontSize: fontSize,  // Font boyutunu küçülttük
+                  fontFamily: "PtSans",
+                  color: Colors.black87),
             ),
-            const SizedBox(height: 35),
+            SizedBox(height: ekranYuksekligi * 0.07),
 
             // Çalışma Saatleri
-            const Text(
+            Text(
               'Çalışma Saatleri',
               style: TextStyle(
-                  fontSize: 19,
+                  fontSize: fontSize * 1.1,  // Font boyutunu küçülttük
                   fontFamily: "ABeeZee",
                   fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 10),
-            const Text(
+            SizedBox(height: 10),
+            Text(
               'Pazartesi - Cuma, 08:00  - 18:00 ',
               style: TextStyle(
-                  fontSize: 17, fontFamily: "ABeeZee", color: Colors.black87),
+                  fontSize: fontSize,  // Font boyutunu küçülttük
+                  fontFamily: "ABeeZee",
+                  color: Colors.black87),
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: ekranYuksekligi * 0.07),
 
             // Yorumlar
-            const Text(
+            Text(
               'Yorumlar',
               style: TextStyle(
-                  fontSize: 19,
+                  fontSize: fontSize * 1.1,  // Font boyutunu küçülttük
                   fontFamily: "ABeeZee",
                   fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             SizedBox(
-              height: 200, // Kaydırılabilir alan yüksekliği
+              height: ekranYuksekligi * 0.25, // Kaydırılabilir alan yüksekliği
               child: ListView.builder(
                 itemCount: yorumlar.length,
                 itemBuilder: (context, index) {
                   final yorum = yorumlar[index];
                   return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    margin: EdgeInsets.symmetric(vertical: padding / 2),
                     child: Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: EdgeInsets.all(padding / 2),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             yorum['isim']!,
-                            style: const TextStyle(
-                                fontSize: 16,
+                            style: TextStyle(
+                                fontSize: fontSize,  // Font boyutunu küçülttük
                                 fontWeight: FontWeight.bold,
                                 fontFamily: "ABeeZee"),
                           ),
-                          const SizedBox(height: 5),
+                          SizedBox(height: 5),
                           Text(
                             yorum['yorum']!,
-                            style: const TextStyle(
-                                fontSize: 15,
+                            style: TextStyle(
+                                fontSize: fontSize * 0.9,  // Font boyutunu küçülttük
                                 fontFamily: "PtSans",
                                 color: Colors.black87),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: 8),
                           Text(
                             yorum['tarih']!,
-                            style: const TextStyle(
-                                fontSize: 13,
+                            style: TextStyle(
+                                fontSize: fontSize * 0.8,  // Font boyutunu küçülttük
                                 fontFamily: "PtSans",
                                 color: Colors.grey),
                           ),
@@ -192,17 +198,17 @@ class DoctorBilgiEkran extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: ekranYuksekligi * 0.07),
 
             // Uygun Saatler
-            const Text(
+            Text(
               'Uygun Saatler:',
               style: TextStyle(
-                  fontSize: 19,
+                  fontSize: fontSize * 1.1,  // Font boyutunu küçülttük
                   fontFamily: "ABeeZee",
                   fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: ['08:00  ', '10:00  ', '12:00  ']
@@ -221,7 +227,7 @@ class DoctorBilgiEkran extends StatelessWidget {
               ))
                   .toList(),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: ekranYuksekligi * 0.07),
 
             // Randevu Al Butonu
             ElevatedButton(
@@ -232,9 +238,9 @@ class DoctorBilgiEkran extends StatelessWidget {
                 minimumSize: Size(ekranGenisligi, 50),
                 backgroundColor: acikKirmizi,
               ),
-              child: const Text(
+              child: Text(
                 'Randevu Al',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: fontSize),
               ),
             ),
           ],
