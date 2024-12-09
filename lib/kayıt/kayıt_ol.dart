@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/renkler/renkler.dart';
 
 class KayitEkrani extends StatefulWidget {
   const KayitEkrani({super.key});
@@ -34,7 +35,7 @@ class _KayitEkraniState extends State<KayitEkrani> {
     if (_formKey.currentState!.validate()) {
       // Form valid ise bu işlemler yapılır
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Kayıt Başarılı!")),
+        const SnackBar(content: Text("Kayıt Başarılı!")),
       );
     }
   }
@@ -66,7 +67,7 @@ class _KayitEkraniState extends State<KayitEkrani> {
     if (selectedDate != null && selectedDate != DateTime.now()) {
       setState(() {
         dogumTarihiController.text =
-        "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
+            "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
       });
     }
   }
@@ -75,8 +76,10 @@ class _KayitEkraniState extends State<KayitEkrani> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Kayıt Ol"),
+        title: const Text("Kayıt Ol"),
+        centerTitle: true,
         backgroundColor: Colors.red,
+        foregroundColor: beyaz,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -86,7 +89,7 @@ class _KayitEkraniState extends State<KayitEkrani> {
             children: [
               TextFormField(
                 controller: tcController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "TC Kimlik Numarası",
                   border: OutlineInputBorder(),
                 ),
@@ -105,7 +108,7 @@ class _KayitEkraniState extends State<KayitEkrani> {
               const SizedBox(height: 10),
               TextFormField(
                 controller: telefonController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Telefon Numarası",
                   border: OutlineInputBorder(),
                 ),
@@ -122,7 +125,7 @@ class _KayitEkraniState extends State<KayitEkrani> {
                 },
               ),
               const SizedBox(height: 5),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
@@ -132,13 +135,12 @@ class _KayitEkraniState extends State<KayitEkrani> {
                       color: Colors.grey,
                     ),
                   ),
-
                 ],
               ),
               const SizedBox(height: 10),
               TextFormField(
                 controller: isimController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Adınız",
                   border: OutlineInputBorder(),
                 ),
@@ -152,7 +154,7 @@ class _KayitEkraniState extends State<KayitEkrani> {
               const SizedBox(height: 10),
               TextFormField(
                 controller: soyisimController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Soyadınız",
                   border: OutlineInputBorder(),
                 ),
@@ -166,7 +168,7 @@ class _KayitEkraniState extends State<KayitEkrani> {
               const SizedBox(height: 10),
               TextFormField(
                 controller: emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "E-posta",
                   border: OutlineInputBorder(),
                 ),
@@ -184,7 +186,7 @@ class _KayitEkraniState extends State<KayitEkrani> {
               const SizedBox(height: 10),
               TextFormField(
                 controller: sifreController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Şifre",
                   border: OutlineInputBorder(),
                 ),
@@ -223,11 +225,11 @@ class _KayitEkraniState extends State<KayitEkrani> {
               // Cinsiyet
               DropdownButtonFormField<String>(
                 value: _selectedCinsiyet,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Cinsiyet",
                   border: OutlineInputBorder(),
                 ),
-                items: [
+                items: const [
                   DropdownMenuItem(child: Text("Erkek"), value: "Erkek"),
                   DropdownMenuItem(child: Text("Kadın"), value: "Kadın"),
                   DropdownMenuItem(child: Text("Diğer"), value: "Diğer"),
@@ -251,12 +253,14 @@ class _KayitEkraniState extends State<KayitEkrani> {
                   ElevatedButton(
                     onPressed: kayitOl,
                     child: Text("Kayıt Ol"),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.green,foregroundColor: beyaz),
                   ),
                   ElevatedButton(
                     onPressed: iptal,
                     child: Text("İptal"),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.red,foregroundColor: beyaz),
                   ),
                 ],
               ),
