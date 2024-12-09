@@ -40,15 +40,15 @@ class _AnaEkranState extends State<AnaEkran> {
 
   @override
   Widget build(BuildContext context) {
-    // Getting screen size and width for responsive design
+    // Ekran boyutlarını al
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    // Adjusting font size and padding based on screen width
-    double fontSize = screenWidth * 0.05; // 5% of screen width for font size
-    double paddingValue = screenWidth * 0.04; // 4% of screen width for padding
-    double avatarRadius = screenWidth * 0.1; // Circle Avatar radius based on width
-    double buttonPadding = screenWidth * 0.05; // Padding for button
+    // Dinamik boyutlar için ayar
+    double fontSize = screenWidth * 0.05;
+    double paddingValue = screenWidth * 0.04;
+    double avatarRadius = screenWidth * 0.1;
+    double buttonPadding = screenWidth * 0.05;
 
     return Scaffold(
       key: _scaffoldKey,
@@ -65,7 +65,7 @@ class _AnaEkranState extends State<AnaEkran> {
                 'Sağlıklı Günler',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: fontSize, // Adjust font size
+                  fontSize: fontSize,
                 ),
               ),
             ),
@@ -97,7 +97,7 @@ class _AnaEkranState extends State<AnaEkran> {
                 Text(
                   'Selam Kaan ',
                   style: TextStyle(
-                    fontSize: fontSize, // Dynamic font size
+                    fontSize: fontSize,
                     fontFamily: "ABeeZee",
                     fontWeight: FontWeight.bold,
                   ),
@@ -109,8 +109,8 @@ class _AnaEkranState extends State<AnaEkran> {
                   },
                   child: Image.asset(
                     'resimler/menu.png',
-                    width: screenWidth * 0.08, // Width for the menu icon
-                    height: screenHeight * 0.08, // Height for the menu icon
+                    width: screenWidth * 0.08,
+                    height: screenHeight * 0.08,
                   ),
                 ),
               ],
@@ -118,28 +118,26 @@ class _AnaEkranState extends State<AnaEkran> {
             Text(
               "Sağlıklı Günler",
               style: TextStyle(
-                fontSize: fontSize * 0.8, // Slightly smaller font size
+                fontSize: fontSize * 0.8,
                 fontFamily: "PtSans",
                 color: gri,
               ),
             ),
-            SizedBox(height: screenHeight * 0.02), // Spacing for elements
+            SizedBox(height: screenHeight * 0.02),
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
                 backgroundColor: acikKirmizi,
                 foregroundColor: beyaz,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 0.05), // Dynamic border radius
+                  borderRadius: BorderRadius.circular(screenWidth * 0.05),
                 ),
                 padding: EdgeInsets.symmetric(
                   horizontal: buttonPadding,
-                  vertical: screenHeight * 0.015, // Vertical padding
+                  vertical: screenHeight * 0.015,
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
-              child: Text(
+              child: const Text(
                 "Randevu Al",
                 style: TextStyle(fontFamily: "ABeeZee"),
               ),
@@ -159,7 +157,7 @@ class _AnaEkranState extends State<AnaEkran> {
                 print('Schedule tıklandı');
               },
               child: Container(
-                padding: EdgeInsets.all(screenWidth * 0.04), // Dynamic padding
+                padding: EdgeInsets.all(screenWidth * 0.04),
                 decoration: BoxDecoration(
                   color: beyaz,
                   borderRadius: BorderRadius.circular(30),
@@ -175,8 +173,8 @@ class _AnaEkranState extends State<AnaEkran> {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      radius: avatarRadius, // Dynamic avatar radius
-                      backgroundImage: NetworkImage(
+                      radius: avatarRadius,
+                      backgroundImage: const NetworkImage(
                         'https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg=',
                       ),
                     ),
@@ -196,13 +194,13 @@ class _AnaEkranState extends State<AnaEkran> {
                           style: TextStyle(
                               fontSize: 15, fontFamily: "PtSans", color: gri),
                         ),
-                        SizedBox(height: screenHeight * 0.02), // Vertical spacing
+                        SizedBox(height: screenHeight * 0.02),
                         Row(
                           children: [
                             Image.asset(
                               'resimler/calendar.png',
-                              width: screenWidth * 0.05, // Icon width
-                              height: screenWidth * 0.05, // Icon height
+                              width: screenWidth * 0.05,
+                              height: screenWidth * 0.05,
                             ),
                             SizedBox(width: screenWidth * 0.03),
                             Text(
@@ -228,10 +226,11 @@ class _AnaEkranState extends State<AnaEkran> {
                   fontFamily: "ABeeZee",
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: screenHeight * 0.02),
+            SizedBox(height: screenHeight * 0.01),
             Expanded(
-              child: ListView.builder(
+              child: ListView.separated(
                 itemCount: doctors.length,
+                separatorBuilder: (context, index) => SizedBox(height: screenHeight * 0.015),
                 itemBuilder: (context, index) {
                   final doctor = doctors[index];
                   return DoctorCard(
@@ -242,7 +241,6 @@ class _AnaEkranState extends State<AnaEkran> {
                     favourite: true,
                   );
                 },
-
               ),
             )
           ],
