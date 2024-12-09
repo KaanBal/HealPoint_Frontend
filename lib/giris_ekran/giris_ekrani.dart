@@ -22,15 +22,19 @@ class _GirisEkraniState extends State<GirisEkrani> {
     final double ekranYuksekligi = ekranBilgisi.size.height;
     final double ekranGenisligi = ekranBilgisi.size.width;
 
+    // Dinamik font ve boyut faktörleri
+    double fontScaleFactor = 0.9;
+
     return Scaffold(
       backgroundColor: beyaz,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: EdgeInsets.symmetric(horizontal: ekranGenisligi * 0.05),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                // Tabs for "Hasta Girişi" and "Doktor Girişi"
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -45,7 +49,7 @@ class _GirisEkraniState extends State<GirisEkrani> {
                           Text(
                             'Hasta Girişi',
                             style: TextStyle(
-                              fontSize: ekranGenisligi / 20,
+                              fontSize: ekranGenisligi / 20 * fontScaleFactor,
                               fontWeight: FontWeight.bold,
                               color: selectedIndex == 0 ? koyuKirmizi : Colors.black,
                             ),
@@ -71,7 +75,7 @@ class _GirisEkraniState extends State<GirisEkrani> {
                           Text(
                             'Doktor Girişi',
                             style: TextStyle(
-                              fontSize: ekranGenisligi / 20,
+                              fontSize: ekranGenisligi / 20 * fontScaleFactor,
                               fontWeight: FontWeight.bold,
                               color: selectedIndex == 1 ? koyuKirmizi : Colors.black,
                             ),
@@ -99,6 +103,7 @@ class _GirisEkraniState extends State<GirisEkrani> {
                   ),
                 ),
                 SizedBox(height: ekranYuksekligi * 0.05),
+                // Telefon Numarası TextField
                 TextField(
                   controller: telefonController,
                   keyboardType: TextInputType.phone,
@@ -117,6 +122,7 @@ class _GirisEkraniState extends State<GirisEkrani> {
                   ),
                 ),
                 SizedBox(height: ekranYuksekligi * 0.03),
+                // Şifre TextField
                 TextField(
                   controller: sifreController,
                   obscureText: true,
@@ -135,6 +141,7 @@ class _GirisEkraniState extends State<GirisEkrani> {
                   ),
                 ),
                 SizedBox(height: ekranYuksekligi * 0.05),
+                // Giriş Yap Button
                 ElevatedButton(
                   onPressed: () {
                     fonksiyonlar.girisYap(
@@ -156,12 +163,13 @@ class _GirisEkraniState extends State<GirisEkrani> {
                     "Giriş Yap",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: ekranGenisligi / 20,
+                      fontSize: ekranGenisligi / 20 * fontScaleFactor,
                     ),
                   ),
                 ),
+                // Kaydol Butonu
                 Padding(
-                  padding: const EdgeInsets.only(right: 21.0, top: 5.0),
+                  padding: EdgeInsets.only(right: ekranGenisligi * 0.05, top: 5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -183,7 +191,7 @@ class _GirisEkraniState extends State<GirisEkrani> {
                           "Kaydol",
                           style: TextStyle(
                             color: koyuKirmizi,
-                            fontSize: ekranGenisligi / 25,
+                            fontSize: ekranGenisligi / 25 * fontScaleFactor,
                           ),
                         ),
                       ),

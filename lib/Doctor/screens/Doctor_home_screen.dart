@@ -25,7 +25,6 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
     setState(() {});
   }
 
-
   @override
   void initState() {
     _loadData();
@@ -34,14 +33,22 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    double fontScaleFactor = 0.8; // Font boyutlarını küçültmek için ölçek faktörü
+
     return Scaffold(
       backgroundColor: beyaz,
       appBar: AppBar(
         backgroundColor: beyaz,
         centerTitle: true,
-        title: const Text(
-            "Appointments List",
-          style: TextStyle(fontFamily: "ABeeZee"),
+        title: Text(
+          "Appointments List",
+          style: TextStyle(
+            fontFamily: "ABeeZee",
+            fontSize: screenWidth * 0.05 * fontScaleFactor, // Dinamik font boyutu
+          ),
         ),
       ),
       body: ListView.builder(
@@ -50,9 +57,9 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
           final appointment = appointments[index];
           return Card(
             color: beyaz,
-            margin: const EdgeInsets.all(10),
+            margin: EdgeInsets.all(screenWidth * 0.03), // Dinamik margin
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(screenWidth * 0.04), // Dinamik padding
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -61,52 +68,72 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                     children: [
                       // Appointment Time Chip
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.03,
+                            vertical: screenWidth * 0.02),
                         decoration: BoxDecoration(
                           color: Colors.blue.shade100,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
                           appointment.appointment_time,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
+                            fontSize: screenWidth * 0.04 * fontScaleFactor, // Dinamik font boyutu
                           ),
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: screenWidth * 0.02),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.03,
+                            vertical: screenWidth * 0.02),
                         decoration: BoxDecoration(
                           color: getStatusColor(
-                            appointment.Appointment_status.toString().split('.').last,
+                            appointment.Appointment_status
+                                .toString()
+                                .split('.')
+                                .last,
                           ).withOpacity(0.2),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
-                          appointment.Appointment_status.toString().split('.').last,
+                          appointment.Appointment_status
+                              .toString()
+                              .split('.')
+                              .last,
                           style: TextStyle(
                             color: getStatusColor(
-                              appointment.Appointment_status.toString().split('.').last,
+                              appointment.Appointment_status
+                                  .toString()
+                                  .split('.')
+                                  .last,
                             ),
                             fontWeight: FontWeight.bold,
+                            fontSize: screenWidth * 0.04 * fontScaleFactor, // Dinamik font boyutu
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: screenHeight * 0.02),
                   Text(
                     "Hasta İsmi: ${appointment.patient.Patient_name} ${appointment.patient.Patient_surname}",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,fontFamily: "ABeeZee", fontSize: 16),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "ABeeZee",
+                      fontSize: screenWidth * 0.045 * fontScaleFactor, // Dinamik font boyutu
+                    ),
                   ),
-                  const SizedBox(height: 5),
+                  SizedBox(height: screenHeight * 0.01),
                   Text(
                     "${appointment.Appointment_text}",
-                    style: const TextStyle(fontSize: 14,fontFamily: "PTSans" ,color: Colors.grey),
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.035 * fontScaleFactor, // Dinamik font boyutu
+                      fontFamily: "PTSans",
+                      color: Colors.grey,
+                    ),
                   ),
                 ],
               ),
