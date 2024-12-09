@@ -4,33 +4,30 @@ import 'package:yazilim_projesi/models/Patients.dart';
 
 class Reviews {
   final int reviewId;
-  final String comments;
-  final int points;
-  final DateTime createdAt;
-  final Patients patient;
-  final Doctors doctor;
-  final Appointments appointment;
+  final String? comment;
+  final int? points;
+  final Patients? patient;
+  final Doctors? doctor;
+  final Appointments? appointment;
 
   Reviews({
     required this.reviewId,
-    required this.comments,
-    required this.points,
-    required this.createdAt,
-    required this.patient,
-    required this.doctor,
-    required this.appointment,
+    this.comment,
+    this.points,
+    this.patient,
+    this.doctor,
+    this.appointment,
   });
 
-  // JSON'dan nesneye dönüştürme
   factory Reviews.fromJson(Map<String, dynamic> json) {
     return Reviews(
-      reviewId: json['Review_id'],
-      comments: json['comments'],
+      reviewId: json['reviewId'],
+      comment: json['comment'],
       points: json['points'],
-      createdAt: DateTime.parse(json['created_at']),
-      patient: Patients.fromJson(json['patient']),
-      doctor: Doctors.fromJson(json['doctor']),
-      appointment: Appointments.fromJson(json['appointment']),
+      patient: json['patient'] != null ? Patients.fromJson(json['patient']) : null,
+      doctor: json['doctor'] != null ? Doctors.fromJson(json['doctor']) : null,
+      appointment: json['appointment'] != null ? Appointments.fromJson(json['appointment']) : null,
     );
   }
+
 }

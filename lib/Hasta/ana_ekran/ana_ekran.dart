@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 import 'anaekranfonk.dart';
 
@@ -16,8 +20,36 @@ Future<void> ara(String aramaKelimesi) async {
 class _AnaEkranState extends State<AnaEkran> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  List<Doctors> doctors = [];
+
+  void _loadData() async {
+    const String jsonFile = 'assets/MockData/doctors.json';
+    final dataString = await rootBundle.loadString(jsonFile);
+    final List<dynamic> dataJson = jsonDecode(dataString);
+
+    doctors = dataJson.map((json) => Doctors.fromJson(json)).toList();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    _loadData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Ekran boyutlarını al
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    // Dinamik boyutlar için ayar
+    double fontSize = screenWidth * 0.05;
+    double paddingValue = screenWidth * 0.04;
+    double avatarRadius = screenWidth * 0.1;
+    double buttonPadding = screenWidth * 0.05;
+
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: beyaz,
@@ -29,11 +61,11 @@ class _AnaEkranState extends State<AnaEkran> {
               decoration: BoxDecoration(
                 color: acikKirmizi,
               ),
-              child: const Text(
+              child: Text(
                 'Sağlıklı Günler',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 24,
+                  fontSize: fontSize,
                 ),
               ),
             ),
@@ -55,15 +87,20 @@ class _AnaEkranState extends State<AnaEkran> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 50.0, right: 16.0, left: 16.0, bottom: 16.0),
+        padding: const EdgeInsets.only(
+            top: 50.0, right: 16.0, left: 16.0, bottom: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const Text(
+                Text(
                   'Selam Kaan ',
-                  style: TextStyle(fontSize: 22, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    fontFamily: "ABeeZee",
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const Spacer(),
                 InkWell(
@@ -72,44 +109,55 @@ class _AnaEkranState extends State<AnaEkran> {
                   },
                   child: Image.asset(
                     'resimler/menu.png',
-                    width: 30,
-                    height: 30,
+                    width: screenWidth * 0.08,
+                    height: screenHeight * 0.08,
                   ),
                 ),
               ],
             ),
             Text(
               "Sağlıklı Günler",
-              style: TextStyle(fontSize: 17, fontFamily: "PtSans", color: gri),
+              style: TextStyle(
+                fontSize: fontSize * 0.8,
+                fontFamily: "PtSans",
+                color: gri,
+              ),
             ),
-            const SizedBox(height: 15),
+            SizedBox(height: screenHeight * 0.02),
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
                 backgroundColor: acikKirmizi,
                 foregroundColor: beyaz,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(screenWidth * 0.05),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: EdgeInsets.symmetric(
+                  horizontal: buttonPadding,
+                  vertical: screenHeight * 0.015,
+                ),
               ),
               child: const Text(
                 "Randevu Al",
                 style: TextStyle(fontFamily: "ABeeZee"),
               ),
             ),
-            const SizedBox(height: 15),
+            SizedBox(height: screenHeight * 0.02),
             const Text(
               'Yaklaşan Randevular ',
-              style: TextStyle(fontSize: 22, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 22,
+                fontFamily: "ABeeZee",
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: screenHeight * 0.03),
             InkWell(
               onTap: () {
                 print('Schedule tıklandı');
               },
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(screenWidth * 0.04),
                 decoration: BoxDecoration(
                   color: beyaz,
                   borderRadius: BorderRadius.circular(30),
@@ -124,36 +172,43 @@ class _AnaEkranState extends State<AnaEkran> {
                 ),
                 child: Row(
                   children: [
-                    const CircleAvatar(
-                      radius: 35,
-                      backgroundImage: NetworkImage(
+                    CircleAvatar(
+                      radius: avatarRadius,
+                      backgroundImage: const NetworkImage(
                         'https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg=',
                       ),
                     ),
-                    const SizedBox(width: 15),
+                    SizedBox(width: screenWidth * 0.04),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           'Prof. Dr. Mehmet Eriş',
-                          style: TextStyle(fontSize: 17, fontFamily: "PtSans", fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontFamily: "PtSans",
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
                           'Üroloji',
-                          style: TextStyle(fontSize: 15, fontFamily: "PtSans", color: gri),
+                          style: TextStyle(
+                              fontSize: 15, fontFamily: "PtSans", color: gri),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: screenHeight * 0.02),
                         Row(
                           children: [
                             Image.asset(
                               'resimler/calendar.png',
-                              width: 20,
-                              height: 20,
+                              width: screenWidth * 0.05,
+                              height: screenWidth * 0.05,
                             ),
-                            const SizedBox(width: 10),
+                            SizedBox(width: screenWidth * 0.03),
                             Text(
                               'June 12, 9:30 AM',
-                              style: TextStyle(fontSize: 18, fontFamily: "PtSans", color: gri),
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: "PtSans",
+                                  color: gri),
                             ),
                           ],
                         ),
@@ -163,72 +218,31 @@ class _AnaEkranState extends State<AnaEkran> {
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: screenHeight * 0.03),
             const Text(
               'Popüler Doktorlar',
-              style: TextStyle(fontSize: 22, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 22,
+                  fontFamily: "ABeeZee",
+                  fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 5),
+            SizedBox(height: screenHeight * 0.01),
             Expanded(
-              child: ListView(
-                children: [
-                  DoctorCard(
-                    name: 'Dr. Ayşe Demir',
-                    specialization: 'Kardiyolog',
-                    rating: '4.9',
-                    reviews: '2435',
-                    price: '\$25/hr',
+              child: ListView.separated(
+                itemCount: doctors.length,
+                separatorBuilder: (context, index) => SizedBox(height: screenHeight * 0.015),
+                itemBuilder: (context, index) {
+                  final doctor = doctors[index];
+                  return DoctorCard(
+                    name: doctor.Doctor_name,
+                    specialization: doctor.branch ?? "",
+                    rating: "",
+                    reviews: doctor.reviews?.length.toString() ?? "0",
                     favourite: true,
-                  ),
-                  const SizedBox(height: 20),
-                  DoctorCard(
-                    name: 'Dr. Mehmet Can',
-                    specialization: 'Diyetisyen',
-                    rating: '4.8',
-                    reviews: '1930',
-                    price: '\$30/hr',
-                    favourite: true,
-                  ),
-                  const SizedBox(height: 20),
-                  DoctorCard(
-                    name: 'Dr. Zeynep Arda',
-                    specialization: 'Fizyoterapist',
-                    rating: '4.7',
-                    reviews: '1750',
-                    price: '\$20/hr',
-                    favourite: false,
-                  ),
-                  const SizedBox(height: 20),
-                  DoctorCard(
-                    name: 'Dr. Zeynep Arda',
-                    specialization: 'Fizyoterapist',
-                    rating: '4.7',
-                    reviews: '1750',
-                    price: '\$20/hr',
-                    favourite: false,
-                  ),
-                  const SizedBox(height: 20),
-                  DoctorCard(
-                    name: 'Dr. Zeynep Arda',
-                    specialization: 'Fizyoterapist',
-                    rating: '4.7',
-                    reviews: '1750',
-                    price: '\$20/hr',
-                    favourite: false,
-                  ),
-                  const SizedBox(height: 20),
-                  DoctorCard(
-                    name: 'Dr. Zeynep Arda',
-                    specialization: 'Fizyoterapist',
-                    rating: '4.7',
-                    reviews: '1750',
-                    price: '\$20/hr',
-                    favourite: false,
-                  ),
-                  const SizedBox(height: 20),
-                ],
+                  );
+                },
               ),
-            ),
+            )
           ],
         ),
       ),
