@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // Tarih işlemleri için gerekli paket
 
 class HastaProfil extends StatefulWidget {
   const HastaProfil({super.key});
@@ -13,47 +14,23 @@ class HastaProfilState extends State<HastaProfil> {
   String email = 'ayberkoz@gmail.com';
   String password = '1234';
   String birthDate = '15/07/2003';
-  String age = '19 yrs';
 
-  // Function to show a dialog for editing information
-  void showEditDialog(BuildContext context, String title, String initialValue, ValueChanged<String> onEdit) {
-    final TextEditingController controller = TextEditingController(text: initialValue);
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Düzenle: $title"),
-        content: TextField(
-          controller: controller,
-          decoration: InputDecoration(hintText: "Yeni $title girin"),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text(
-              "İptal",
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              onEdit(controller.text);
-              Navigator.of(context).pop();
-            },
-            child: const Text(
-              "Kaydet",
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-        ],
-      ),
-    );
+  // Yaşı hesaplayan fonksiyon
+  int calculateAge(String birthDate) {
+    DateTime birthDateParsed = DateFormat('dd/MM/yyyy').parse(birthDate);
+    DateTime today = DateTime.now();
+    int age = today.year - birthDateParsed.year;
+    if (today.month < birthDateParsed.month ||
+        (today.month == birthDateParsed.month && today.day < birthDateParsed.day)) {
+      age--;
+    }
+    return age;
   }
 
   @override
   Widget build(BuildContext context) {
+    int age = calculateAge(birthDate);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -75,20 +52,12 @@ class HastaProfilState extends State<HastaProfil> {
                         backgroundImage: NetworkImage('https://cdn-icons-png.flaticon.com/512/387/387585.png'),
                         backgroundColor: Colors.white,
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       Text(
                         'Erza Scarlet',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20.0,
-                        ),
-                      ),
-                      SizedBox(height: 10.0),
-                      Text(
-                        age, // Upper part displays the updated age
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
                         ),
                       ),
                     ],
@@ -102,12 +71,12 @@ class HastaProfilState extends State<HastaProfil> {
                   child: Center(
                     child: Card(
                       color: Colors.grey[200],
-                      margin: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+                      margin: const EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
                       child: Container(
                         width: 310.0,
-                        height: 380.0,
+                        height: 340.0,
                         child: Padding(
-                          padding: EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(10.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -118,7 +87,7 @@ class HastaProfilState extends State<HastaProfil> {
                                   fontWeight: FontWeight.w800,
                                 ),
                               ),
-                              Divider(color: Colors.black12),
+                              const Divider(color: Colors.black12),
                               buildEditableTile(
                                 "Telefon No",
                                 phone,
@@ -129,7 +98,7 @@ class HastaProfilState extends State<HastaProfil> {
                                   });
                                 },
                               ),
-                              SizedBox(height: 20.0),
+                              const SizedBox(height: 20.0),
                               buildEditableTile(
                                 "E Mail",
                                 email,
@@ -162,17 +131,6 @@ class HastaProfilState extends State<HastaProfil> {
                                   });
                                 },
                               ),
-                              const SizedBox(height: 20.0),
-                              buildEditableTile(
-                                "Yaş",
-                                age,
-                                Icons.calendar_today,
-                                    (newValue) {
-                                  setState(() {
-                                    age = newValue;
-                                  });
-                                },
-                              ),
                             ],
                           ),
                         ),
@@ -190,47 +148,58 @@ class HastaProfilState extends State<HastaProfil> {
             child: Card(
               color: Colors.grey[200],
               child: Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
-                      child: Column(
-                        children: [
-                          Text(
-                            'Ad',
-                            style: TextStyle(color: Colors.black, fontSize: 14.0),
+                    Column(
+                      children: const [
+                        Text(
+                          'Ad',
+                          style: TextStyle(color: Colors.black, fontSize: 14.0),
+                        ),
+                        SizedBox(height: 5.0),
+                        Text(
+                          "Erza",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 15.0,
                           ),
-                          const SizedBox(height: 5.0),
-                          const Text(
-                            "Erza",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 15.0,
-                            ),
-                          )
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      child: Column(
-                        children: [
-                          Text(
-                            'Soyad',
-                            style: TextStyle(color: Colors.black, fontSize: 14.0),
+                    Column(
+                      children: const [
+                        Text(
+                          'Soyad',
+                          style: TextStyle(color: Colors.black, fontSize: 14.0),
+                        ),
+                        SizedBox(height: 5.0),
+                        Text(
+                          'Scarlet',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 15.0,
                           ),
-                          const SizedBox(height: 5.0),
-                          const Text(
-                            'Scarlet',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 15.0,
-                            ),
-                          )
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    // Removed the "Yaş" field from the bottom section
+                    Column(
+                      children: [
+                        const Text(
+                          'Yaş',
+                          style: TextStyle(color: Colors.black, fontSize: 14.0),
+                        ),
+                        const SizedBox(height: 5.0),
+                        Text(
+                          '$age yrs',
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 15.0,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -241,7 +210,7 @@ class HastaProfilState extends State<HastaProfil> {
     );
   }
 
-  // Widget for displaying editable fields with an edit button
+  // Düzenlenebilir alan için widget
   Widget buildEditableTile(
       String title, String value, IconData icon, ValueChanged<String> onEdit) {
     return Row(
@@ -251,13 +220,13 @@ class HastaProfilState extends State<HastaProfil> {
           color: Colors.black,
           size: 35,
         ),
-        SizedBox(width: 20.0),
+        const SizedBox(width: 20.0),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 15.0,
               ),
             ),
@@ -270,7 +239,7 @@ class HastaProfilState extends State<HastaProfil> {
             ),
           ],
         ),
-        Spacer(),
+        const Spacer(),
         IconButton(
           icon: const Icon(Icons.edit),
           onPressed: () {
@@ -278,6 +247,37 @@ class HastaProfilState extends State<HastaProfil> {
           },
         ),
       ],
+    );
+  }
+
+  // Düzenleme için diyalog gösteren fonksiyon
+  void showEditDialog(BuildContext context, String title, String initialValue, ValueChanged<String> onEdit) {
+    final TextEditingController controller = TextEditingController(text: initialValue);
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Düzenle: $title"),
+        content: TextField(
+          controller: controller,
+          decoration: InputDecoration(hintText: "Yeni $title girin"),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("İptal"),
+          ),
+          TextButton(
+            onPressed: () {
+              onEdit(controller.text);
+              Navigator.of(context).pop();
+            },
+            child: const Text("Kaydet"),
+          ),
+        ],
+      ),
     );
   }
 }

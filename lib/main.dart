@@ -7,6 +7,7 @@ import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi_fonks.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import 'Doctor/screens/Doctor_home_screen.dart';
 
+
 void main() {
   runApp(const MyApp());
 }
