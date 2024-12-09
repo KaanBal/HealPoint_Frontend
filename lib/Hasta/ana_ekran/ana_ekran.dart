@@ -55,7 +55,8 @@ class _AnaEkranState extends State<AnaEkran> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 50.0, right: 16.0, left: 16.0, bottom: 16.0),
+        padding: const EdgeInsets.only(
+            top: 50.0, right: 16.0, left: 16.0, bottom: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -63,7 +64,10 @@ class _AnaEkranState extends State<AnaEkran> {
               children: [
                 const Text(
                   'Selam Kaan ',
-                  style: TextStyle(fontSize: 22, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontFamily: "ABeeZee",
+                      fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 InkWell(
@@ -91,7 +95,8 @@ class _AnaEkranState extends State<AnaEkran> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
               child: const Text(
                 "Randevu Al",
@@ -101,7 +106,10 @@ class _AnaEkranState extends State<AnaEkran> {
             const SizedBox(height: 15),
             const Text(
               'Yaklaşan Randevular ',
-              style: TextStyle(fontSize: 22, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 22,
+                  fontFamily: "ABeeZee",
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
             InkWell(
@@ -136,11 +144,15 @@ class _AnaEkranState extends State<AnaEkran> {
                       children: [
                         const Text(
                           'Prof. Dr. Mehmet Eriş',
-                          style: TextStyle(fontSize: 17, fontFamily: "PtSans", fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontFamily: "PtSans",
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
                           'Üroloji',
-                          style: TextStyle(fontSize: 15, fontFamily: "PtSans", color: gri),
+                          style: TextStyle(
+                              fontSize: 15, fontFamily: "PtSans", color: gri),
                         ),
                         const SizedBox(height: 20),
                         Row(
@@ -153,7 +165,10 @@ class _AnaEkranState extends State<AnaEkran> {
                             const SizedBox(width: 10),
                             Text(
                               'June 12, 9:30 AM',
-                              style: TextStyle(fontSize: 18, fontFamily: "PtSans", color: gri),
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: "PtSans",
+                                  color: gri),
                             ),
                           ],
                         ),
@@ -166,7 +181,10 @@ class _AnaEkranState extends State<AnaEkran> {
             const SizedBox(height: 30),
             const Text(
               'Popüler Doktorlar',
-              style: TextStyle(fontSize: 22, fontFamily: "ABeeZee", fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 22,
+                  fontFamily: "ABeeZee",
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
             Expanded(
