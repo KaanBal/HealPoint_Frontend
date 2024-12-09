@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Tarih işlemleri için gerekli paket
 
@@ -21,7 +20,8 @@ class HastaProfilState extends State<HastaProfil> {
     DateTime today = DateTime.now();
     int age = today.year - birthDateParsed.year;
     if (today.month < birthDateParsed.month ||
-        (today.month == birthDateParsed.month && today.day < birthDateParsed.day)) {
+        (today.month == birthDateParsed.month &&
+            today.day < birthDateParsed.day)) {
       age--;
     }
     return age;
@@ -29,6 +29,8 @@ class HastaProfilState extends State<HastaProfil> {
 
   @override
   Widget build(BuildContext context) {
+    final double ekranYuksekligi = MediaQuery.of(context).size.height;
+    final double ekranGenisligi = MediaQuery.of(context).size.width;
     int age = calculateAge(birthDate);
 
     return Scaffold(
@@ -36,6 +38,7 @@ class HastaProfilState extends State<HastaProfil> {
         children: [
           Column(
             children: [
+              // Üst bölüm (Kırmızı arka plan)
               Expanded(
                 flex: 5,
                 child: Container(
@@ -48,22 +51,24 @@ class HastaProfilState extends State<HastaProfil> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CircleAvatar(
-                        radius: 65.0,
-                        backgroundImage: NetworkImage('https://cdn-icons-png.flaticon.com/512/387/387585.png'),
+                        radius: ekranGenisligi * 0.18,
+                        backgroundImage: const NetworkImage(
+                            'https://cdn-icons-png.flaticon.com/512/387/387585.png'),
                         backgroundColor: Colors.white,
                       ),
-                      const SizedBox(height: 10.0),
-                      Text(
+                      SizedBox(height: ekranYuksekligi * 0.015),
+                      const Text(
                         'Erza Scarlet',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20.0,
+                          fontSize: 18.0,
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
+              // Alt bölüm (Bilgi kartı)
               Expanded(
                 flex: 5,
                 child: Container(
@@ -71,68 +76,66 @@ class HastaProfilState extends State<HastaProfil> {
                   child: Center(
                     child: Card(
                       color: Colors.grey[200],
-                      margin: const EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
-                      child: Container(
-                        width: 310.0,
-                        height: 340.0,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Information",
-                                style: TextStyle(
-                                  fontSize: 17.0,
-                                  fontWeight: FontWeight.w800,
-                                ),
+                      margin: EdgeInsets.only(top: ekranYuksekligi * 0.04,left: ekranGenisligi * 0.1
+                          ,right: ekranGenisligi * 0.1),
+                      child: Padding(
+                        padding: EdgeInsets.all(ekranGenisligi * 0.08),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              "Bilgiler",
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w800,
                               ),
-                              const Divider(color: Colors.black12),
-                              buildEditableTile(
-                                "Telefon No",
-                                phone,
-                                Icons.phone,
-                                    (newValue) {
-                                  setState(() {
-                                    phone = newValue;
-                                  });
-                                },
-                              ),
-                              const SizedBox(height: 20.0),
-                              buildEditableTile(
-                                "E Mail",
-                                email,
-                                Icons.mail,
-                                    (newValue) {
-                                  setState(() {
-                                    email = newValue;
-                                  });
-                                },
-                              ),
-                              const SizedBox(height: 20.0),
-                              buildEditableTile(
-                                "Şifre",
-                                password,
-                                Icons.lock_outline,
-                                    (newValue) {
-                                  setState(() {
-                                    password = newValue;
-                                  });
-                                },
-                              ),
-                              const SizedBox(height: 20.0),
-                              buildEditableTile(
-                                "Doğum Tarihi",
-                                birthDate,
-                                Icons.calendar_month,
-                                    (newValue) {
-                                  setState(() {
-                                    birthDate = newValue;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
+                            ),
+                            const Divider(color: Colors.black12),
+                            buildEditableTile(
+                              "Telefon No",
+                              phone,
+                              Icons.phone,
+                                  (newValue) {
+                                setState(() {
+                                  phone = newValue;
+                                });
+                              },
+                            ),
+                            SizedBox(height: ekranYuksekligi * 0.02),
+                            buildEditableTile(
+                              "E Mail",
+                              email,
+                              Icons.mail,
+                                  (newValue) {
+                                setState(() {
+                                  email = newValue;
+                                });
+                              },
+                            ),
+                            SizedBox(height: ekranYuksekligi * 0.02),
+                            buildEditableTile(
+                              "Şifre",
+                              password,
+                              Icons.lock_outline,
+                                  (newValue) {
+                                setState(() {
+                                  password = newValue;
+                                });
+                              },
+                            ),
+                            SizedBox(height: ekranYuksekligi * 0.02),
+                            buildEditableTile(
+                              "Doğum Tarihi",
+                              birthDate,
+                              Icons.calendar_month,
+                                  (newValue) {
+                                setState(() {
+                                  birthDate = newValue;
+                                });
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -141,45 +144,49 @@ class HastaProfilState extends State<HastaProfil> {
               ),
             ],
           ),
+          // Ad, Soyad ve Yaş Kartı
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.45,
-            left: 20.0,
-            right: 20.0,
+            top: ekranYuksekligi * 0.45,
+            left: ekranGenisligi * 0.09,
+            right: ekranGenisligi * 0.09,
             child: Card(
               color: Colors.grey[200],
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: EdgeInsets.symmetric(
+                  vertical: ekranYuksekligi * 0.01,
+                  horizontal: ekranGenisligi * 0.01,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Column(
-                      children: const [
+                    const Column(
+                      children: [
                         Text(
                           'Ad',
-                          style: TextStyle(color: Colors.black, fontSize: 14.0),
+                          style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
                         SizedBox(height: 5.0),
                         Text(
                           "Erza",
                           style: TextStyle(
                             color: Colors.grey,
-                            fontSize: 15.0,
+                            fontSize: 13.0,
                           ),
                         ),
                       ],
                     ),
-                    Column(
-                      children: const [
+                    const Column(
+                      children: [
                         Text(
                           'Soyad',
-                          style: TextStyle(color: Colors.black, fontSize: 14.0),
+                          style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
                         SizedBox(height: 5.0),
                         Text(
                           'Scarlet',
                           style: TextStyle(
                             color: Colors.grey,
-                            fontSize: 15.0,
+                            fontSize: 13.0,
                           ),
                         ),
                       ],
@@ -188,14 +195,14 @@ class HastaProfilState extends State<HastaProfil> {
                       children: [
                         const Text(
                           'Yaş',
-                          style: TextStyle(color: Colors.black, fontSize: 14.0),
+                          style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
                         const SizedBox(height: 5.0),
                         Text(
                           '$age yrs',
                           style: const TextStyle(
                             color: Colors.grey,
-                            fontSize: 15.0,
+                            fontSize: 13.0,
                           ),
                         ),
                       ],
@@ -218,28 +225,27 @@ class HastaProfilState extends State<HastaProfil> {
         Icon(
           icon,
           color: Colors.black,
-          size: 35,
+          size: 30,
         ),
-        const SizedBox(width: 20.0),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 15.0,
+        SizedBox(width: MediaQuery.of(context).size.width * 0.04),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(fontSize: 13.0),
               ),
-            ),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 12.0,
-                color: Colors.grey[400],
+              Text(
+                value,
+                style: TextStyle(
+                  fontSize: 11.0,
+                  color: Colors.grey[400],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        const Spacer(),
         IconButton(
           icon: const Icon(Icons.edit),
           onPressed: () {
@@ -251,8 +257,10 @@ class HastaProfilState extends State<HastaProfil> {
   }
 
   // Düzenleme için diyalog gösteren fonksiyon
-  void showEditDialog(BuildContext context, String title, String initialValue, ValueChanged<String> onEdit) {
-    final TextEditingController controller = TextEditingController(text: initialValue);
+  void showEditDialog(BuildContext context, String title, String initialValue,
+      ValueChanged<String> onEdit) {
+    final TextEditingController controller =
+    TextEditingController(text: initialValue);
 
     showDialog(
       context: context,
