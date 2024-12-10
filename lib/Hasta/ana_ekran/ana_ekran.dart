@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:yazilim_projesi/Hasta/HastaProfil/hasta_profil.dart';
+import 'package:yazilim_projesi/gecmisRandevu/gecmis_randevu.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 import 'anaekranfonk.dart';
@@ -73,14 +75,14 @@ class _AnaEkranState extends State<AnaEkran> {
               leading: const Icon(Icons.calendar_month_outlined),
               title: const Text('Geçmiş Randevular'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>  GecmisRandevular()));
               },
             ),
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('Profilim'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const HastaProfil()));
               },
             ),
           ],
