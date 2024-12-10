@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yazilim_projesi/kay%C4%B1t/kay%C4%B1t_ol.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
+import '../Hasta/Hasta_kayit/hasta_kayıt_ol.dart';
 import 'girisekranfonks.dart';
 
 class GirisEkrani extends StatefulWidget {

@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:yazilim_projesi/renkler/renkler.dart';
 
-class KayitEkrani extends StatefulWidget {
-  const KayitEkrani({super.key});
+import '../../renkler/renkler.dart';
+
+class DoktorKayitOl extends StatefulWidget {
+  const DoktorKayitOl({super.key});
 
   @override
-  _KayitEkraniState createState() => _KayitEkraniState();
+  State<DoktorKayitOl> createState() => _DoktorKayitOlState();
 }
 
-class _KayitEkraniState extends State<KayitEkrani> {
+class _DoktorKayitOlState extends State<DoktorKayitOl> {
   final _formKey = GlobalKey<FormState>();
 
-  // Kontrol edilecek alanlar için TextEditingController'lar
   final TextEditingController tcController = TextEditingController();
   final TextEditingController telefonController = TextEditingController();
   final TextEditingController isimController = TextEditingController();
   final TextEditingController soyisimController = TextEditingController();
+  final TextEditingController branchController = TextEditingController();
+  final TextEditingController cityController = TextEditingController();
+  final TextEditingController districtController = TextEditingController();
   final TextEditingController sifreController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController adresController = TextEditingController();
   final TextEditingController dogumTarihiController = TextEditingController();
 
   String? _selectedCinsiyet;
 
-  // Telefon numarası için TextEditingController'ı dinlemek amacıyla sayfa yüklendiğinde listener ekleyelim
   @override
   void initState() {
     super.initState();
@@ -41,7 +44,6 @@ class _KayitEkraniState extends State<KayitEkrani> {
   }
 
   void iptal() {
-    // Tüm alanları sıfırlama
     tcController.clear();
     telefonController.clear();
     isimController.clear();
@@ -49,10 +51,14 @@ class _KayitEkraniState extends State<KayitEkrani> {
     sifreController.clear();
     emailController.clear();
     dogumTarihiController.clear();
-    _selectedCinsiyet = null; // Cinsiyet de sıfırlanacak
+    branchController.clear();
+    cityController.clear();
+    districtController.clear();
+    adresController.clear();
+    _selectedCinsiyet = null;
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("İşlem iptal edildi.")),
+      const SnackBar(content: Text("İşlem iptal edildi.")),
     );
   }
 
@@ -67,7 +73,7 @@ class _KayitEkraniState extends State<KayitEkrani> {
     if (selectedDate != null && selectedDate != DateTime.now()) {
       setState(() {
         dogumTarihiController.text =
-            "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
+        "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
       });
     }
   }
@@ -105,11 +111,13 @@ class _KayitEkraniState extends State<KayitEkrani> {
                   return null;
                 },
               ),
+
               const SizedBox(height: 10),
               TextFormField(
                 controller: telefonController,
                 decoration: const InputDecoration(
                   labelText: "Telefon Numarası",
+                  hintText: "Telefon numaranızın başında 0 olmadan yazınız.",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.phone,
@@ -123,19 +131,6 @@ class _KayitEkraniState extends State<KayitEkrani> {
                   }
                   return null;
                 },
-              ),
-              const SizedBox(height: 5),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Telefon numaranızın başında 0 olmadan yazınız.",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
               ),
               const SizedBox(height: 10),
               TextFormField(
@@ -167,15 +162,57 @@ class _KayitEkraniState extends State<KayitEkrani> {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                controller: branchController,
+                decoration: const InputDecoration(
+                  labelText: "Branş",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Lütfen branşınızı girin.";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: cityController,
+                decoration: const InputDecoration(
+                  labelText: "Şehir",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Lütfen Şehir girin.";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: districtController,
+                decoration: const InputDecoration(
+                  labelText: "İlçe",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Lütfen İlçe girin.";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
                 controller: emailController,
                 decoration: const InputDecoration(
-                  labelText: "E-posta",
+                  labelText: "Adres",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Lütfen e-posta adresinizi girin.";
+                    return "Lütfen adresinizi girin.";
                   }
                   if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
                     return "Geçerli bir e-posta adresi girin.";
@@ -254,13 +291,13 @@ class _KayitEkraniState extends State<KayitEkrani> {
                     onPressed: kayitOl,
                     child: Text("Kayıt Ol"),
                     style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.green,foregroundColor: beyaz),
+                    ElevatedButton.styleFrom(backgroundColor: Colors.green,foregroundColor: beyaz),
                   ),
                   ElevatedButton(
                     onPressed: iptal,
                     child: Text("İptal"),
                     style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.red,foregroundColor: beyaz),
+                    ElevatedButton.styleFrom(backgroundColor: Colors.red,foregroundColor: beyaz),
                   ),
                 ],
               ),
