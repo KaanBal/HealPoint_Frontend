@@ -70,6 +70,7 @@ class _GirisEkraniState extends State<GirisEkrani>
                 sifreController.text,
                 telefonController,
                 sifreController,
+                true,
               );
             },
           ),
@@ -84,6 +85,8 @@ class _GirisEkraniState extends State<GirisEkrani>
                 sifreController.text,
                 telefonController,
                 sifreController,
+
+                false,
               );
             },
           ),
