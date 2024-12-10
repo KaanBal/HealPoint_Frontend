@@ -145,15 +145,39 @@ class _AnaEkranState extends State<AnaEkran> {
               ),
             ),
             SizedBox(height: screenHeight * 0.02),
-            const Text(
-              'Yaklaşan Randevular ',
-              style: TextStyle(
-                fontSize: 22,
-                fontFamily: "ABeeZee",
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  "Yaklaşan Randevular",
+                  style: TextStyle(
+                    fontFamily: "ABeeZee",
+                    fontWeight: FontWeight.bold,
+                    fontSize: fontSize,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    // Tıklama olayını burada işle
+                    print("Küçük Görüntüle tıklandı!");
+                  },
+
+                  child: Text(
+                    " Görüntüle",
+                    style: TextStyle(
+                      fontFamily: "ABeeZee",
+                      fontWeight: FontWeight.normal,
+                      fontSize: fontSize * 0.6,
+                      color: acikKirmizi,
+                    ),
+                  ),
+                ),
+              ],
             ),
+
             SizedBox(height: screenHeight * 0.03),
+
             InkWell(
               onTap: () {
                 print('Schedule tıklandı');
@@ -221,10 +245,10 @@ class _AnaEkranState extends State<AnaEkran> {
               ),
             ),
             SizedBox(height: screenHeight * 0.03),
-            const Text(
+            Text(
               'Popüler Doktorlar',
               style: TextStyle(
-                  fontSize: 22,
+                  fontSize: fontSize,
                   fontFamily: "ABeeZee",
                   fontWeight: FontWeight.bold),
             ),
