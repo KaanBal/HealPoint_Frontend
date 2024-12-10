@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
-class KayitEkrani extends StatefulWidget {
-  const KayitEkrani({super.key});
+class HastaKayitOl extends StatefulWidget {
+  const HastaKayitOl({super.key});
 
   @override
-  _KayitEkraniState createState() => _KayitEkraniState();
+  _HastaKayitOlState createState() => _HastaKayitOlState();
 }
 
-class _KayitEkraniState extends State<KayitEkrani> {
+class _HastaKayitOlState extends State<HastaKayitOl> {
   final _formKey = GlobalKey<FormState>();
 
   // Kontrol edilecek alanlar için TextEditingController'lar
@@ -52,7 +52,7 @@ class _KayitEkraniState extends State<KayitEkrani> {
     _selectedCinsiyet = null; // Cinsiyet de sıfırlanacak
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("İşlem iptal edildi.")),
+      const SnackBar(content: Text("İşlem iptal edildi.")),
     );
   }
 
