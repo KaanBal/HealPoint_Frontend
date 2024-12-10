@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/kay%C4%B1t/kay%C4%B1t_ol.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 import 'girisekranfonks.dart';
 
@@ -51,7 +52,9 @@ class _GirisEkraniState extends State<GirisEkrani> {
                             style: TextStyle(
                               fontSize: ekranGenisligi / 20 * fontScaleFactor,
                               fontWeight: FontWeight.bold,
-                              color: selectedIndex == 0 ? koyuKirmizi : Colors.black,
+                              color: selectedIndex == 0
+                                  ? koyuKirmizi
+                                  : Colors.black,
                             ),
                           ),
                           if (selectedIndex == 0)
@@ -77,7 +80,9 @@ class _GirisEkraniState extends State<GirisEkrani> {
                             style: TextStyle(
                               fontSize: ekranGenisligi / 20 * fontScaleFactor,
                               fontWeight: FontWeight.bold,
-                              color: selectedIndex == 1 ? koyuKirmizi : Colors.black,
+                              color: selectedIndex == 1
+                                  ? koyuKirmizi
+                                  : Colors.black,
                             ),
                           ),
                           if (selectedIndex == 1)
@@ -157,7 +162,8 @@ class _GirisEkraniState extends State<GirisEkrani> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
-                    minimumSize: Size(ekranGenisligi * 0.8, ekranYuksekligi * 0.06),
+                    minimumSize:
+                        Size(ekranGenisligi * 0.8, ekranYuksekligi * 0.06),
                   ),
                   child: Text(
                     "Giriş Yap",
@@ -169,7 +175,8 @@ class _GirisEkraniState extends State<GirisEkrani> {
                 ),
                 // Kaydol Butonu
                 Padding(
-                  padding: EdgeInsets.only(right: ekranGenisligi * 0.05, top: 5.0),
+                  padding:
+                      EdgeInsets.only(right: ekranGenisligi * 0.05, top: 5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -186,6 +193,7 @@ class _GirisEkraniState extends State<GirisEkrani> {
                             telefonController,
                             sifreController,
                           );
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const KayitEkrani()));
                         },
                         child: Text(
                           "Kaydol",
