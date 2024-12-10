@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi_fonks.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
@@ -13,7 +14,6 @@ class DoctorBilgiEkran extends StatefulWidget {
 }
 
 class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Doctors? selectedDoctor;
 
@@ -36,6 +36,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
     var ekranBilgisi = MediaQuery.of(context);
     final double ekranGenisligi = ekranBilgisi.size.width;
     final double ekranYuksekligi = ekranBilgisi.size.height;
+    final DoktorBilgiFonks doktorBilgiFonks = DoktorBilgiFonks();
+
 
     double fontSize = ekranGenisligi / 22;
     double padding = ekranGenisligi * 0.05;
@@ -163,7 +165,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
             Text(
               'Uygun Saatler:',
               style: TextStyle(
-                  fontSize: fontSize * 1.1, // Font boyutunu küçülttük
+                  fontSize: fontSize * 1.1, 
                   fontFamily: "ABeeZee",
                   fontWeight: FontWeight.bold),
             ),
@@ -212,7 +214,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "İsim Gelecek",
+                            doktorBilgiFonks.getNameAndSurname(review.patient?.Patient_name ?? "", review.patient?.Patient_surname ?? ""),
                             style: TextStyle(
                                 fontSize:
                                 fontSize, // Font boyutunu küçülttük
@@ -230,7 +232,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                           ),
                           SizedBox(height: ekranYuksekligi * 0.01),
                           Text(
-                            "Tarih Gelecek",
+                            review.createdAt?.toIso8601String() ?? "",
                             style: TextStyle(
                                 fontSize: fontSize *
                                     0.8, // Font boyutunu küçülttük
