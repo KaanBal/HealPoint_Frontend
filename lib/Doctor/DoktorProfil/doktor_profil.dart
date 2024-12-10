@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Doctor/DoktorProfil/doktor_abonelik.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
 // Global showEditDialog function
@@ -274,7 +275,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
         ),
         trailing: TextButton(
           onPressed: () {
-            print("Abonelik durumu görüntülendi.");
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const AbonelikBilgiSayfasi()));
           },
           child: Text(
             "Görüntüle",
