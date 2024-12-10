@@ -39,7 +39,7 @@ class DoktorBilgiFonks {
     );
   }
 
-  String getPatientNameAndSurname(String name, String surname) {
+  String getNameAndSurname(String name, String surname) {
     String nameSurname = "";
 
     if (name.isNotEmpty) {

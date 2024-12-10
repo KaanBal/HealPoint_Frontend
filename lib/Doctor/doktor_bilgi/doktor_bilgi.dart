@@ -14,7 +14,6 @@ class DoctorBilgiEkran extends StatefulWidget {
 }
 
 class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Doctors? selectedDoctor;
 
@@ -37,7 +36,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
     var ekranBilgisi = MediaQuery.of(context);
     final double ekranGenisligi = ekranBilgisi.size.width;
     final double ekranYuksekligi = ekranBilgisi.size.height;
-    final DoktorBilgiFonks _doktorBilgiFonks = DoktorBilgiFonks();
+    final DoktorBilgiFonks doktorBilgiFonks = DoktorBilgiFonks();
 
 
     double fontSize = ekranGenisligi / 22;
@@ -166,7 +165,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
             Text(
               'Uygun Saatler:',
               style: TextStyle(
-                  fontSize: fontSize * 1.1, // Font boyutunu küçülttük
+                  fontSize: fontSize * 1.1, 
                   fontFamily: "ABeeZee",
                   fontWeight: FontWeight.bold),
             ),
@@ -215,7 +214,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            _doktorBilgiFonks.getPatientNameAndSurname(review.patient?.Patient_name ?? "", review.patient?.Patient_surname ?? ""),
+                            doktorBilgiFonks.getNameAndSurname(review.patient?.Patient_name ?? "", review.patient?.Patient_surname ?? ""),
                             style: TextStyle(
                                 fontSize:
                                 fontSize, // Font boyutunu küçülttük
