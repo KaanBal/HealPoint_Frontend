@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
-import '../Hasta/Hasta_kayit/hasta_kayıt_ol.dart';
+import '../Hasta/Hasta_kayit/hasta_kayit_ol.dart';
 import 'girisekranfonks.dart';
 
 class GirisEkrani extends StatefulWidget {
@@ -183,7 +183,7 @@ class _GirisEkraniState extends State<GirisEkrani>
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const KayitEkrani()));
+                            builder: (context) => const HastaKayitOl()));
                   },
                   child: Text("Kaydol", style: TextStyle(color: koyuKirmizi)),
                 ),
