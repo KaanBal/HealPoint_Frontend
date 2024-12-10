@@ -3,7 +3,6 @@ import 'package:yazilim_projesi/Doctor/screens/Doctor_home_screen.dart';
 import 'package:yazilim_projesi/Hasta/ana_ekran/ana_ekran.dart';
 
 class GirisEkranFonks {
-
   void showAlertDialog(BuildContext context, String baslik, String mesaj) {
     showDialog(
       context: context,
@@ -30,6 +29,7 @@ class GirisEkranFonks {
       String sifre,
       TextEditingController telefonController,
       TextEditingController sifreController,
+
       bool isHasta, // Giriş tipini belirtmek için
       ) {
     if (telefon.isNotEmpty && sifre.isNotEmpty) {
@@ -57,23 +57,33 @@ class GirisEkranFonks {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Lütfen tüm alanları doldurun!")),
       );
+      ) {
+    if (telefon.isEmpty || sifre.isEmpty) {
+      showAlertDialog(context, "Hata", "Telefon numarası ve şifre boş olamaz.");
+    } else {
+      showAlertDialog(context, "Başarılı", "Giriş yapıldı: $telefon");
+      telefonController.clear();
+      sifreController.clear();
     }
     telefonController.clear();
     sifreController.clear();
   }
 
-  void kaydol(BuildContext context, String telefon, String sifre,
-      TextEditingController telefonController, TextEditingController sifreController) {
+  void kaydol(
+      BuildContext context,
+      String telefon,
+      String sifre,
+      TextEditingController telefonController,
+      TextEditingController sifreController,
+      ) {
     if (telefon.isEmpty || sifre.isEmpty) {
       showAlertDialog(context, "Hata", "Telefon numarası ve şifre boş olamaz.");
     } else {
       showAlertDialog(context, "Başarılı", "Kayıt yapıldı: $telefon");
-
       telefonController.clear();
       sifreController.clear();
     }
   }
-
 }
 
 
