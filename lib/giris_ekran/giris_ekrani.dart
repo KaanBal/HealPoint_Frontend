@@ -10,12 +10,29 @@ class GirisEkrani extends StatefulWidget {
   State<GirisEkrani> createState() => _GirisEkraniState();
 }
 
-class _GirisEkraniState extends State<GirisEkrani> {
-  int selectedIndex = 0;
+class _GirisEkraniState extends State<GirisEkrani>
+    with SingleTickerProviderStateMixin {
   final TextEditingController telefonController = TextEditingController();
   final TextEditingController sifreController = TextEditingController();
-
   final GirisEkranFonks fonksiyonlar = GirisEkranFonks();
+
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    // TabController oluşturuluyor.
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    // TabController ve diğer kontrolcüler bellekten temizleniyor.
+    _tabController.dispose();
+    telefonController.dispose();
+    sifreController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,192 +40,158 @@ class _GirisEkraniState extends State<GirisEkrani> {
     final double ekranYuksekligi = ekranBilgisi.size.height;
     final double ekranGenisligi = ekranBilgisi.size.width;
 
-    // Dinamik font ve boyut faktörleri
-    double fontScaleFactor = 0.9;
-
     return Scaffold(
       backgroundColor: beyaz,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: ekranGenisligi * 0.05),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+      appBar: AppBar(
+        backgroundColor: beyaz,
+        elevation: 0,
+        bottom: TabBar(
+          controller: _tabController,
+          labelColor: koyuKirmizi,
+          unselectedLabelColor: Colors.black,
+          indicatorColor: koyuKirmizi,
+          tabs: const [
+            Tab(text: "Hasta Girişi"),
+            Tab(text: "Doktor Girişi"),
+          ],
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          _buildGirisForm(
+            ekranGenisligi,
+            ekranYuksekligi,
+            "Hasta Girişi",
+                () {
+              fonksiyonlar.girisYap(
+                context,
+                telefonController.text,
+                sifreController.text,
+                telefonController,
+                sifreController,
+                true,
+              );
+            },
+          ),
+          _buildGirisForm(
+            ekranGenisligi,
+            ekranYuksekligi,
+            "Doktor Girişi",
+                () {
+              fonksiyonlar.girisYap(
+                context,
+                telefonController.text,
+                sifreController.text,
+                telefonController,
+                sifreController,
+                false,
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGirisForm(
+      double ekranGenisligi,
+      double ekranYuksekligi,
+      String baslik,
+      VoidCallback onPressed,
+      ) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: ekranGenisligi * 0.05),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: ekranYuksekligi * 0.05),
+            CircleAvatar(
+              radius: ekranGenisligi / 10,
+              backgroundColor: Colors.grey[300],
+              child: Icon(
+                Icons.people,
+                size: ekranGenisligi / 10,
+                color: koyuKirmizi,
+              ),
+            ),
+            SizedBox(height: ekranYuksekligi * 0.05),
+            TextField(
+              controller: telefonController,
+              keyboardType: TextInputType.phone,
+              decoration: InputDecoration(
+                labelText: "Telefon Numarası",
+                labelStyle: TextStyle(color: koyuKirmizi),
+                prefixIcon: Icon(Icons.phone, color: koyuKirmizi),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide(color: koyuKirmizi),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide(color: koyuKirmizi),
+                ),
+              ),
+            ),
+            SizedBox(height: ekranYuksekligi * 0.03),
+            TextField(
+              controller: sifreController,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: "Şifre",
+                labelStyle: TextStyle(color: koyuKirmizi),
+                prefixIcon: Icon(Icons.lock, color: koyuKirmizi),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide(color: koyuKirmizi),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide(color: koyuKirmizi),
+                ),
+              ),
+            ),
+            SizedBox(height: ekranYuksekligi * 0.05),
+            ElevatedButton(
+              onPressed: onPressed,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: koyuKirmizi,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                minimumSize:
+                Size(ekranGenisligi * 0.8, ekranYuksekligi * 0.06),
+              ),
+              child: const Text(
+                "Giriş Yap",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            SizedBox(height: ekranYuksekligi * 0.03),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                // Tabs for "Hasta Girişi" and "Doktor Girişi"
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = 0;
-                        });
-                      },
-                      child: Column(
-                        children: [
-                          Text(
-                            'Hasta Girişi',
-                            style: TextStyle(
-                              fontSize: ekranGenisligi / 20 * fontScaleFactor,
-                              fontWeight: FontWeight.bold,
-                              color: selectedIndex == 0
-                                  ? koyuKirmizi
-                                  : Colors.black,
-                            ),
-                          ),
-                          if (selectedIndex == 0)
-                            Container(
-                              margin: const EdgeInsets.only(top: 4.0),
-                              height: 2,
-                              width: ekranGenisligi / 8,
-                              color: koyuKirmizi,
-                            ),
-                        ],
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = 1;
-                        });
-                      },
-                      child: Column(
-                        children: [
-                          Text(
-                            'Doktor Girişi',
-                            style: TextStyle(
-                              fontSize: ekranGenisligi / 20 * fontScaleFactor,
-                              fontWeight: FontWeight.bold,
-                              color: selectedIndex == 1
-                                  ? koyuKirmizi
-                                  : Colors.black,
-                            ),
-                          ),
-                          if (selectedIndex == 1)
-                            Container(
-                              margin: const EdgeInsets.only(top: 4.0),
-                              height: 2,
-                              width: ekranGenisligi / 8,
-                              color: koyuKirmizi,
-                            ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: ekranYuksekligi * 0.05),
-                CircleAvatar(
-                  radius: ekranGenisligi / 10,
-                  backgroundColor: Colors.grey[300],
-                  child: Icon(
-                    Icons.people,
-                    size: ekranGenisligi / 10,
-                    color: koyuKirmizi,
-                  ),
-                ),
-                SizedBox(height: ekranYuksekligi * 0.05),
-                // Telefon Numarası TextField
-                TextField(
-                  controller: telefonController,
-                  keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    labelText: "Telefon Numarası",
-                    labelStyle: TextStyle(color: koyuKirmizi),
-                    prefixIcon: Icon(Icons.phone, color: koyuKirmizi),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(color: koyuKirmizi),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(color: koyuKirmizi),
-                    ),
-                  ),
-                ),
-                SizedBox(height: ekranYuksekligi * 0.03),
-                // Şifre TextField
-                TextField(
-                  controller: sifreController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: "Şifre",
-                    labelStyle: TextStyle(color: koyuKirmizi),
-                    prefixIcon: Icon(Icons.lock, color: koyuKirmizi),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(color: koyuKirmizi),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(color: koyuKirmizi),
-                    ),
-                  ),
-                ),
-                SizedBox(height: ekranYuksekligi * 0.05),
-                // Giriş Yap Button
-                ElevatedButton(
+                Icon(Icons.person_add, color: koyuKirmizi),
+                TextButton(
                   onPressed: () {
-                    fonksiyonlar.girisYap(
+                    fonksiyonlar.kaydol(
                       context,
                       telefonController.text,
                       sifreController.text,
                       telefonController,
                       sifreController,
                     );
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const KayitEkrani()));
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: koyuKirmizi,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    minimumSize:
-                        Size(ekranGenisligi * 0.8, ekranYuksekligi * 0.06),
-                  ),
-                  child: Text(
-                    "Giriş Yap",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: ekranGenisligi / 20 * fontScaleFactor,
-                    ),
-                  ),
-                ),
-                // Kaydol Butonu
-                Padding(
-                  padding:
-                      EdgeInsets.only(right: ekranGenisligi * 0.05, top: 5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(
-                        Icons.person_add,
-                        color: koyuKirmizi,
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          fonksiyonlar.kaydol(
-                            context,
-                            telefonController.text,
-                            sifreController.text,
-                            telefonController,
-                            sifreController,
-                          );
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const KayitEkrani()));
-                        },
-                        child: Text(
-                          "Kaydol",
-                          style: TextStyle(
-                            color: koyuKirmizi,
-                            fontSize: ekranGenisligi / 25 * fontScaleFactor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  child: Text("Kaydol", style: TextStyle(color: koyuKirmizi)),
                 ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     );

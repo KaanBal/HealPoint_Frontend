@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:yazilim_projesi/Hasta/HastaProfil/hasta_profil.dart';
 import 'package:yazilim_projesi/gecmisRandevu/gecmis_randevu.dart';
+import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 import 'anaekranfonk.dart';
@@ -83,6 +84,18 @@ class _AnaEkranState extends State<AnaEkran> {
               title: const Text('Profilim'),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const HastaProfil()));
+              },
+            ),
+            const Divider(), // Görsel ayrım için çizgi
+            ListTile(
+              leading: const Icon(Icons.logout, color: Colors.red),
+              title: const Text(
+                'Çıkış Yap',
+                style: TextStyle(color: Colors.red),
+              ),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => GirisEkrani()));
+                // Çıkış işlemleri
               },
             ),
           ],

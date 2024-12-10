@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Doctor/screens/Doctor_home_screen.dart';
+import 'package:yazilim_projesi/Hasta/ana_ekran/ana_ekran.dart';
 
 class GirisEkranFonks {
 
@@ -22,16 +24,42 @@ class GirisEkranFonks {
     );
   }
 
-  void girisYap(BuildContext context, String telefon, String sifre,
-      TextEditingController telefonController, TextEditingController sifreController) {
-    if (telefon.isEmpty || sifre.isEmpty) {
-      showAlertDialog(context, "Hata", "Telefon numarası ve şifre boş olamaz.");
+  void girisYap(
+      BuildContext context,
+      String telefon,
+      String sifre,
+      TextEditingController telefonController,
+      TextEditingController sifreController,
+      bool isHasta, // Giriş tipini belirtmek için
+      ) {
+    if (telefon.isNotEmpty && sifre.isNotEmpty) {
+      // Örnek kontrol işlemi
+      if (telefon == "123" && sifre == "123") {
+        if (isHasta) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const AnaEkran()),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const DoctorHomeScreen()),
+          );
+        }
+      } else {
+        // Hatalı giriş mesajı
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Telefon veya şifre hatalı!")),
+        );
+      }
     } else {
-      showAlertDialog(context, "Başarılı", "Giriş yapıldı: $telefon");
-
-      telefonController.clear();
-      sifreController.clear();
+      // Eksik bilgi mesajı
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Lütfen tüm alanları doldurun!")),
+      );
     }
+    telefonController.clear();
+    sifreController.clear();
   }
 
   void kaydol(BuildContext context, String telefon, String sifre,
@@ -47,3 +75,6 @@ class GirisEkranFonks {
   }
 
 }
+
+
+
