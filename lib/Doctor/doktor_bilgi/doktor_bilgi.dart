@@ -86,11 +86,14 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                                 color: Colors.grey),
                           ),
                           const SizedBox(height: 10),
-                           Row(
+                          Row(
                             children: [
                               Icon(Icons.star, color: Colors.yellow, size: 18),
                               SizedBox(width: 5),
-                              Text(selectedDoctor?.reviews?.first.points.toString() ?? "0" ,
+                              Text(
+                                  selectedDoctor?.reviews?.first.points
+                                      .toString() ??
+                                      "0",
                                   style: const TextStyle(
                                       fontSize: 15)), // Font boyutunu küçülttük
                             ],
@@ -118,7 +121,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                 ),
               ],
             ),
-            SizedBox(height: ekranYuksekligi * 0.05),
+            SizedBox(height: ekranYuksekligi * 0.04),
 
             // Doktor Hakkında Bilgi
             Text(
@@ -128,15 +131,15 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                   fontFamily: "ABeeZee",
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: ekranYuksekligi * 0.02),
             Text(
               selectedDoctor?.Doctor_about ?? "",
               style: TextStyle(
-                  fontSize: fontSize, 
+                  fontSize: fontSize,
                   fontFamily: "PtSans",
                   color: Colors.black87),
             ),
-            SizedBox(height: ekranYuksekligi * 0.07),
+            SizedBox(height: ekranYuksekligi * 0.04),
 
             // Çalışma Saatleri
             Text(
@@ -146,7 +149,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                   fontFamily: "ABeeZee",
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: ekranYuksekligi * 0.02),
             Text(
               'Pazartesi - Cuma, 08:00  - 18:00 ',
               style: TextStyle(
@@ -154,21 +157,51 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                   fontFamily: "ABeeZee",
                   color: Colors.black87),
             ),
-            SizedBox(height: ekranYuksekligi * 0.07),
+            SizedBox(height: ekranYuksekligi * 0.04),
+
+            // Uygun Saatler
+            Text(
+              'Uygun Saatler:',
+              style: TextStyle(
+                  fontSize: fontSize * 1.1, // Font boyutunu küçülttük
+                  fontFamily: "ABeeZee",
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: ekranYuksekligi * 0.02),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: ['08:00  ', '10:00  ', '12:00  ']
+                  .map((time) => ElevatedButton(
+                onPressed: () {
+                  // Randevu alınabilir
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: acikKirmizi,
+                  foregroundColor: beyaz,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                ),
+                child: Text(time),
+              ))
+                  .toList(),
+            ),
+            SizedBox(height: ekranYuksekligi * 0.04),
 
             // Yorumlar
             Text(
               'Yorumlar',
               style: TextStyle(
-                  fontSize: fontSize * 1.1, 
+                  fontSize: fontSize * 1.1,
                   fontFamily: "ABeeZee",
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: ekranYuksekligi * 0.02),
             SizedBox(
-              height: ekranYuksekligi * 0.25, 
-              child: selectedDoctor?.reviews != null ? ListView.builder(
-                itemCount: selectedDoctor?.reviews?.length ,
+              height: ekranYuksekligi * 0.25,
+              child: selectedDoctor?.reviews != null
+                  ? ListView.builder(
+                itemCount: selectedDoctor?.reviews?.length,
                 itemBuilder: (context, index) {
                   final review = selectedDoctor!.reviews![index];
                   return Card(
@@ -181,7 +214,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                           Text(
                             "İsim Gelecek",
                             style: TextStyle(
-                                fontSize: fontSize, // Font boyutunu küçülttük
+                                fontSize:
+                                fontSize, // Font boyutunu küçülttük
                                 fontWeight: FontWeight.bold,
                                 fontFamily: "ABeeZee"),
                           ),
@@ -189,8 +223,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                           Text(
                             review.comment ?? "",
                             style: TextStyle(
-                                fontSize:
-                                    fontSize * 0.9, // Font boyutunu küçülttük
+                                fontSize: fontSize *
+                                    0.9, // Font boyutunu küçülttük
                                 fontFamily: "PtSans",
                                 color: Colors.black87),
                           ),
@@ -198,8 +232,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                           Text(
                             "Tarih Gelecek",
                             style: TextStyle(
-                                fontSize:
-                                    fontSize * 0.8, // Font boyutunu küçülttük
+                                fontSize: fontSize *
+                                    0.8, // Font boyutunu küçülttük
                                 fontFamily: "PtSans",
                                 color: Colors.grey),
                           ),
@@ -209,45 +243,16 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                   );
                 },
               )
-              : Center(
-        child: Text(
-          "No reviews available",
-          style: TextStyle(
-            fontSize: fontSize * 0.9,
-            fontFamily: "PtSans",
-            color: Colors.grey,
-          ),
-        ),
-      ),
-            ),
-            SizedBox(height: ekranYuksekligi * 0.07),
-
-            // Uygun Saatler
-            Text(
-              'Uygun Saatler:',
-              style: TextStyle(
-                  fontSize: fontSize * 1.1, // Font boyutunu küçülttük
-                  fontFamily: "ABeeZee",
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: ['08:00  ', '10:00  ', '12:00  ']
-                  .map((time) => ElevatedButton(
-                        onPressed: () {
-                          // Randevu alınabilir
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: acikKirmizi,
-                          foregroundColor: beyaz,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                        ),
-                        child: Text(time),
-                      ))
-                  .toList(),
+                  : Center(
+                child: Text(
+                  "No reviews available",
+                  style: TextStyle(
+                    fontSize: fontSize * 0.9,
+                    fontFamily: "PtSans",
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
             ),
             SizedBox(height: ekranYuksekligi * 0.07),
 
