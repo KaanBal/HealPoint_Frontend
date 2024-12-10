@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi_fonks.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
@@ -36,6 +37,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
     var ekranBilgisi = MediaQuery.of(context);
     final double ekranGenisligi = ekranBilgisi.size.width;
     final double ekranYuksekligi = ekranBilgisi.size.height;
+    final DoktorBilgiFonks _doktorBilgiFonks = DoktorBilgiFonks();
+
 
     double fontSize = ekranGenisligi / 22;
     double padding = ekranGenisligi * 0.05;
@@ -212,7 +215,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "İsim Gelecek",
+                            _doktorBilgiFonks.getPatientNameAndSurname(review.patient?.Patient_name ?? "", review.patient?.Patient_surname ?? ""),
                             style: TextStyle(
                                 fontSize:
                                 fontSize, // Font boyutunu küçülttük
@@ -230,7 +233,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                           ),
                           SizedBox(height: ekranYuksekligi * 0.01),
                           Text(
-                            "Tarih Gelecek",
+                            review.createdAt?.toIso8601String() ?? "",
                             style: TextStyle(
                                 fontSize: fontSize *
                                     0.8, // Font boyutunu küçülttük
