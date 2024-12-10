@@ -34,6 +34,17 @@ class HastaProfilState extends State<HastaProfil> {
     int age = calculateAge(birthDate);
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Profil"),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Geri butonu işlevi
+          },
+        ),
+        backgroundColor: Colors.red,
+      ),
       body: Stack(
         children: [
           Column(
@@ -146,7 +157,7 @@ class HastaProfilState extends State<HastaProfil> {
           ),
           // Ad, Soyad ve Yaş Kartı
           Positioned(
-            top: ekranYuksekligi * 0.45,
+            top: ekranYuksekligi * 0.40,
             left: ekranGenisligi * 0.09,
             right: ekranGenisligi * 0.09,
             child: Card(
