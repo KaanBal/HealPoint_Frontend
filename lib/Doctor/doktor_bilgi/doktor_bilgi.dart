@@ -61,16 +61,16 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(width: 10),
+                      SizedBox(width: ekranGenisligi * 0.04),
                       const CircleAvatar(
                         radius: 35,
                         backgroundImage: AssetImage('resimler/doktor.png'),
                       ),
-                      const SizedBox(width: 20),
+                      SizedBox(width: ekranGenisligi * 0.04),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 10),
+                          SizedBox(height: ekranYuksekligi * 0.02),
                           Text(
                             selectedDoctor?.Doctor_name ?? "",
                             style: const TextStyle(
@@ -85,7 +85,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                                 fontFamily: "PtSans",
                                 color: Colors.grey),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: ekranYuksekligi * 0.01),
                           Row(
                             children: [
                               Icon(Icons.star, color: Colors.yellow, size: 18),
@@ -98,7 +98,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                                       fontSize: 15)), // Font boyutunu küçülttük
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: ekranYuksekligi * 0.01),
                         ],
                       ),
                     ],
@@ -219,7 +219,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                                 fontWeight: FontWeight.bold,
                                 fontFamily: "ABeeZee"),
                           ),
-                          SizedBox(height: 5),
+                          SizedBox(height: ekranYuksekligi * 0.01),
                           Text(
                             review.comment ?? "",
                             style: TextStyle(
@@ -228,7 +228,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                                 fontFamily: "PtSans",
                                 color: Colors.black87),
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: ekranYuksekligi * 0.01),
                           Text(
                             "Tarih Gelecek",
                             style: TextStyle(
