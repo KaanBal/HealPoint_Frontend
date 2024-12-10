@@ -57,16 +57,19 @@ class GirisEkranFonks {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Lütfen tüm alanları doldurun!")),
       );
-      ) {
-    if (telefon.isEmpty || sifre.isEmpty) {
-      showAlertDialog(context, "Hata", "Telefon numarası ve şifre boş olamaz.");
-    } else {
-      showAlertDialog(context, "Başarılı", "Giriş yapıldı: $telefon");
-      telefonController.clear();
-      sifreController.clear();
+      {
+        if (telefon.isEmpty || sifre.isEmpty) {
+          showAlertDialog(
+              context, "Hata", "Telefon numarası ve şifre boş olamaz.");
+        } else {
+          showAlertDialog(context, "Başarılı", "Giriş yapıldı: $telefon");
+          telefonController.clear();
+          sifreController.clear();
+        }
+        telefonController.clear();
+        sifreController.clear();
+      }
     }
-    telefonController.clear();
-    sifreController.clear();
   }
 
   void kaydol(

@@ -63,7 +63,7 @@ class _GirisEkraniState extends State<GirisEkrani>
             ekranGenisligi,
             ekranYuksekligi,
             "Hasta Girişi",
-                () {
+            () {
               fonksiyonlar.girisYap(
                 context,
                 telefonController.text,
@@ -78,14 +78,13 @@ class _GirisEkraniState extends State<GirisEkrani>
             ekranGenisligi,
             ekranYuksekligi,
             "Doktor Girişi",
-                () {
+            () {
               fonksiyonlar.girisYap(
                 context,
                 telefonController.text,
                 sifreController.text,
                 telefonController,
                 sifreController,
-
                 false,
               );
             },
@@ -96,11 +95,11 @@ class _GirisEkraniState extends State<GirisEkrani>
   }
 
   Widget _buildGirisForm(
-      double ekranGenisligi,
-      double ekranYuksekligi,
-      String baslik,
-      VoidCallback onPressed,
-      ) {
+    double ekranGenisligi,
+    double ekranYuksekligi,
+    String baslik,
+    VoidCallback onPressed,
+  ) {
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: ekranGenisligi * 0.05),
@@ -161,8 +160,7 @@ class _GirisEkraniState extends State<GirisEkrani>
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
-                minimumSize:
-                Size(ekranGenisligi * 0.8, ekranYuksekligi * 0.06),
+                minimumSize: Size(ekranGenisligi * 0.8, ekranYuksekligi * 0.06),
               ),
               child: const Text(
                 "Giriş Yap",
