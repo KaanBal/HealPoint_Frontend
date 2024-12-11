@@ -35,10 +35,13 @@ class HastaProfilState extends State<HastaProfil> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profil"),
+        title: const Text(
+            "Profil",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back,color: Colors.white),
           onPressed: () {
             Navigator.pop(context); // Geri butonu işlevi
           },
@@ -51,7 +54,7 @@ class HastaProfilState extends State<HastaProfil> {
             children: [
               // Üst bölüm (Kırmızı arka plan)
               Expanded(
-                flex: 5,
+                flex: 3,
                 child: Container(
                   width: double.infinity,
                   decoration: const BoxDecoration(
@@ -62,7 +65,7 @@ class HastaProfilState extends State<HastaProfil> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CircleAvatar(
-                        radius: ekranGenisligi * 0.18,
+                        radius: ekranGenisligi * 0.15,
                         backgroundImage: const NetworkImage(
                             'https://cdn-icons-png.flaticon.com/512/387/387585.png'),
                         backgroundColor: Colors.white,
@@ -157,7 +160,7 @@ class HastaProfilState extends State<HastaProfil> {
           ),
           // Ad, Soyad ve Yaş Kartı
           Positioned(
-            top: ekranYuksekligi * 0.40,
+            top: ekranYuksekligi * 0.30,
             left: ekranGenisligi * 0.09,
             right: ekranGenisligi * 0.09,
             child: Card(

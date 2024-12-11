@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GecmisRandevular extends StatelessWidget {
+
   final List<Map<String, String>> gecmisRandevular = [
     {
       "saat": "09:30",

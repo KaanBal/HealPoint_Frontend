@@ -253,14 +253,14 @@ class _HastaKayitOlState extends State<HastaKayitOl> {
                   ElevatedButton(
                     onPressed: kayitOl,
                     child: Text("Kayıt Ol"),
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.green,foregroundColor: beyaz),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green, foregroundColor: beyaz),
                   ),
                   ElevatedButton(
                     onPressed: iptal,
                     child: Text("İptal"),
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.red,foregroundColor: beyaz),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red, foregroundColor: beyaz),
                   ),
                 ],
               ),
