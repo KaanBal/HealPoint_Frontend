@@ -11,7 +11,7 @@ class YaklasanRandevular extends StatelessWidget {
       "durum": "Yaklaşan Randevu",
     },
     {
-      "saat": "14:00",
+      "saat": "09:00",
       "tarih": "15.12.2024",
       "doktorIsmi": "Dr. Zeynep Kaya",
       "hastane": "Memorial Hastanesi",
@@ -30,11 +30,11 @@ class YaklasanRandevular extends StatelessWidget {
 
   Map<String, String> getEnYakinRandevu() {
     yaklasanRandevular.sort((a, b) {
-      DateTime tarihA =
-          DateTime.parse(a["tarih"]!.split('.').reversed.join('-'));
-      DateTime tarihB =
-          DateTime.parse(b["tarih"]!.split('.').reversed.join('-'));
-      return tarihA.compareTo(tarihB);
+      DateTime tarihSaatA = DateTime.parse(
+          a["tarih"]!.split('.').reversed.join('-') + " " + a["saat"]!);
+      DateTime tarihSaatB = DateTime.parse(
+          b["tarih"]!.split('.').reversed.join('-') + " " + b["saat"]!);
+      return tarihSaatA.compareTo(tarihSaatB);
     });
     return yaklasanRandevular.first;
   }
@@ -59,9 +59,9 @@ class YaklasanRandevular extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "En Yakın Randevu",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.blue,
