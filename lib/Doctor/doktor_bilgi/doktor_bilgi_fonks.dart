@@ -39,6 +39,23 @@ class DoktorBilgiFonks {
     );
   }
 
+  String getNameAndSurname(String name, String surname) {
+    String nameSurname = "";
+
+    if (name.isNotEmpty) {
+      nameSurname += name;
+    }
+
+    if (surname.isNotEmpty) {
+      if (nameSurname.isNotEmpty) {
+        nameSurname += " ";
+      }
+      nameSurname += surname;
+    }
+
+    return nameSurname;
+  }
+
   // Doktor değerlendirme işlevi
   void doktorDegerlendir(BuildContext context, String doktorAdi) {
     showDialog(
