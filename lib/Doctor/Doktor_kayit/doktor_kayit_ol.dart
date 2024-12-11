@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../renkler/renkler.dart';
 
 class DoktorKayitOl extends StatefulWidget {
@@ -73,7 +72,7 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
     if (selectedDate != null && selectedDate != DateTime.now()) {
       setState(() {
         dogumTarihiController.text =
-        "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
+            "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
       });
     }
   }
@@ -290,14 +289,14 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                   ElevatedButton(
                     onPressed: kayitOl,
                     child: Text("Kayıt Ol"),
-                    style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.green,foregroundColor: beyaz),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green, foregroundColor: beyaz),
                   ),
                   ElevatedButton(
                     onPressed: iptal,
                     child: Text("İptal"),
-                    style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.red,foregroundColor: beyaz),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red, foregroundColor: beyaz),
                   ),
                 ],
               ),

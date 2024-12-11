@@ -6,7 +6,8 @@ import 'package:yazilim_projesi/Doctor/doktor_bilgi/hasta_doktorprofil_goruntule
 import 'package:yazilim_projesi/Hasta/HastaProfil/hasta_profil.dart';
 import 'package:yazilim_projesi/Hasta/ana_ekran/ana_ekran.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi_fonks.dart';
-import 'package:yazilim_projesi/gecmisRandevu/gecmis_randevu.dart';
+import 'package:yazilim_projesi/Hasta//gecmisRandevu/gecmis_randevu.dart';
+import 'package:yazilim_projesi/Hasta/yaklasan_randevular/yaklasan_randevular.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import '../Hasta/Hasta_kayit/hasta_kayit_ol.dart';
 import 'Doctor/screens/Doctor_home_screen.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:const DoktorKayitOl(),
+      home: AnaEkran(),
     );
   }
 }

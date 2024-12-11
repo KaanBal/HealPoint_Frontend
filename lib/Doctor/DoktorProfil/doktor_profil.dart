@@ -6,7 +6,7 @@ import 'package:yazilim_projesi/renkler/renkler.dart';
 void showEditDialog(BuildContext context, String title, String initialValue,
     ValueChanged<String> onEdit) {
   final TextEditingController controller =
-  TextEditingController(text: initialValue);
+      TextEditingController(text: initialValue);
 
   showDialog(
     context: context,
@@ -142,7 +142,9 @@ class _DoctorProfilState extends State<DoctorProfil> {
         style: TextStyle(
           fontFamily: "ABeeZee",
           fontWeight: FontWeight.normal,
-          fontSize: MediaQuery.of(context).size.width * 0.04 * fontScaleFactor, // Dynamically adjusting font size
+          fontSize: MediaQuery.of(context).size.width *
+              0.04 *
+              fontScaleFactor, // Dynamically adjusting font size
         ),
       ),
     );
@@ -156,7 +158,9 @@ class _DoctorProfilState extends State<DoctorProfil> {
           "Dr. William Anderson",
           style: TextStyle(
             fontFamily: "ABeeZee",
-            fontSize: MediaQuery.of(context).size.width * 0.045 * fontScaleFactor, // Dynamically adjusting font size
+            fontSize: MediaQuery.of(context).size.width *
+                0.045 *
+                fontScaleFactor, // Dynamically adjusting font size
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -170,8 +174,10 @@ class _DoctorProfilState extends State<DoctorProfil> {
         shape: BoxShape.circle,
         color: Colors.white,
       ),
-      width: MediaQuery.of(context).size.width * 0.3, // Dynamically adjusting image size
-      height: MediaQuery.of(context).size.width * 0.3, // Dynamically adjusting image size
+      width: MediaQuery.of(context).size.width *
+          0.3, // Dynamically adjusting image size
+      height: MediaQuery.of(context).size.width *
+          0.3, // Dynamically adjusting image size
       alignment: Alignment.center,
       child: const CircleAvatar(
         radius: 50,
@@ -185,7 +191,8 @@ class _DoctorProfilState extends State<DoctorProfil> {
 
   Widget contactDetail(double screenWidth, double fontScaleFactor) {
     return Card(
-      margin: EdgeInsets.all(screenWidth * 0.05), // Adjust margin based on screen width
+      margin: EdgeInsets.all(
+          screenWidth * 0.05), // Adjust margin based on screen width
       color: Colors.white,
       child: Container(
         padding: const EdgeInsets.all(8.0),
@@ -207,11 +214,11 @@ class _DoctorProfilState extends State<DoctorProfil> {
               });
             }, fontScaleFactor),
             buildEditableTile("Telefon No", phone, Icons.phone_android,
-                    (newValue) {
-                  setState(() {
-                    phone = newValue;
-                  });
-                }, fontScaleFactor),
+                (newValue) {
+              setState(() {
+                phone = newValue;
+              });
+            }, fontScaleFactor),
             buildEditableTile("Email", email, Icons.mail, (newValue) {
               setState(() {
                 email = newValue;
@@ -228,8 +235,8 @@ class _DoctorProfilState extends State<DoctorProfil> {
     );
   }
 
-  Widget buildEditableTile(
-      String title, String value, IconData icon, ValueChanged<String> onEdit, double fontScaleFactor) {
+  Widget buildEditableTile(String title, String value, IconData icon,
+      ValueChanged<String> onEdit, double fontScaleFactor) {
     return ListTile(
       iconColor: Colors.black,
       textColor: Colors.black,
@@ -239,12 +246,18 @@ class _DoctorProfilState extends State<DoctorProfil> {
         style: TextStyle(
             fontWeight: FontWeight.bold,
             fontFamily: "ABeeZee",
-            fontSize: MediaQuery.of(context).size.width * 0.04 * fontScaleFactor), // Dynamic font size
+            fontSize: MediaQuery.of(context).size.width *
+                0.04 *
+                fontScaleFactor), // Dynamic font size
       ),
       subtitle: Text(
         value,
         style: TextStyle(
-            color: Colors.black, fontFamily: "ABeeZee", fontSize: MediaQuery.of(context).size.width * 0.035 * fontScaleFactor), // Dynamic font size
+            color: Colors.black,
+            fontFamily: "ABeeZee",
+            fontSize: MediaQuery.of(context).size.width *
+                0.035 *
+                fontScaleFactor), // Dynamic font size
       ),
       dense: true,
       trailing: IconButton(
@@ -256,7 +269,8 @@ class _DoctorProfilState extends State<DoctorProfil> {
 
   Card contactStatus(double screenWidth, double fontScaleFactor) {
     return Card(
-      margin: EdgeInsets.fromLTRB(screenWidth * 0.05, 0, screenWidth * 0.05, screenWidth * 0.05), // Dynamic margin
+      margin: EdgeInsets.fromLTRB(screenWidth * 0.05, 0, screenWidth * 0.05,
+          screenWidth * 0.05), // Dynamic margin
       color: Colors.white,
       child: ListTile(
         iconColor: Colors.black,
@@ -266,16 +280,25 @@ class _DoctorProfilState extends State<DoctorProfil> {
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontFamily: "ABeeZee",
-              fontSize: MediaQuery.of(context).size.width * 0.04 * fontScaleFactor), // Dynamic font size
+              fontSize: MediaQuery.of(context).size.width *
+                  0.04 *
+                  fontScaleFactor), // Dynamic font size
         ),
         subtitle: Text(
           "Aktif",
           style: TextStyle(
-              color: Colors.black, fontFamily: "ABeeZee", fontSize: MediaQuery.of(context).size.width * 0.035 * fontScaleFactor), // Dynamic font size
+              color: Colors.black,
+              fontFamily: "ABeeZee",
+              fontSize: MediaQuery.of(context).size.width *
+                  0.035 *
+                  fontScaleFactor), // Dynamic font size
         ),
         trailing: TextButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const AbonelikBilgiSayfasi()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AbonelikBilgiSayfasi()));
           },
           child: Text(
             "Görüntüle",
@@ -283,7 +306,9 @@ class _DoctorProfilState extends State<DoctorProfil> {
               color: Colors.red,
               fontWeight: FontWeight.bold,
               fontFamily: "ABeeZee",
-              fontSize: MediaQuery.of(context).size.width * 0.035 * fontScaleFactor, // Dynamic font size
+              fontSize: MediaQuery.of(context).size.width *
+                  0.035 *
+                  fontScaleFactor, // Dynamic font size
             ),
           ),
         ),
@@ -299,7 +324,10 @@ class AboutSection extends StatelessWidget {
   final double fontScaleFactor;
 
   const AboutSection(
-      {super.key, required this.aboutText, required this.onEdit, required this.fontScaleFactor});
+      {super.key,
+      required this.aboutText,
+      required this.onEdit,
+      required this.fontScaleFactor});
 
   @override
   Widget build(BuildContext context) {
@@ -314,7 +342,11 @@ class AboutSection extends StatelessWidget {
               padding: const EdgeInsets.all(30),
               child: Text(
                 aboutText,
-                style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.04 * fontScaleFactor), // Dynamic font size
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: MediaQuery.of(context).size.width *
+                        0.04 *
+                        fontScaleFactor), // Dynamic font size
               ),
             ),
           ),
@@ -331,7 +363,9 @@ class AboutSection extends StatelessWidget {
                   "Düzenle",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: MediaQuery.of(context).size.width * 0.035 * fontScaleFactor, // Dynamic font size
+                    fontSize: MediaQuery.of(context).size.width *
+                        0.035 *
+                        fontScaleFactor, // Dynamic font size
                     fontWeight: FontWeight.bold,
                   ),
                 ),
