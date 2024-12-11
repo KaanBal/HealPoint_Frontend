@@ -13,7 +13,6 @@ class DoctorBilgiEkran extends StatefulWidget {
 }
 
 class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
-
   Doctors? selectedDoctor;
 
   void _loadData() async {
@@ -38,8 +37,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
       if (pickedDate != null && pickedDate != selectedDate) {
         setState(() {
           selectedDate = pickedDate;
-          // Seçilen tarihe uygun saatleri belirleme
-          availableTimes = ['08:00', '10:00', '12:00']; // Örnek saatler
+          availableTimes = ['08:00', '10:00', '12:00'];
         });
       }
     }
@@ -83,7 +81,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
-                        'Seçilen Tarih: ${selectedDate!.toLocal()}'.split(' ')[0],
+                        'Seçilen Tarih: ${selectedDate!.toLocal()}'
+                            .split(' ')[0],
                         style: const TextStyle(fontSize: 16),
                       ),
                     ),
@@ -99,11 +98,11 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                         const SizedBox(height: 10),
                         DropdownButton<String>(
                           hint: const Text("Uygun Saat Seçin"),
-                          value: availableTimes.isNotEmpty ? availableTimes[0] : null, // İlk saati seç
+                          value: availableTimes.isNotEmpty
+                              ? availableTimes[0]
+                              : null,
                           onChanged: (String? newValue) {
-                            bottomSheetSetState(() {
-                              // Seçilen saati burada kullanabilirsin
-                            });
+                            bottomSheetSetState(() {});
                           },
                           items: availableTimes.map((String time) {
                             return DropdownMenuItem<String>(
@@ -118,7 +117,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pop(context); // Bottom Sheet'i kapat
+                        Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),
@@ -152,7 +151,6 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
     final double ekranYuksekligi = ekranBilgisi.size.height;
     final DoktorBilgiFonks doktorBilgiFonks = DoktorBilgiFonks();
 
-
     double fontSize = ekranGenisligi / 22;
     double padding = ekranGenisligi * 0.05;
 
@@ -166,9 +164,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
         backgroundColor: acikKirmizi,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            // Navigator.pop(context);
-          },
+          onPressed: () {},
         ),
       ),
       body: SingleChildScrollView(
@@ -176,7 +172,6 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Doktor Profili ve Bilgiler
             Stack(
               children: [
                 Card(
@@ -214,7 +209,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                               SizedBox(width: 5),
                               Text(
                                   selectedDoctor?.reviews?.first.points
-                                      .toString() ?? "0",
+                                          .toString() ??
+                                      "0",
                                   style: const TextStyle(fontSize: 15)),
                             ],
                           ),
@@ -242,8 +238,6 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
               ],
             ),
             SizedBox(height: ekranYuksekligi * 0.04),
-
-            // Doktor Hakkında Bilgi
             Text(
               'Doktor Hakkında',
               style: TextStyle(
@@ -260,8 +254,6 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                   color: Colors.black87),
             ),
             SizedBox(height: ekranYuksekligi * 0.04),
-
-            // Çalışma Saatleri
             Text(
               'Çalışma Saatleri',
               style: TextStyle(
@@ -278,38 +270,6 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                   color: Colors.black87),
             ),
             SizedBox(height: ekranYuksekligi * 0.04),
-
-            // Uygun Saatler
-            Text(
-              'Uygun Saatler:',
-              style: TextStyle(
-                  fontSize: fontSize * 1.1, 
-                  fontFamily: "ABeeZee",
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: ekranYuksekligi * 0.02),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: ['08:00  ', '10:00  ', '12:00  ']
-                  .map((time) => ElevatedButton(
-                onPressed: () {
-                  // Randevu alınabilir
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: acikKirmizi,
-                  foregroundColor: beyaz,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                ),
-                child: Text(time),
-              ))
-                  .toList(),
-            ),
-            SizedBox(height: ekranYuksekligi * 0.04),
-
-
-            // Yorumlar
             Text(
               'Yorumlar',
               style: TextStyle(
@@ -322,60 +282,59 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
               height: ekranYuksekligi * 0.25,
               child: selectedDoctor?.reviews != null
                   ? ListView.builder(
-                itemCount: selectedDoctor?.reviews?.length,
-                itemBuilder: (context, index) {
-                  final review = selectedDoctor!.reviews![index];
-                  return Card(
-                    margin: EdgeInsets.symmetric(vertical: padding / 2),
-                    child: Padding(
-                      padding: EdgeInsets.all(padding / 2),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            doktorBilgiFonks.getNameAndSurname(review.patient?.Patient_name ?? "", review.patient?.Patient_surname ?? ""),
-                            style: TextStyle(
-                                fontSize: fontSize,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "ABeeZee"),
+                      itemCount: selectedDoctor?.reviews?.length,
+                      itemBuilder: (context, index) {
+                        final review = selectedDoctor!.reviews![index];
+                        return Card(
+                          margin: EdgeInsets.symmetric(vertical: padding / 2),
+                          child: Padding(
+                            padding: EdgeInsets.all(padding / 2),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  doktorBilgiFonks.getNameAndSurname(
+                                      review.patient?.Patient_name ?? "",
+                                      review.patient?.Patient_surname ?? ""),
+                                  style: TextStyle(
+                                      fontSize: fontSize,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "ABeeZee"),
+                                ),
+                                SizedBox(height: ekranYuksekligi * 0.01),
+                                Text(
+                                  review.comment ?? "",
+                                  style: TextStyle(
+                                      fontSize: fontSize * 0.9,
+                                      fontFamily: "PtSans",
+                                      color: Colors.black87),
+                                ),
+                                SizedBox(height: ekranYuksekligi * 0.01),
+                                Text(
+                                  review.createdAt?.toIso8601String() ?? "",
+                                  style: TextStyle(
+                                      fontSize: fontSize * 0.8,
+                                      fontFamily: "PtSans",
+                                      color: Colors.grey),
+                                ),
+                              ],
+                            ),
                           ),
-                          SizedBox(height: ekranYuksekligi * 0.01),
-                          Text(
-                            review.comment ?? "",
-                            style: TextStyle(
-                                fontSize: fontSize * 0.9,
-                                fontFamily: "PtSans",
-                                color: Colors.black87),
-                          ),
-                          SizedBox(height: ekranYuksekligi * 0.01),
-                          Text(
-                            review.createdAt?.toIso8601String() ?? "",
-                            style: TextStyle(
-                                fontSize: fontSize * 0.8,
-                                fontFamily: "PtSans",
-                                color: Colors.grey),
-
-                          ),
-                        ],
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Text(
+                        "No reviews available",
+                        style: TextStyle(
+                          fontSize: fontSize * 0.9,
+                          fontFamily: "PtSans",
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
-                  );
-                },
-              )
-                  : Center(
-                child: Text(
-                  "No reviews available",
-                  style: TextStyle(
-                    fontSize: fontSize * 0.9,
-                    fontFamily: "PtSans",
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
             ),
             SizedBox(height: ekranYuksekligi * 0.07),
-
-            // Randevu Al Butonu
             Center(
               child: ElevatedButton(
                 onPressed: () {
