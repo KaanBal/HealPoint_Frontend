@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:yazilim_projesi/Hasta/HastaProfil/hasta_profil.dart';
 import 'package:yazilim_projesi/Hasta/gecmisRandevu/gecmis_randevu.dart';
+import 'package:yazilim_projesi/Hasta/yaklasan_randevular/yaklasan_randevular.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
@@ -171,8 +172,7 @@ class _AnaEkranState extends State<AnaEkran> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    // Tıklama olayını burada işle
-                    print("Küçük Görüntüle tıklandı!");
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => YaklasanRandevular()));
                   },
 
                   child: Text(
