@@ -25,9 +25,10 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
 
   void _showBottomSheet(BuildContext context) {
     DateTime? selectedDate;
+    String? selectedTime;
     List<String> availableTimes = [];
 
-    void _selectDate() async {
+    void _selectDate(StateSetter bottomSheetSetState) async {
       final DateTime? pickedDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -35,9 +36,10 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
         lastDate: DateTime(2025),
       );
       if (pickedDate != null && pickedDate != selectedDate) {
-        setState(() {
+        bottomSheetSetState(() {
           selectedDate = pickedDate;
-          availableTimes = ['08:00', '10:00', '12:00'];
+          availableTimes = ['08:00', '10:00', '12:00']; // Örnek saatler
+          selectedTime = availableTimes[0]; // Varsayılan saat seç
         });
       }
     }
@@ -64,55 +66,73 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                         fontFamily: "ABeeZee"),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    'Tarih Seçimi',
-                    style: TextStyle(fontSize: 16, fontFamily: "ABeeZee"),
-                  ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: _selectDate,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: acikKirmizi,
-                      foregroundColor: beyaz,
-                    ),
-                    child: const Text("Tarih Seç"),
-                  ),
-                  if (selectedDate != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text(
-                        'Seçilen Tarih: ${selectedDate!.toLocal()}'
-                            .split(' ')[0],
-                        style: const TextStyle(fontSize: 16),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Tarih Seçimi',
+                              style: TextStyle(
+                                  fontSize: 16, fontFamily: "ABeeZee"),
+                            ),
+                            const SizedBox(height: 10),
+                            ElevatedButton(
+                              onPressed: () => _selectDate(bottomSheetSetState),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: acikKirmizi,
+                                foregroundColor: beyaz,
+                              ),
+                              child: const Text("Tarih Seç"),
+                            ),
+                            if (selectedDate != null && selectedTime != null)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: Text(
+                                  'Seçilen Tarih ve Saat: ${selectedDate!.toLocal().toString().split(' ')[0]} / $selectedTime',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                  const SizedBox(height: 20),
-                  if (availableTimes.isNotEmpty)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Saat Seçimi',
-                          style: TextStyle(fontSize: 16, fontFamily: "ABeeZee"),
+                      const SizedBox(width: 20),
+                      if (availableTimes.isNotEmpty)
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Uygun Saatler',
+                                style: TextStyle(
+                                    fontSize: 16, fontFamily: "ABeeZee"),
+                              ),
+                              const SizedBox(height: 10),
+                              DropdownButton<String>(
+                                hint: const Text("Saat Seçin"),
+                                value: selectedTime,
+                                onChanged: (String? newValue) {
+                                  bottomSheetSetState(() {
+                                    selectedTime = newValue;
+                                  });
+                                },
+                                items: availableTimes.map((String time) {
+                                  return DropdownMenuItem<String>(
+                                    value: time,
+                                    child: Text(time),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
                         ),
-                        const SizedBox(height: 10),
-                        DropdownButton<String>(
-                          hint: const Text("Uygun Saat Seçin"),
-                          value: availableTimes.isNotEmpty
-                              ? availableTimes[0]
-                              : null,
-                          onChanged: (String? newValue) {
-                            bottomSheetSetState(() {});
-                          },
-                          items: availableTimes.map((String time) {
-                            return DropdownMenuItem<String>(
-                              value: time,
-                              child: Text(time),
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    ),
+                    ],
+                  ),
                   const SizedBox(height: 20),
                   Center(
                     child: ElevatedButton(
@@ -137,6 +157,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
       },
     );
   }
+
 
   @override
   void initState() {
@@ -205,7 +226,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                           SizedBox(height: ekranYuksekligi * 0.01),
                           Row(
                             children: [
-                              Icon(Icons.star, color: Colors.yellow, size: 18),
+                              const Icon(Icons.star,
+                                  color: Colors.yellow, size: 18),
                               SizedBox(width: 5),
                               Text(
                                   selectedDoctor?.reviews?.first.points
