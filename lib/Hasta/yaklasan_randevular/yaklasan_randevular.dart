@@ -12,7 +12,7 @@ class YaklasanRandevular extends StatelessWidget {
     },
     {
       "saat": "09:00",
-      "tarih": "15.12.2024",
+      "tarih": "12.12.2024",
       "doktorIsmi": "Dr. Zeynep Kaya",
       "hastane": "Memorial Hastanesi",
       "brans": "Dahiliye",
