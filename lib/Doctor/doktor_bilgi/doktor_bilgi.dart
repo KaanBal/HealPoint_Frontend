@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi_fonks.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
@@ -12,7 +13,6 @@ class DoctorBilgiEkran extends StatefulWidget {
 }
 
 class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Doctors? selectedDoctor;
 
@@ -150,6 +150,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
     var ekranBilgisi = MediaQuery.of(context);
     final double ekranGenisligi = ekranBilgisi.size.width;
     final double ekranYuksekligi = ekranBilgisi.size.height;
+    final DoktorBilgiFonks doktorBilgiFonks = DoktorBilgiFonks();
+
 
     double fontSize = ekranGenisligi / 22;
     double padding = ekranGenisligi * 0.05;
@@ -277,6 +279,36 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
             ),
             SizedBox(height: ekranYuksekligi * 0.04),
 
+            // Uygun Saatler
+            Text(
+              'Uygun Saatler:',
+              style: TextStyle(
+                  fontSize: fontSize * 1.1, 
+                  fontFamily: "ABeeZee",
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: ekranYuksekligi * 0.02),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: ['08:00  ', '10:00  ', '12:00  ']
+                  .map((time) => ElevatedButton(
+                onPressed: () {
+                  // Randevu alınabilir
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: acikKirmizi,
+                  foregroundColor: beyaz,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                ),
+                child: Text(time),
+              ))
+                  .toList(),
+            ),
+            SizedBox(height: ekranYuksekligi * 0.04),
+
+
             // Yorumlar
             Text(
               'Yorumlar',
@@ -301,7 +333,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "İsim Gelecek",
+                            doktorBilgiFonks.getNameAndSurname(review.patient?.Patient_name ?? "", review.patient?.Patient_surname ?? ""),
                             style: TextStyle(
                                 fontSize: fontSize,
                                 fontWeight: FontWeight.bold,
@@ -317,7 +349,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                           ),
                           SizedBox(height: ekranYuksekligi * 0.01),
                           Text(
-                            "Tarih Gelecek",
+                            review.createdAt?.toIso8601String() ?? "",
                             style: TextStyle(
                                 fontSize: fontSize * 0.8,
                                 fontFamily: "PtSans",

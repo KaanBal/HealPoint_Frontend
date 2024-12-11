@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi_fonks.dart';
+import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
 class HastaDoktorprofilGoruntuler extends StatefulWidget {
@@ -11,19 +16,28 @@ class HastaDoktorprofilGoruntuler extends StatefulWidget {
 
 class _HastaDoktorprofilGoruntulerState
     extends State<HastaDoktorprofilGoruntuler> {
-  final String city = "Adana";
-  final String district = "Sarıçam";
-  final String address = "156.sokak ahmetağa mah.";
-  final String phone = "***********";
-  final String email = "********@gmail.com";
+  Doctors? selectedDoctor;
+  final DoktorBilgiFonks doktorBilgiFonks = DoktorBilgiFonks();
+
+  void _loadData() async {
+    const String jsonFile = 'assets/MockData/doctorInfo.json';
+    final dataString = await rootBundle.loadString(jsonFile);
+    final Map<String, dynamic> jsonData = json.decode(dataString);
+    selectedDoctor = Doctors.fromJson(jsonData);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    _loadData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Ekran boyutlarına göre ölçekleme faktörü
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    // Font boyutları için ölçek faktörü (bu faktörü daha da küçültebilirsiniz)
     double fontScaleFactor = 0.9;
 
     return DefaultTabController(
@@ -35,7 +49,8 @@ class _HastaDoktorprofilGoruntulerState
           titleTextStyle: const TextStyle(
             color: Colors.white,
           ),
-          toolbarHeight: screenHeight * 0.35, // App bar yüksekliğini dinamik yapıyoruz
+          toolbarHeight:
+              screenHeight * 0.35, 
           title: Padding(
             padding: EdgeInsets.only(top: screenHeight * 0.05),
             child: Column(
@@ -81,11 +96,13 @@ class _HastaDoktorprofilGoruntulerState
     return Padding(
       padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
       child: Text(
-        "Ürolog",
+        selectedDoctor?.branch ?? "",
         style: TextStyle(
           fontFamily: "ABeeZee",
           fontWeight: FontWeight.normal,
-          fontSize: MediaQuery.of(context).size.width * 0.04 * fontScaleFactor, // Dinamik font boyutu
+          fontSize: MediaQuery.of(context).size.width *
+              0.04 *
+              fontScaleFactor, 
         ),
       ),
     );
@@ -96,10 +113,12 @@ class _HastaDoktorprofilGoruntulerState
       padding: const EdgeInsets.only(top: 8.0),
       child: Center(
         child: Text(
-          "Dr. William Anderson",
+          doktorBilgiFonks.getNameAndSurname(selectedDoctor?.Doctor_name ?? "", selectedDoctor?.Doctor_surname ?? ""),    
           style: TextStyle(
             fontFamily: "ABeeZee",
-            fontSize: MediaQuery.of(context).size.width * 0.045 * fontScaleFactor, // Dinamik font boyutu
+            fontSize: MediaQuery.of(context).size.width *
+                0.045 *
+                fontScaleFactor, // Dinamik font boyutu
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -132,25 +151,29 @@ class _HastaDoktorprofilGoruntulerState
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            buildTile("Şehir", city, Icons.location_city, fontScaleFactor),
-            buildTile("İlçe", district, Icons.my_location, fontScaleFactor),
-            buildTile("Adres", address, Icons.location_pin, fontScaleFactor),
-            buildTile("Telefon No", phone, Icons.phone_android, fontScaleFactor),
-            buildTile("Email", email, Icons.mail, fontScaleFactor),
+            buildTile("Şehir", selectedDoctor?.city ?? "", Icons.location_city, fontScaleFactor),
+            buildTile("İlçe", selectedDoctor?.district ?? "", Icons.my_location, fontScaleFactor),
+            buildTile("Adres", selectedDoctor?.address ?? "", Icons.location_pin, fontScaleFactor),
+            buildTile(
+                "Telefon No", selectedDoctor?.Doctor_phonenumber ?? "", Icons.phone_android, fontScaleFactor),
+            buildTile("Email", selectedDoctor?.Doctor_email ?? "", Icons.mail, fontScaleFactor),
           ],
         ),
       ),
     );
   }
 
-  ListTile buildTile(String title, String value, IconData icon, double fontScaleFactor) {
+  ListTile buildTile(
+      String title, String value, IconData icon, double fontScaleFactor) {
     return ListTile(
       leading: Icon(icon, color: Colors.black),
       title: Text(
         title,
         style: TextStyle(
           color: Colors.black,
-          fontSize: MediaQuery.of(context).size.width * 0.04 * fontScaleFactor, // Dinamik font boyutu
+          fontSize: MediaQuery.of(context).size.width *
+              0.04 *
+              fontScaleFactor, 
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -158,7 +181,9 @@ class _HastaDoktorprofilGoruntulerState
         value,
         style: TextStyle(
           color: Colors.black,
-          fontSize: MediaQuery.of(context).size.width * 0.035 * fontScaleFactor, // Dinamik font boyutu
+          fontSize: MediaQuery.of(context).size.width *
+              0.035 *
+              fontScaleFactor,
         ),
       ),
     );
@@ -185,7 +210,8 @@ class AboutSection extends StatelessWidget {
                 aboutText,
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: MediaQuery.of(context).size.width * 0.04, // Dinamik font boyutu
+                  fontSize: MediaQuery.of(context).size.width *
+                      0.04, 
                 ),
               ),
             ),

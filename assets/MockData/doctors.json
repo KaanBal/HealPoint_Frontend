@@ -96,12 +96,14 @@
       {
         "reviewId": 8,
         "points": 5,
-        "comment": "Very skilled surgeon, I felt at ease during my procedure."
+        "comment": "Very skilled surgeon, I felt at ease during my procedure.",
+        "createdAt": "2024-12-10T10:30:00Z"
       },
       {
         "reviewId": 9,
         "points": 4,
-        "comment": "Great doctor, but the office staff could be more responsive."
+        "comment": "Great doctor, but the office staff could be more responsive.",
+        "createdAt": "2024-12-09T14:45:00Z"
       }
     ]
   },
@@ -117,12 +119,14 @@
       {
         "reviewId": 10,
         "points": 5,
-        "comment": "Dr. Garcia helped me manage my thyroid condition with great care."
+        "comment": "Dr. Garcia helped me manage my thyroid condition with great care.",
+        "createdAt": "2024-12-10T10:30:00Z"
       },
       {
         "reviewId": 10,
         "points": 4,
-        "comment": "Good consultation, but I would have preferred a more detailed explanation."
+        "comment": "Good consultation, but I would have preferred a more detailed explanation.",
+        "createdAt": "2024-12-09T14:45:00Z"
       }
     ]
   }
