@@ -354,6 +354,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                                 fontSize: fontSize * 0.8,
                                 fontFamily: "PtSans",
                                 color: Colors.grey),
+
                           ),
                         ],
                       ),
