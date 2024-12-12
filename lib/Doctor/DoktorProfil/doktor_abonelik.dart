@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:yazilim_projesi/Doctor/DoktorProfil/abone_ol.dart';
 
 class AbonelikBilgiSayfasi extends StatefulWidget {
   const AbonelikBilgiSayfasi({super.key});
@@ -84,7 +85,7 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
                   ListTile(
                     title: const Text('Bireysel (3 Ay)'),
                     subtitle: const Text(
-                      'Fiyat: 50 TL (İlk Ay Ücretsiz)',
+                      'Fiyat: 99.99 TL',
                       style: TextStyle(color: Colors.green, fontSize: 14),
                     ),
                     leading: Radio<String>(
@@ -101,7 +102,7 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
                   ListTile(
                     title: const Text('1 Yıl'),
                     subtitle: const Text(
-                      'Fiyat: 180 TL (İlk Ay Ücretsiz)',
+                      'Fiyat: 299.99 TL (İlk Ay Ücretsiz)',
                       style: TextStyle(color: Colors.green, fontSize: 14),
                     ),
                     leading: Radio<String>(
@@ -138,6 +139,24 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
               child: const Text('Aboneliği İptal Et'),
             ),
             const SizedBox(height: 20),
+
+            // Aboneliği düzenle butonu
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AboneOl()));
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue, // Buton rengi
+                padding: const EdgeInsets.symmetric(vertical: 17),
+                textStyle: const TextStyle(fontSize: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: const Text('Aboneliği Düzenle'),
+            ),
+
+            const SizedBox(height: 20),
             if (cancelDateMessage.isNotEmpty) ...[
               Text(
                 cancelDateMessage,
@@ -172,5 +191,3 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
     );
   }
 }
-
-

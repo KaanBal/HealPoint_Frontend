@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Doctor/DoktorProfil/abone_ol.dart';
+import 'package:yazilim_projesi/Doctor/DoktorProfil/abonelik_onaylama.dart';
+import 'package:yazilim_projesi/Doctor/DoktorProfil/doktor_abonelik.dart';
 import 'package:yazilim_projesi/Doctor/DoktorProfil/doktor_profil.dart';
 import 'package:yazilim_projesi/Doctor/Doktor_kayit/doktor_kayit_ol.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi.dart';
@@ -29,7 +32,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: AnaEkran(),
+      home: AbonelikBilgiSayfasi(),
     );
   }
 }
