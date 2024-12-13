@@ -94,8 +94,9 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
               ),
               keyboardType: TextInputType.name,
               inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[a-zA-ZğüşöçıİĞÜŞÖÇ\s]')), // Türkçe karakter desteği ve boşluk
-                LengthLimitingTextInputFormatter(50), // Maksimum 50 karakter
+                FilteringTextInputFormatter.allow(RegExp(
+                    r'[a-zA-ZğüşöçıİĞÜŞÖÇ\s]')),
+                LengthLimitingTextInputFormatter(50),
               ],
             ),
             SizedBox(height: 16),
@@ -159,7 +160,8 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
 
 class ExpiryDateInputFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     String text = newValue.text.replaceAll(RegExp(r'[^\d]'), '');
     if (text.length > 2) {
       text = text.substring(0, 2) + '/' + text.substring(2);

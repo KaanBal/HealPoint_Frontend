@@ -29,13 +29,12 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
   void initState() {
     super.initState();
     telefonController.addListener(() {
-      setState(() {}); // Telefon numarasındaki değişikliği güncellemek için
+      setState(() {});
     });
   }
 
   void kayitOl() {
     if (_formKey.currentState!.validate()) {
-      // Form valid ise bu işlemler yapılır
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Kayıt Başarılı!")),
       );
@@ -238,7 +237,6 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                 },
               ),
               const SizedBox(height: 10),
-              // Doğum Tarihi
               TextFormField(
                 controller: dogumTarihiController,
                 decoration: InputDecoration(
@@ -258,7 +256,6 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                 },
               ),
               const SizedBox(height: 10),
-              // Cinsiyet
               DropdownButtonFormField<String>(
                 value: _selectedCinsiyet,
                 decoration: const InputDecoration(

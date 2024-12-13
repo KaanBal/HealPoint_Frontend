@@ -35,7 +35,7 @@ class _RandevuAlState extends State<RandevuAl> {
   void _applyFilters() {
     Navigator.pushNamed(
       context,
-      '/filteredDoctors', // Listeleme ekranının route adı
+      '/filteredDoctors',
       arguments: {
         'hospital': selectedHospital,
         'branch': selectedBranch,

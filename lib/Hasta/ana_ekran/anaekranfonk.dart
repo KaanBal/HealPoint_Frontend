@@ -59,7 +59,6 @@ class _DoctorCardState extends State<DoctorCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Name kısmı ve Favori Icon
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -71,7 +70,6 @@ class _DoctorCardState extends State<DoctorCard> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      // Trailing kısmı (Favourite Icon)
                       InkWell(
                         onTap: () {
                           setState(() {

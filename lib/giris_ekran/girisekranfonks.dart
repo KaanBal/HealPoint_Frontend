@@ -29,11 +29,9 @@ class GirisEkranFonks {
       String sifre,
       TextEditingController telefonController,
       TextEditingController sifreController,
-
-      bool isHasta, // Giriş tipini belirtmek için
+      bool isHasta,
       ) {
     if (telefon.isNotEmpty && sifre.isNotEmpty) {
-      // Örnek kontrol işlemi
       if (telefon == "123" && sifre == "123") {
         if (isHasta) {
           Navigator.pushReplacement(
@@ -47,13 +45,11 @@ class GirisEkranFonks {
           );
         }
       } else {
-        // Hatalı giriş mesajı
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Telefon veya şifre hatalı!")),
         );
       }
     } else {
-      // Eksik bilgi mesajı
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Lütfen tüm alanları doldurun!")),
       );

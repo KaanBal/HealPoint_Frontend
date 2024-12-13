@@ -15,7 +15,6 @@ class Payments {
     required this.updatedAt,
   });
 
-  // JSON'dan nesneye dönüştürme
 factory Payments.fromJson(Map<String, dynamic> json) {
   return Payments(
     Payment_id: json['Payment_id'] ?? "", 

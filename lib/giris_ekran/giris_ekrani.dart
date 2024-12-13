@@ -22,13 +22,11 @@ class _GirisEkraniState extends State<GirisEkrani>
   @override
   void initState() {
     super.initState();
-    // TabController oluşturuluyor.
     _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
   void dispose() {
-    // TabController ve diğer kontrolcüler bellekten temizleniyor.
     _tabController.dispose();
     telefonController.dispose();
     sifreController.dispose();
@@ -176,7 +174,6 @@ class _GirisEkraniState extends State<GirisEkrani>
                 TextButton(
                   onPressed: () {
                     if (_tabController.index == 0) {
-                      // Hasta Girişi sekmesi seçili
                       fonksiyonlar.kaydol(
                         context,
                         telefonController.text,
@@ -189,7 +186,6 @@ class _GirisEkraniState extends State<GirisEkrani>
                         MaterialPageRoute(builder: (context) => const HastaKayitOl()),
                       );
                     } else if (_tabController.index == 1) {
-                      // Doktor Girişi sekmesi seçili
                       fonksiyonlar.kaydol(
                         context,
                         telefonController.text,
@@ -199,13 +195,12 @@ class _GirisEkraniState extends State<GirisEkrani>
                       );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const DoktorKayitOl()), // DoktorKayitOl ekranı burada olmalı
+                        MaterialPageRoute(builder: (context) => const DoktorKayitOl()),
                       );
                     }
                   },
                   child: Text("Kaydol", style: TextStyle(color: koyuKirmizi)),
                 ),
-
               ],
             ),
           ],

@@ -23,7 +23,6 @@ class Appointments {
     required this.doctor,
   });
 
-  // JSON'dan nesneye dönüştürme
   factory Appointments.fromJson(Map<String, dynamic> json) {
     return Appointments(
       Appointment_id: json['Appointment_id'],

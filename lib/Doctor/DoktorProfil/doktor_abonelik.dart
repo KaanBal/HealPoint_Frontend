@@ -10,15 +10,14 @@ class AbonelikBilgiSayfasi extends StatefulWidget {
 }
 
 class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
-  // Abonelik tarihleri
+
   DateTime startDate = DateTime(2023, 10, 1);
   DateTime endDate = DateTime(2024, 10, 1);
 
   String subscriptionType = 'Bireysel (3 Ay)';
   String cancelDateMessage = '';
-  String cancelStatusMessage = ''; // İptal durumu mesajı
+  String cancelStatusMessage = '';
 
-  // Tarih formatı
   String formatDate(DateTime date) {
     return DateFormat('dd MMM yyyy').format(date);
   }
@@ -36,7 +35,6 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Abonelik Başlığı
             const Text(
               'Aboneliğiniz',
               style: TextStyle(
@@ -47,7 +45,6 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
             ),
             const SizedBox(height: 10),
 
-            // Abonelik Başlangıç ve Bitiş Tarihi
             Card(
               elevation: 5,
               shape: RoundedRectangleBorder(
@@ -120,7 +117,6 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
             ),
             const SizedBox(height: 20),
 
-            // Aboneliği iptal et kısmı
             ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -140,7 +136,6 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
             ),
             const SizedBox(height: 20),
 
-            // Aboneliği düzenle butonu
             ElevatedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => AboneOl()));
@@ -168,7 +163,7 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
             ],
             if (cancelStatusMessage.isNotEmpty) ...[
               Text(
-                cancelStatusMessage, // İptal mesajı gösterilecek
+                cancelStatusMessage,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -178,7 +173,6 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
             ],
             const SizedBox(height: 20),
 
-            // Footer ve info kısmı
             const Divider(),
             const SizedBox(height: 10),
             const Text(

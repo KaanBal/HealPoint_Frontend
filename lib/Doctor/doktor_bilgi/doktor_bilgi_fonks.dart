@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DoktorBilgiFonks {
-  // Doktor bilgisi gösterme işlevi
+
   void doktorBilgisiGoster(BuildContext context, String doktorAdi) {
     showDialog(
       context: context,
@@ -20,7 +20,6 @@ class DoktorBilgiFonks {
     );
   }
 
-  // Randevu alma işlevi
   void randevuAl(BuildContext context, String saat) {
     showDialog(
       context: context,
@@ -56,7 +55,6 @@ class DoktorBilgiFonks {
     return nameSurname;
   }
 
-  // Doktor değerlendirme işlevi
   void doktorDegerlendir(BuildContext context, String doktorAdi) {
     showDialog(
       context: context,

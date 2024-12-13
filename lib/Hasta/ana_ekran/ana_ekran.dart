@@ -8,7 +8,6 @@ import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 import 'anaekranfonk.dart';
-import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al.dart';
 
 class AnaEkran extends StatefulWidget {
   const AnaEkran({super.key});
@@ -44,13 +43,10 @@ class _AnaEkranState extends State<AnaEkran> {
 
   @override
   Widget build(BuildContext context) {
-    // Ekran boyutlarını al
+
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-
-    // Dinamik boyutlar için ayar
     double fontSize = screenWidth * 0.05;
-    double paddingValue = screenWidth * 0.04;
     double avatarRadius = screenWidth * 0.1;
     double buttonPadding = screenWidth * 0.05;
 
@@ -87,7 +83,7 @@ class _AnaEkranState extends State<AnaEkran> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const HastaProfil()));
               },
             ),
-            const Divider(), // Görsel ayrım için çizgi
+            const Divider(),
             ListTile(
               leading: const Icon(Icons.logout, color: Colors.red),
               title: const Text(
@@ -96,7 +92,6 @@ class _AnaEkranState extends State<AnaEkran> {
               ),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => GirisEkrani()));
-                // Çıkış işlemleri
               },
             ),
           ],
