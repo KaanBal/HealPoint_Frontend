@@ -258,7 +258,7 @@ class _AnaEkranState extends State<AnaEkran> {
             ),
             SizedBox(height: screenHeight * 0.03),
             Text(
-              'Popüler Doktorlar',
+              'Favori Doktorlarım',
               style: TextStyle(
                   fontSize: fontSize,
                   fontFamily: "ABeeZee",
