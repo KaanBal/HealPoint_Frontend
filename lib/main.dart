@@ -10,11 +10,15 @@ import 'package:yazilim_projesi/Hasta/HastaProfil/hasta_profil.dart';
 import 'package:yazilim_projesi/Hasta/ana_ekran/ana_ekran.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi_fonks.dart';
 import 'package:yazilim_projesi/Hasta//gecmisRandevu/gecmis_randevu.dart';
-import 'package:yazilim_projesi/Hasta/ana_ekran/randevu_al.dart';
+import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al.dart';
+import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al_doktor_liste.dart';
 import 'package:yazilim_projesi/Hasta/yaklasan_randevular/yaklasan_randevular.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import '../Hasta/Hasta_kayit/hasta_kayit_ol.dart';
 import 'Doctor/screens/Doctor_home_screen.dart';
+import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al_doktor_liste.dart';
+
+import 'models/Doctors.dart';
 
 
 void main() {
@@ -24,16 +28,31 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // Örnek doktor listesini burada tanımlıyoruz
+    List<Doctors> exampleDoctors = [
+      Doctors(
+        Doctor_name: "Dr. Ahmet Yılmaz",
+        branch: "Kardiyoloji",
+        reviews: [
+        ], Doctor_tc: '12345678913', Doctor_surname: 'adigu',
+      ),
+      Doctors(
+        Doctor_name: "Dr. Elif Kaya",
+        branch: "Dermatoloji",
+        reviews: [
+        ], Doctor_tc: '12345678911', Doctor_surname: 'kagabu',
+      ),
+    ];
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: RandevuAl(),
+      home: FilteredDoctorsScreen(filteredDoctors: exampleDoctors),
     );
   }
 }

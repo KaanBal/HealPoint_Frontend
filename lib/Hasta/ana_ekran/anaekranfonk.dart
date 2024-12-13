@@ -55,14 +55,15 @@ class _DoctorCardState extends State<DoctorCard> {
                   'https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg='),
             ),
             const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 140.0),
-                      child: Text(
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Name kısmı ve Favori Icon
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
                         widget.name,
                         style: const TextStyle(
                           fontSize: 17,
@@ -70,44 +71,44 @@ class _DoctorCardState extends State<DoctorCard> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                    // Favourite icon
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          widget.favourite = !widget.favourite;
-                        });
-                      },
-                      child: Icon(
-                        Icons.favorite,
-                        color: widget.favourite ? koyuKirmizi : acikGri,
+                      // Trailing kısmı (Favourite Icon)
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            widget.favourite = !widget.favourite;
+                          });
+                        },
+                        child: Icon(
+                          Icons.favorite,
+                          color: widget.favourite ? koyuKirmizi : acikGri,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Text(
-                  widget.specialization,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontFamily: "PtSans",
-                    color: Colors.grey,
+                    ],
                   ),
-                ),
-                Row(
-                  children: [
-                    const Icon(Icons.star, color: Colors.yellow, size: 16),
-                    const SizedBox(width: 5),
-                    Text(
-                      style: const TextStyle(
-                        fontFamily: "PtSans",
-                        fontSize: 15,
-                      ),
-                      '${widget.rating} (${widget.reviews} Değerlendirme)',
+                  Text(
+                    widget.specialization,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontFamily: "PtSans",
+                      color: Colors.grey,
                     ),
-                    const SizedBox(width: 20),
-                  ],
-                ),
-              ],
+                  ),
+                  Row(
+                    children: [
+                      const Icon(Icons.star, color: Colors.yellow, size: 16),
+                      const SizedBox(width: 5),
+                      Text(
+                        style: const TextStyle(
+                          fontFamily: "PtSans",
+                          fontSize: 15,
+                        ),
+                        '${widget.rating} (${widget.reviews} Değerlendirme)',
+                      ),
+                      const SizedBox(width: 20),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
