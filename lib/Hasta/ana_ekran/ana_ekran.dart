@@ -8,6 +8,7 @@ import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 import 'anaekranfonk.dart';
+import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al.dart';
 
 class AnaEkran extends StatefulWidget {
   const AnaEkran({super.key});
