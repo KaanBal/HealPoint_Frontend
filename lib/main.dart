@@ -35,14 +35,22 @@ class MyApp extends StatelessWidget {
       Doctors(
         Doctor_name: "Dr. Ahmet Yılmaz",
         branch: "Kardiyoloji",
-        reviews: [
-        ], Doctor_tc: '12345678913', Doctor_surname: 'adigu',
+        reviews: [], Doctor_tc: '12345678913', Doctor_surname: 'adigu',
       ),
       Doctors(
         Doctor_name: "Dr. Elif Kaya",
         branch: "Dermatoloji",
-        reviews: [
-        ], Doctor_tc: '12345678911', Doctor_surname: 'kagabu',
+        reviews: [], Doctor_tc: '12345678911', Doctor_surname: 'kagabu',
+      ),
+      Doctors(
+        Doctor_name: "Dr. Mehmet Kaya",
+        branch: "Dermatoloji",
+        reviews: [], Doctor_tc: '12345678911', Doctor_surname: 'kagabu',
+      ),
+      Doctors(
+        Doctor_name: "Dr. Şahmet Kaya",
+        branch: "Dermatoloji",
+        reviews: [], Doctor_tc: '12345678911', Doctor_surname: 'kagabu',
       ),
     ];
 
