@@ -13,7 +13,7 @@ class YaklasanRandevular extends StatelessWidget {
     {
       "saat": "09:00",
       "tarih": "12.12.2024",
-      "doktorIsmi": "Dr. Zeynep Kaya",
+      "doktorIsmi": "Prof. Dr. Zeynep İrem Adıgüzel",
       "hastane": "Memorial Hastanesi",
       "brans": "Dahiliye",
       "durum": "Yaklaşan Randevu",
