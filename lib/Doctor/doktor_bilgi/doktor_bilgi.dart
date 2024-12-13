@@ -38,8 +38,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
       if (pickedDate != null && pickedDate != selectedDate) {
         bottomSheetSetState(() {
           selectedDate = pickedDate;
-          availableTimes = ['08:00', '10:00', '12:00']; // Örnek saatler
-          selectedTime = availableTimes[0]; // Varsayılan saat seç
+          availableTimes = ['08:00', '10:00', '12:00'];
+          selectedTime = availableTimes[0];
         });
       }
     }

@@ -4,7 +4,7 @@ import 'package:yazilim_projesi/renkler/renkler.dart';
 import '../ana_ekran/anaekranfonk.dart';
 
 class FilteredDoctorsScreen extends StatelessWidget {
-  final List<Doctors> filteredDoctors; // Filtrelenmiş doktorlar listesi
+  final List<Doctors> filteredDoctors;
 
   const FilteredDoctorsScreen({
     super.key,

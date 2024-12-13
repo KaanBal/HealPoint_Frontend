@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:yazilim_projesi/Doctor/DoktorProfil/doktor_abonelik.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
-// Global showEditDialog function
 void showEditDialog(BuildContext context, String title, String initialValue,
     ValueChanged<String> onEdit) {
   final TextEditingController controller =
@@ -60,11 +59,8 @@ class _DoctorProfilState extends State<DoctorProfil> {
 
   @override
   Widget build(BuildContext context) {
-    // Get screen size for responsiveness
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-
-    // Font size scaling factor (80% of original size)
     double fontScaleFactor = 0.8;
 
     return DefaultTabController(
@@ -76,7 +72,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
           titleTextStyle: const TextStyle(
             color: Colors.white,
           ),
-          toolbarHeight: screenHeight * 0.35, // Adjust toolbar height
+          toolbarHeight: screenHeight * 0.35,
           title: Padding(
             padding: EdgeInsets.only(top: screenHeight * 0.05),
             child: Column(
@@ -144,7 +140,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
           fontWeight: FontWeight.normal,
           fontSize: MediaQuery.of(context).size.width *
               0.04 *
-              fontScaleFactor, // Dynamically adjusting font size
+              fontScaleFactor,
         ),
       ),
     );
@@ -160,7 +156,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
             fontFamily: "ABeeZee",
             fontSize: MediaQuery.of(context).size.width *
                 0.045 *
-                fontScaleFactor, // Dynamically adjusting font size
+                fontScaleFactor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -175,9 +171,9 @@ class _DoctorProfilState extends State<DoctorProfil> {
         color: Colors.white,
       ),
       width: MediaQuery.of(context).size.width *
-          0.3, // Dynamically adjusting image size
+          0.3,
       height: MediaQuery.of(context).size.width *
-          0.3, // Dynamically adjusting image size
+          0.3,
       alignment: Alignment.center,
       child: const CircleAvatar(
         radius: 50,
@@ -192,7 +188,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
   Widget contactDetail(double screenWidth, double fontScaleFactor) {
     return Card(
       margin: EdgeInsets.all(
-          screenWidth * 0.05), // Adjust margin based on screen width
+          screenWidth * 0.05),
       color: Colors.white,
       child: Container(
         padding: const EdgeInsets.all(8.0),
@@ -248,7 +244,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
             fontFamily: "ABeeZee",
             fontSize: MediaQuery.of(context).size.width *
                 0.04 *
-                fontScaleFactor), // Dynamic font size
+                fontScaleFactor),
       ),
       subtitle: Text(
         value,
@@ -257,7 +253,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
             fontFamily: "ABeeZee",
             fontSize: MediaQuery.of(context).size.width *
                 0.035 *
-                fontScaleFactor), // Dynamic font size
+                fontScaleFactor),
       ),
       dense: true,
       trailing: IconButton(
@@ -270,7 +266,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
   Card contactStatus(double screenWidth, double fontScaleFactor) {
     return Card(
       margin: EdgeInsets.fromLTRB(screenWidth * 0.05, 0, screenWidth * 0.05,
-          screenWidth * 0.05), // Dynamic margin
+          screenWidth * 0.05),
       color: Colors.white,
       child: ListTile(
         iconColor: Colors.black,
@@ -282,7 +278,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
               fontFamily: "ABeeZee",
               fontSize: MediaQuery.of(context).size.width *
                   0.04 *
-                  fontScaleFactor), // Dynamic font size
+                  fontScaleFactor),
         ),
         subtitle: Text(
           "Aktif",
@@ -291,7 +287,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
               fontFamily: "ABeeZee",
               fontSize: MediaQuery.of(context).size.width *
                   0.035 *
-                  fontScaleFactor), // Dynamic font size
+                  fontScaleFactor),
         ),
         trailing: TextButton(
           onPressed: () {
@@ -308,7 +304,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
               fontFamily: "ABeeZee",
               fontSize: MediaQuery.of(context).size.width *
                   0.035 *
-                  fontScaleFactor, // Dynamic font size
+                  fontScaleFactor,
             ),
           ),
         ),
@@ -346,7 +342,7 @@ class AboutSection extends StatelessWidget {
                     color: Colors.black,
                     fontSize: MediaQuery.of(context).size.width *
                         0.04 *
-                        fontScaleFactor), // Dynamic font size
+                        fontScaleFactor),
               ),
             ),
           ),
@@ -365,7 +361,7 @@ class AboutSection extends StatelessWidget {
                     color: Colors.black,
                     fontSize: MediaQuery.of(context).size.width *
                         0.035 *
-                        fontScaleFactor, // Dynamic font size
+                        fontScaleFactor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

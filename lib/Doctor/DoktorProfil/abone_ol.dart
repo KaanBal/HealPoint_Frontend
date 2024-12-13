@@ -24,7 +24,8 @@ class _SubscriptionScreenState extends State<AboneOl> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => AbonelikOnaylama(subscription: selectedSubscription),
+          builder: (context) =>
+              AbonelikOnaylama(subscription: selectedSubscription),
         ),
       );
     } else {

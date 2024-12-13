@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi_fonks.dart';
@@ -118,7 +117,7 @@ class _HastaDoktorprofilGoruntulerState
             fontFamily: "ABeeZee",
             fontSize: MediaQuery.of(context).size.width *
                 0.045 *
-                fontScaleFactor, // Dinamik font boyutu
+                fontScaleFactor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -132,8 +131,8 @@ class _HastaDoktorprofilGoruntulerState
         shape: BoxShape.circle,
         color: Colors.white,
       ),
-      width: screenWidth * 0.3, // Ekran genişliğine göre dinamik boyutlandırma
-      height: screenWidth * 0.3, // Ekran genişliğine göre dinamik boyutlandırma
+      width: screenWidth * 0.3,
+      height: screenWidth * 0.3,
       alignment: Alignment.center,
       child: const CircleAvatar(
         radius: 50,
@@ -145,7 +144,7 @@ class _HastaDoktorprofilGoruntulerState
 
   Widget contactDetail(double screenWidth, double fontScaleFactor) {
     return Card(
-      margin: EdgeInsets.all(screenWidth * 0.05), // Dinamik margin
+      margin: EdgeInsets.all(screenWidth * 0.05),
       color: Colors.white,
       child: Container(
         padding: const EdgeInsets.all(8.0),

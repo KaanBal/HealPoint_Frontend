@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Tarih işlemleri için gerekli paket
+import 'package:intl/intl.dart';
 
 class HastaProfil extends StatefulWidget {
   const HastaProfil({super.key});
@@ -14,7 +14,6 @@ class HastaProfilState extends State<HastaProfil> {
   String password = '1234';
   String birthDate = '15/07/2003';
 
-  // Yaşı hesaplayan fonksiyon
   int calculateAge(String birthDate) {
     DateTime birthDateParsed = DateFormat('dd/MM/yyyy').parse(birthDate);
     DateTime today = DateTime.now();
@@ -43,7 +42,7 @@ class HastaProfilState extends State<HastaProfil> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back,color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // Geri butonu işlevi
+            Navigator.pop(context);
           },
         ),
         backgroundColor: Colors.red,
@@ -52,7 +51,6 @@ class HastaProfilState extends State<HastaProfil> {
         children: [
           Column(
             children: [
-              // Üst bölüm (Kırmızı arka plan)
               Expanded(
                 flex: 3,
                 child: Container(
@@ -82,7 +80,6 @@ class HastaProfilState extends State<HastaProfil> {
                   ),
                 ),
               ),
-              // Alt bölüm (Bilgi kartı)
               Expanded(
                 flex: 5,
                 child: Container(
@@ -158,7 +155,6 @@ class HastaProfilState extends State<HastaProfil> {
               ),
             ],
           ),
-          // Ad, Soyad ve Yaş Kartı
           Positioned(
             top: ekranYuksekligi * 0.30,
             left: ekranGenisligi * 0.09,
@@ -231,7 +227,6 @@ class HastaProfilState extends State<HastaProfil> {
     );
   }
 
-  // Düzenlenebilir alan için widget
   Widget buildEditableTile(
       String title, String value, IconData icon, ValueChanged<String> onEdit) {
     return Row(
@@ -270,7 +265,6 @@ class HastaProfilState extends State<HastaProfil> {
     );
   }
 
-  // Düzenleme için diyalog gösteren fonksiyon
   void showEditDialog(BuildContext context, String title, String initialValue,
       ValueChanged<String> onEdit) {
     final TextEditingController controller =

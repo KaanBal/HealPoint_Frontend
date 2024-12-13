@@ -36,7 +36,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    double fontScaleFactor = 0.8; // Font boyutlarını küçültmek için ölçek faktörü
+    double fontScaleFactor = 0.8;
 
     return Scaffold(
       backgroundColor: beyaz,
@@ -47,7 +47,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
           "Appointments List",
           style: TextStyle(
             fontFamily: "ABeeZee",
-            fontSize: screenWidth * 0.05 * fontScaleFactor, // Dinamik font boyutu
+            fontSize: screenWidth * 0.05 * fontScaleFactor,
           ),
         ),
       ),
@@ -57,16 +57,14 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
           final appointment = appointments[index];
           return Card(
             color: beyaz,
-            margin: EdgeInsets.all(screenWidth * 0.03), // Dinamik margin
+            margin: EdgeInsets.all(screenWidth * 0.03),
             child: Padding(
-              padding: EdgeInsets.all(screenWidth * 0.04), // Dinamik padding
+              padding: EdgeInsets.all(screenWidth * 0.04),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Üst satır: Zaman ve Durum
                   Row(
                     children: [
-                      // Appointment Time Chip
                       Container(
                         padding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.03,
@@ -80,7 +78,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                           style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
-                            fontSize: screenWidth * 0.04 * fontScaleFactor, // Dinamik font boyutu
+                            fontSize: screenWidth * 0.04 * fontScaleFactor,
                           ),
                         ),
                       ),
@@ -111,7 +109,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                                   .last,
                             ),
                             fontWeight: FontWeight.bold,
-                            fontSize: screenWidth * 0.04 * fontScaleFactor, // Dinamik font boyutu
+                            fontSize: screenWidth * 0.04 * fontScaleFactor,
                           ),
                         ),
                       ),
@@ -123,14 +121,14 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontFamily: "ABeeZee",
-                      fontSize: screenWidth * 0.045 * fontScaleFactor, // Dinamik font boyutu
+                      fontSize: screenWidth * 0.045 * fontScaleFactor,
                     ),
                   ),
                   SizedBox(height: screenHeight * 0.01),
                   Text(
                     "${appointment.Appointment_text}",
                     style: TextStyle(
-                      fontSize: screenWidth * 0.035 * fontScaleFactor, // Dinamik font boyutu
+                      fontSize: screenWidth * 0.035 * fontScaleFactor,
                       fontFamily: "PTSans",
                       color: Colors.grey,
                     ),

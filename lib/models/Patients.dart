@@ -24,7 +24,6 @@ class Patients {
     this.appointments,
   });
 
-  // JSON'dan nesneye dönüştürme
   factory Patients.fromJson(Map<String, dynamic> json) {
     return Patients(
       patientTc: json['patientTc'],

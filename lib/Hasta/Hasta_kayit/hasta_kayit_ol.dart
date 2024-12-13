@@ -9,9 +9,8 @@ class HastaKayitOl extends StatefulWidget {
 }
 
 class _HastaKayitOlState extends State<HastaKayitOl> {
-  final _formKey = GlobalKey<FormState>();
 
-  // Kontrol edilecek alanlar için TextEditingController'lar
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController tcController = TextEditingController();
   final TextEditingController telefonController = TextEditingController();
   final TextEditingController isimController = TextEditingController();
@@ -22,18 +21,16 @@ class _HastaKayitOlState extends State<HastaKayitOl> {
 
   String? _selectedCinsiyet;
 
-  // Telefon numarası için TextEditingController'ı dinlemek amacıyla sayfa yüklendiğinde listener ekleyelim
   @override
   void initState() {
     super.initState();
     telefonController.addListener(() {
-      setState(() {}); // Telefon numarasındaki değişikliği güncellemek için
+      setState(() {});
     });
   }
 
   void kayitOl() {
     if (_formKey.currentState!.validate()) {
-      // Form valid ise bu işlemler yapılır
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Kayıt Başarılı!")),
       );
@@ -41,7 +38,6 @@ class _HastaKayitOlState extends State<HastaKayitOl> {
   }
 
   void iptal() {
-    // Tüm alanları sıfırlama
     tcController.clear();
     telefonController.clear();
     isimController.clear();
@@ -49,7 +45,7 @@ class _HastaKayitOlState extends State<HastaKayitOl> {
     sifreController.clear();
     emailController.clear();
     dogumTarihiController.clear();
-    _selectedCinsiyet = null; // Cinsiyet de sıfırlanacak
+    _selectedCinsiyet = null;
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("İşlem iptal edildi.")),
@@ -202,7 +198,7 @@ class _HastaKayitOlState extends State<HastaKayitOl> {
                 },
               ),
               const SizedBox(height: 10),
-              // Doğum Tarihi
+
               TextFormField(
                 controller: dogumTarihiController,
                 decoration: InputDecoration(
@@ -222,7 +218,7 @@ class _HastaKayitOlState extends State<HastaKayitOl> {
                 },
               ),
               const SizedBox(height: 10),
-              // Cinsiyet
+
               DropdownButtonFormField<String>(
                 value: _selectedCinsiyet,
                 decoration: const InputDecoration(
