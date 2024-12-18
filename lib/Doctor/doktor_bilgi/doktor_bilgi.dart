@@ -28,7 +28,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
     String? selectedTime;
     List<String> availableTimes = [];
 
-    void _selectDate(StateSetter bottomSheetSetState) async {
+    void selectDate(StateSetter bottomSheetSetState) async {
       final DateTime? pickedDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -80,7 +80,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                             ),
                             const SizedBox(height: 10),
                             ElevatedButton(
-                              onPressed: () => _selectDate(bottomSheetSetState),
+                              onPressed: () => selectDate(bottomSheetSetState),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: acikKirmizi,
                                 foregroundColor: beyaz,
@@ -228,7 +228,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                             children: [
                               const Icon(Icons.star,
                                   color: Colors.yellow, size: 18),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               Text(
                                   selectedDoctor?.reviews?.first.points
                                           .toString() ??

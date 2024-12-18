@@ -91,7 +91,7 @@ class _AnaEkranState extends State<AnaEkran> {
                 style: TextStyle(color: Colors.red),
               ),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => GirisEkrani()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const GirisEkrani()));
               },
             ),
           ],

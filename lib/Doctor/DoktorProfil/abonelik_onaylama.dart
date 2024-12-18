@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 class AbonelikOnaylama extends StatefulWidget {
   final String subscription;
 
-  const AbonelikOnaylama({required this.subscription});
+  const AbonelikOnaylama({super.key, required this.subscription});
 
   @override
   _ConfirmationScreenState createState() => _ConfirmationScreenState();
@@ -39,7 +39,7 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
     return cardNumberController.text.length == 16 &&
         expiryDateController.text.length == 5 &&
         cvvController.text.length == 3 &&
-        adsoyadController.text.length != 0;
+        adsoyadController.text.isNotEmpty;
   }
 
   void _updateFormState() {
@@ -51,13 +51,13 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
       isLoading = true;
     });
 
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         isLoading = false;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Ödeme başarıyla tamamlandı.')),
+        const SnackBar(content: Text('Ödeme başarıyla tamamlandı.')),
       );
     });
   }
@@ -68,7 +68,7 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Abone Onaylama'),
+        title: const Text('Abone Onaylama'),
         centerTitle: true,
       ),
       body: Padding(
@@ -78,17 +78,17 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
           children: [
             Text(
               'Seçilen Abonelik: ${widget.subscription}',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
               'Tutar: $price',
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             TextField(
               controller: adsoyadController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Ad ve Soyad",
                 border: OutlineInputBorder(),
               ),
@@ -99,10 +99,10 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
                 LengthLimitingTextInputFormatter(50),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: cardNumberController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Kart Numarası',
                 border: OutlineInputBorder(),
               ),
@@ -112,10 +112,10 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
                 LengthLimitingTextInputFormatter(16),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: expiryDateController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Son Kullanma Tarihi (MM/YY)',
                 border: OutlineInputBorder(),
               ),
@@ -126,10 +126,10 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
                 ExpiryDateInputFormatter(),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: cvvController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'CVV',
                 border: OutlineInputBorder(),
               ),
@@ -140,16 +140,16 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
                 LengthLimitingTextInputFormatter(3),
               ],
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             ElevatedButton(
               onPressed: isLoading || !isFormValid ? null : processPayment,
-              child: isLoading
-                  ? CircularProgressIndicator(color: Colors.white)
-                  : Text('Ödeme Yap'),
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16),
-                textStyle: TextStyle(fontSize: 16),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                textStyle: const TextStyle(fontSize: 16),
               ),
+              child: isLoading
+                  ? const CircularProgressIndicator(color: Colors.white)
+                  : const Text('Ödeme Yap'),
             ),
           ],
         ),
@@ -164,7 +164,7 @@ class ExpiryDateInputFormatter extends TextInputFormatter {
       TextEditingValue oldValue, TextEditingValue newValue) {
     String text = newValue.text.replaceAll(RegExp(r'[^\d]'), '');
     if (text.length > 2) {
-      text = text.substring(0, 2) + '/' + text.substring(2);
+      text = '${text.substring(0, 2)}/${text.substring(2)}';
     }
     if (text.length > 5) {
       text = text.substring(0, 5);

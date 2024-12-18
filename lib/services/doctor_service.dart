@@ -1,14 +1,26 @@
+import 'package:dio/dio.dart'; 
+import 'package:yazilim_projesi/services/token_service.dart';
+
 import 'api_client.dart';
-import 'package:http/http.dart' as http;
 
 class DoctorService {
-  final ApiClient _apiClient = ApiClient();
+  final ApiClient apiClient = ApiClient();
+  final TokenService tokenService = TokenService();
 
-  Future<http.Response> fetchDoctorList() async {
-    return await _apiClient.get('doctors/list');
-  }
-
-  Future<http.Response> saveDoctor(Map<String, dynamic> doctorData) async {
-    return await _apiClient.post('doctors/save', doctorData);
+  Future<Response<dynamic>> fetchAllDoctors() async { 
+    try {
+      final token = await tokenService.getToken();
+      final response = await apiClient.dio.get(
+        "doctors/list",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
   }
 }

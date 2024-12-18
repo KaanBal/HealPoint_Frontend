@@ -138,7 +138,7 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
 
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => AboneOl()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const AboneOl()));
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue, // Buton rengi
