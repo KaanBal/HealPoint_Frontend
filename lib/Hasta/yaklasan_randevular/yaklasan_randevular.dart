@@ -28,12 +28,14 @@ class YaklasanRandevular extends StatelessWidget {
     },
   ];
 
+  YaklasanRandevular({super.key});
+
   Map<String, String> getEnYakinRandevu() {
     yaklasanRandevular.sort((a, b) {
       DateTime tarihSaatA = DateTime.parse(
-          a["tarih"]!.split('.').reversed.join('-') + " " + a["saat"]!);
+          "${a["tarih"]!.split('.').reversed.join('-')} ${a["saat"]!}");
       DateTime tarihSaatB = DateTime.parse(
-          b["tarih"]!.split('.').reversed.join('-') + " " + b["saat"]!);
+          "${b["tarih"]!.split('.').reversed.join('-')} ${b["saat"]!}");
       return tarihSaatA.compareTo(tarihSaatB);
     });
     return yaklasanRandevular.first;

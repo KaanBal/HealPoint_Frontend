@@ -241,9 +241,9 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                 controller: dogumTarihiController,
                 decoration: InputDecoration(
                   labelText: "Doğum Tarihiniz",
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.calendar_today),
+                    icon: const Icon(Icons.calendar_today),
                     onPressed: () => _selectDate(context),
                   ),
                 ),
@@ -263,9 +263,9 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                   border: OutlineInputBorder(),
                 ),
                 items: const [
-                  DropdownMenuItem(child: Text("Erkek"), value: "Erkek"),
-                  DropdownMenuItem(child: Text("Kadın"), value: "Kadın"),
-                  DropdownMenuItem(child: Text("Diğer"), value: "Diğer"),
+                  DropdownMenuItem(value: "Erkek", child: Text("Erkek")),
+                  DropdownMenuItem(value: "Kadın", child: Text("Kadın")),
+                  DropdownMenuItem(value: "Diğer", child: Text("Diğer")),
                 ],
                 onChanged: (value) {
                   setState(() {
@@ -285,15 +285,15 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                 children: [
                   ElevatedButton(
                     onPressed: kayitOl,
-                    child: Text("Kayıt Ol"),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green, foregroundColor: beyaz),
+                    child: const Text("Kayıt Ol"),
                   ),
                   ElevatedButton(
                     onPressed: iptal,
-                    child: Text("İptal"),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red, foregroundColor: beyaz),
+                    child: const Text("İptal"),
                   ),
                 ],
               ),

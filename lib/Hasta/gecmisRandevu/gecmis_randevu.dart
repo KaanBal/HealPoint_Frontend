@@ -29,6 +29,8 @@ class GecmisRandevular extends StatelessWidget {
     },
   ];
 
+  GecmisRandevular({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

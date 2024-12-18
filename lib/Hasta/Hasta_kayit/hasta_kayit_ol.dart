@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Hasta/Hasta_kayit/hastakayit_fonks.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
 class HastaKayitOl extends StatefulWidget {
@@ -9,7 +10,6 @@ class HastaKayitOl extends StatefulWidget {
 }
 
 class _HastaKayitOlState extends State<HastaKayitOl> {
-
   final _formKey = GlobalKey<FormState>();
   final TextEditingController tcController = TextEditingController();
   final TextEditingController telefonController = TextEditingController();
@@ -20,6 +20,7 @@ class _HastaKayitOlState extends State<HastaKayitOl> {
   final TextEditingController dogumTarihiController = TextEditingController();
 
   String? _selectedCinsiyet;
+  final HastakayitFonks hastakayitFonks = HastakayitFonks();
 
   @override
   void initState() {
@@ -29,8 +30,19 @@ class _HastaKayitOlState extends State<HastaKayitOl> {
     });
   }
 
-  void kayitOl() {
+  void kayitOl() async {
     if (_formKey.currentState!.validate()) {
+      await hastakayitFonks.kayitOl(
+        tc: tcController.text,
+        telefon: telefonController.text,
+        isim: isimController.text,
+        soyisim: soyisimController.text,
+        sifre: sifreController.text,
+        email: emailController.text,
+        dogumTarihi: dogumTarihiController.text,
+        cinsiyet: _selectedCinsiyet!,
+      );
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Kayıt Başarılı!")),
       );
@@ -198,14 +210,13 @@ class _HastaKayitOlState extends State<HastaKayitOl> {
                 },
               ),
               const SizedBox(height: 10),
-
               TextFormField(
                 controller: dogumTarihiController,
                 decoration: InputDecoration(
                   labelText: "Doğum Tarihiniz",
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.calendar_today),
+                    icon: const Icon(Icons.calendar_today),
                     onPressed: () => _selectDate(context),
                   ),
                 ),
@@ -218,7 +229,6 @@ class _HastaKayitOlState extends State<HastaKayitOl> {
                 },
               ),
               const SizedBox(height: 10),
-
               DropdownButtonFormField<String>(
                 value: _selectedCinsiyet,
                 decoration: const InputDecoration(
@@ -226,9 +236,9 @@ class _HastaKayitOlState extends State<HastaKayitOl> {
                   border: OutlineInputBorder(),
                 ),
                 items: const [
-                  DropdownMenuItem(child: Text("Erkek"), value: "Erkek"),
-                  DropdownMenuItem(child: Text("Kadın"), value: "Kadın"),
-                  DropdownMenuItem(child: Text("Diğer"), value: "Diğer"),
+                  DropdownMenuItem(value: "Erkek", child: Text("Erkek")),
+                  DropdownMenuItem(value: "Kadın", child: Text("Kadın")),
+                  DropdownMenuItem(value: "Diğer", child: Text("Diğer")),
                 ],
                 onChanged: (value) {
                   setState(() {
@@ -248,15 +258,15 @@ class _HastaKayitOlState extends State<HastaKayitOl> {
                 children: [
                   ElevatedButton(
                     onPressed: kayitOl,
-                    child: Text("Kayıt Ol"),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green, foregroundColor: beyaz),
+                    child: Text("Kayıt Ol"),
                   ),
                   ElevatedButton(
                     onPressed: iptal,
-                    child: Text("İptal"),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red, foregroundColor: beyaz),
+                    child: Text("İptal"),
                   ),
                 ],
               ),

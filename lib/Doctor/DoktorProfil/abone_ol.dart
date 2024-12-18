@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:yazilim_projesi/Doctor/DoktorProfil/abonelik_onaylama.dart';
 
 class AboneOl extends StatefulWidget {
+  const AboneOl({super.key});
+
   @override
   _SubscriptionScreenState createState() => _SubscriptionScreenState();
 }
@@ -30,7 +32,7 @@ class _SubscriptionScreenState extends State<AboneOl> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lütfen bir abonelik seçin.')),
+        const SnackBar(content: Text('Lütfen bir abonelik seçin.')),
       );
     }
   }
@@ -39,7 +41,7 @@ class _SubscriptionScreenState extends State<AboneOl> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Abonelik Seçimi'),
+        title: const Text('Abonelik Seçimi'),
         centerTitle: true,
       ),
       body: Padding(
@@ -57,7 +59,7 @@ class _SubscriptionScreenState extends State<AboneOl> {
                 toggleSelection('3 Aylık');
               },
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             SubscriptionCard(
               title: '1 Yıllık Abonelik',
               description: 'İlk ay ücretsiz! 1 yıl boyunca erişim.',
@@ -68,14 +70,14 @@ class _SubscriptionScreenState extends State<AboneOl> {
                 toggleSelection('1 Yıllık');
               },
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () => navigateToConfirmation(context),
-              child: Text('Onayla'),
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16),
-                textStyle: TextStyle(fontSize: 16),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                textStyle: const TextStyle(fontSize: 16),
               ),
+              child: const Text('Onayla'),
             ),
           ],
         ),
@@ -92,7 +94,7 @@ class SubscriptionCard extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onPressed;
 
-  const SubscriptionCard({
+  const SubscriptionCard({super.key, 
     required this.title,
     required this.description,
     required this.price,
@@ -118,21 +120,21 @@ class SubscriptionCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 description,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   color: Colors.black87,
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
