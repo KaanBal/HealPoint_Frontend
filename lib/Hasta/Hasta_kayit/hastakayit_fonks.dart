@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/services/auth_service.dart';
 
 class HastakayitFonks {
@@ -6,24 +6,26 @@ class HastakayitFonks {
 
   Future<void> kayitOl({
     required String tc,
-    required String telefon,
-    required String isim,
-    required String soyisim,
-    required String sifre,
+    required String phoneNumber,
+    required String name,
+    required String surname,
+    required String password,
     required String email,
-    required String dogumTarihi,
-    required String cinsiyet,
+    required String birthDate, 
+    required String gender,
   }) async {
     try {
+      String formattedBirthDate = _formatDateToBackend(birthDate);
+
       Map<String, dynamic> patientData = {
         "tc": tc,
-        "telefon": telefon,
-        "isim": isim,
-        "soyisim": soyisim,
-        "sifre": sifre,
+        "phoneNumber": phoneNumber,
+        "name": name,
+        "surname": surname,
+        "password": password,
         "email": email,
-        "dogumTarihi": dogumTarihi,
-        "cinsiyet": cinsiyet,
+        "birthDate": formattedBirthDate, 
+        "gender": gender,
       };
 
       final response = await _authService.patientSignUp(patientData);
@@ -35,6 +37,17 @@ class HastakayitFonks {
       }
     } catch (e) {
       print("Hata oluştu: $e");
+    }
+  }
+
+  String _formatDateToBackend(String birthDate) {
+    try {
+      DateTime parsedDate = DateFormat("dd-MM-yyyy").parse(birthDate);
+
+      return DateFormat("yyyy-MM-dd").format(parsedDate);
+    } catch (e) {
+      print("Tarih formatlama hatası: $e");
+      return birthDate; 
     }
   }
 }

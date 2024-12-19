@@ -25,12 +25,12 @@ class Appointments {
 
   factory Appointments.fromJson(Map<String, dynamic> json) {
     return Appointments(
-      Appointment_id: json['Appointment_id'],
-      Appointment_date: DateTime.parse(json['Appointment_date']),
-      appointment_time: json['appointment_time'],
+      Appointment_id: json['appointmentId'],
+      Appointment_date: DateTime.parse(json['appointmentDate']),
+      appointment_time: json['appointmentTime'],
       Appointment_status: AppointmentStatus.values.firstWhere((e) =>
-          e.toString() == 'AppointmentStatus.${json['Appointment_status']}'),
-      Appointment_text: json['Appointment_text'],
+          e.toString() == 'AppointmentStatus.${json['appointmentStatus']}'),
+      Appointment_text: json['appointmentText'],
       patient: Patients.fromJson(json['patient']),
       doctor: Doctors.fromJson(json['doctor']),
     );

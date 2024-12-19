@@ -1,12 +1,11 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:yazilim_projesi/Hasta/HastaProfil/hasta_profil.dart';
 import 'package:yazilim_projesi/Hasta/gecmisRandevu/gecmis_randevu.dart';
 import 'package:yazilim_projesi/Hasta/yaklasan_randevular/yaklasan_randevular.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
+import 'package:yazilim_projesi/services/doctor_service.dart';
 import 'anaekranfonk.dart';
 
 class AnaEkran extends StatefulWidget {
@@ -22,18 +21,24 @@ Future<void> ara(String aramaKelimesi) async {
 
 class _AnaEkranState extends State<AnaEkran> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final DoctorService doctorService = DoctorService();
 
   List<Doctors> doctors = [];
 
-  void _loadData() async {
-    const String jsonFile = 'assets/MockData/doctors.json';
-    final dataString = await rootBundle.loadString(jsonFile);
-    final List<dynamic> dataJson = jsonDecode(dataString);
+Future<void> _loadData() async {
+  try {
+    final response = await doctorService.fetchAllDoctors();
+    final List<dynamic> data = response.data;
 
-    doctors = dataJson.map((json) => Doctors.fromJson(json)).toList();
-
-    setState(() {});
+    setState(() {
+      doctors = data.map((doctorJson) => Doctors.fromJson(doctorJson)).toList();
+    });
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Hata: $e")),
+    );
   }
+}
 
   @override
   void initState() {
@@ -43,7 +48,6 @@ class _AnaEkranState extends State<AnaEkran> {
 
   @override
   Widget build(BuildContext context) {
-
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     double fontSize = screenWidth * 0.05;
@@ -73,14 +77,20 @@ class _AnaEkranState extends State<AnaEkran> {
               leading: const Icon(Icons.calendar_month_outlined),
               title: const Text('Geçmiş Randevular'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>  GecmisRandevular()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => GecmisRandevular()));
               },
             ),
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('Profilim'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const HastaProfil()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const HastaProfil()));
               },
             ),
             const Divider(),
@@ -91,7 +101,10 @@ class _AnaEkranState extends State<AnaEkran> {
                 style: TextStyle(color: Colors.red),
               ),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const GirisEkrani()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const GirisEkrani()));
               },
             ),
           ],
@@ -168,9 +181,11 @@ class _AnaEkranState extends State<AnaEkran> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => YaklasanRandevular()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => YaklasanRandevular()));
                   },
-
                   child: Text(
                     " Görüntüle",
                     style: TextStyle(
@@ -183,9 +198,7 @@ class _AnaEkranState extends State<AnaEkran> {
                 ),
               ],
             ),
-
             SizedBox(height: screenHeight * 0.03),
-
             InkWell(
               onTap: () {
                 print('Schedule tıklandı');
@@ -264,11 +277,12 @@ class _AnaEkranState extends State<AnaEkran> {
             Expanded(
               child: ListView.separated(
                 itemCount: doctors.length,
-                separatorBuilder: (context, index) => SizedBox(height: screenHeight * 0.015),
+                separatorBuilder: (context, index) =>
+                    SizedBox(height: screenHeight * 0.015),
                 itemBuilder: (context, index) {
                   final doctor = doctors[index];
                   return DoctorCard(
-                    name: doctor.Doctor_name,
+                    name: doctor.name ?? "",
                     specialization: doctor.branch ?? "",
                     rating: "",
                     reviews: doctor.reviews?.length.toString() ?? "0",

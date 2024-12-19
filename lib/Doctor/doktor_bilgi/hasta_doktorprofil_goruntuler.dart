@@ -112,7 +112,7 @@ class _HastaDoktorprofilGoruntulerState
       padding: const EdgeInsets.only(top: 8.0),
       child: Center(
         child: Text(
-          doktorBilgiFonks.getNameAndSurname(selectedDoctor?.Doctor_name ?? "", selectedDoctor?.Doctor_surname ?? ""),    
+          doktorBilgiFonks.getNameAndSurname(selectedDoctor?.name ?? "", selectedDoctor?.surname ?? ""),    
           style: TextStyle(
             fontFamily: "ABeeZee",
             fontSize: MediaQuery.of(context).size.width *
@@ -154,8 +154,8 @@ class _HastaDoktorprofilGoruntulerState
             buildTile("İlçe", selectedDoctor?.district ?? "", Icons.my_location, fontScaleFactor),
             buildTile("Adres", selectedDoctor?.address ?? "", Icons.location_pin, fontScaleFactor),
             buildTile(
-                "Telefon No", selectedDoctor?.Doctor_phonenumber ?? "", Icons.phone_android, fontScaleFactor),
-            buildTile("Email", selectedDoctor?.Doctor_email ?? "", Icons.mail, fontScaleFactor),
+                "Telefon No", selectedDoctor?.phoneNumber ?? "", Icons.phone_android, fontScaleFactor),
+            buildTile("Email", selectedDoctor?.email ?? "", Icons.mail, fontScaleFactor),
           ],
         ),
       ),

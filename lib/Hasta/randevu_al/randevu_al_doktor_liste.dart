@@ -40,7 +40,7 @@ class FilteredDoctorsScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final doctor = filteredDoctors[index];
                   return DoctorCard(
-                    name: doctor.Doctor_name,
+                    name: doctor.name ?? "",
                     specialization: doctor.branch ?? "",
                     rating: doctor.reviews?.isNotEmpty == true
                         ? doctor.reviews![0].points.toString()
