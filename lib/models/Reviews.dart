@@ -26,13 +26,15 @@ class Reviews {
       reviewId: json['reviewId'],
       comment: json['comment'],
       points: json['points'],
-      patient: json['patient'] != null ? Patients.fromJson(json['patient']) : null,
+      patient:
+          json['patient'] != null ? Patients.fromJson(json['patient']) : null,
       doctor: json['doctor'] != null ? Doctors.fromJson(json['doctor']) : null,
-      appointment: json['appointment'] != null ? Appointments.fromJson(json['appointment']) : null,
+      appointment: json['appointment'] != null
+          ? Appointments.fromJson(json['appointment'])
+          : null,
       createdAt: json['createdAt'] != null
-        ? DateTime.parse(json['createdAt'])
-        : DateTime.fromMillisecondsSinceEpoch(0), 
+          ? DateTime.parse(json['createdAt'])
+          : DateTime.fromMillisecondsSinceEpoch(0),
     );
   }
-
 }

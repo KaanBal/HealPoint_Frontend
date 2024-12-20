@@ -1,38 +1,40 @@
+import 'package:yazilim_projesi/models/DoctorReview.dart';
 
-import 'package:yazilim_projesi/models/Doctors.dart';
-import 'package:yazilim_projesi/models/Patients.dart';
-
-enum AppointmentStatus { AKTIF, IPTAL, TAMAMLANDI}
+enum AppointmentStatus { AKTIF, IPTAL, TAMAMLANDI }
 
 class Appointments {
-  final int Appointment_id;
-  final DateTime Appointment_date;
-  final String appointment_time;
-  final AppointmentStatus Appointment_status;
-  final String? Appointment_text;
-  final Patients patient;
-  final Doctors doctor;
+  final DateTime? appointmentDate;
+  final String? appointmentTime;
+  final AppointmentStatus? appointmentStatus;
+  final String? appointmentText;
+  final DoctorReview? doctorReview;
 
   Appointments({
-    required this.Appointment_id,
-    required this.Appointment_date,
-    required this.appointment_time,
-    required this.Appointment_status,
-    this.Appointment_text,
-    required this.patient,
-    required this.doctor,
+    this.appointmentDate,
+    this.appointmentTime,
+    this.appointmentStatus,
+    this.appointmentText,
+    this.doctorReview,
   });
 
   factory Appointments.fromJson(Map<String, dynamic> json) {
     return Appointments(
-      Appointment_id: json['appointmentId'],
-      Appointment_date: DateTime.parse(json['appointmentDate']),
-      appointment_time: json['appointmentTime'],
-      Appointment_status: AppointmentStatus.values.firstWhere((e) =>
+      appointmentDate: DateTime.parse(json['appointmentDate']),
+      appointmentTime: json['appointmentTime'],
+      appointmentStatus: AppointmentStatus.values.firstWhere((e) =>
           e.toString() == 'AppointmentStatus.${json['appointmentStatus']}'),
-      Appointment_text: json['appointmentText'],
-      patient: Patients.fromJson(json['patient']),
-      doctor: Doctors.fromJson(json['doctor']),
+      appointmentText: json['appointmentText'],
+      doctorReview: json['doctorReview'] != null ? DoctorReview.fromJson(json['doctorReview']) : null
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'appointmentDate': appointmentDate,
+      'appointmentTime': appointmentTime,
+      'appointmentStatus': appointmentStatus,
+      'appointmentText':appointmentText,
+      'doctorReview': doctorReview,
+    };
   }
 }
