@@ -2,11 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:yazilim_projesi/services/api_client.dart';
 import 'package:yazilim_projesi/services/token_service.dart';
 
-class DoctorService {
-  final ApiClient apiClient = ApiClient();
+class AppointmentsService {
   final TokenService tokenService = TokenService();
+  final ApiClient apiClient = ApiClient();
 
-  Future<Response> fetchAllDoctors() async {
+  Future<Response> fetchUpcomingAppointments() async {
     try {
       final token = await tokenService.getToken();
 
@@ -15,47 +15,20 @@ class DoctorService {
       }
 
       final response = await apiClient.dio.get(
-        "doctors/list",
+        "appointments/upcoming-appointments",
         options: Options(
           headers: {
             "Authorization": "Bearer $token",
           },
         ),
       );
-
       return response;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<Response> getDoctorAvailabilities(String id, String date) async {
-    try {
-      final token = await tokenService.getToken();
-
-      if (token == null) {
-        throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
-      }
-
-      final response = await apiClient.dio.get(
-        "doctor/availability/times/$id",
-        queryParameters: {
-          "date": date,
-        },
-        options: Options(
-          headers: {
-            "Authorization": "Bearer $token",
-          },
-        ),
-      );
-
-      return response;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<Response> saveDoctorAvailability(Map<String, dynamic> availabilityData) async {
+  Future<Response> createAppointment(Map<String, dynamic> appointmentData) async {
     try {
       final token = await tokenService.getToken();
 
@@ -64,22 +37,21 @@ class DoctorService {
       }
 
       final response = await apiClient.dio.post(
-        "doctor/availability/save",
-        data: availabilityData,
+        "appointments/create",
+        data: appointmentData,
         options: Options(
           headers: {
             "Authorization": "Bearer $token",
           },
         ),
       );
-
       return response;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<Response> updateDoctorAvailability(String id, Map<String, dynamic> availabilityData) async {
+  Future<Response> fetchCompletedAndCancelledAppointments() async {
     try {
       final token = await tokenService.getToken();
 
@@ -87,19 +59,19 @@ class DoctorService {
         throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
       }
 
-      final response = await apiClient.dio.put(
-        "doctor/availability/update/$id",
-        data: availabilityData,
+      final response = await apiClient.dio.get(
+        "appointments/completed-and-cancelled",
         options: Options(
           headers: {
             "Authorization": "Bearer $token",
           },
         ),
       );
-
       return response;
     } catch (e) {
       rethrow;
     }
   }
+
+
 }
