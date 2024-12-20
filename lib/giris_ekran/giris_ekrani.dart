@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
+import 'package:yazilim_projesi/services/auth_service.dart';
 import '../Doctor/Doktor_kayit/doktor_kayit_ol.dart';
 import '../Hasta/Hasta_kayit/hasta_kayit_ol.dart';
 import 'girisekranfonks.dart';
@@ -13,9 +14,10 @@ class GirisEkrani extends StatefulWidget {
 
 class _GirisEkraniState extends State<GirisEkrani>
     with SingleTickerProviderStateMixin {
-  final TextEditingController telefonController = TextEditingController();
+  final TextEditingController tcController = TextEditingController();
   final TextEditingController sifreController = TextEditingController();
   final GirisEkranFonks fonksiyonlar = GirisEkranFonks();
+  final AuthService authService = AuthService();
 
   late TabController _tabController;
 
@@ -28,7 +30,7 @@ class _GirisEkraniState extends State<GirisEkrani>
   @override
   void dispose() {
     _tabController.dispose();
-    telefonController.dispose();
+    tcController.dispose();
     sifreController.dispose();
     super.dispose();
   }
@@ -65,11 +67,12 @@ class _GirisEkraniState extends State<GirisEkrani>
             () {
               fonksiyonlar.girisYap(
                 context,
-                telefonController.text,
+                tcController.text,
                 sifreController.text,
-                telefonController,
+                tcController,
                 sifreController,
-                true,
+                true, 
+                authService,
               );
             },
           ),
@@ -80,11 +83,12 @@ class _GirisEkraniState extends State<GirisEkrani>
             () {
               fonksiyonlar.girisYap(
                 context,
-                telefonController.text,
+                tcController.text,
                 sifreController.text,
-                telefonController,
+                tcController,
                 sifreController,
-                false,
+                false, 
+                authService,
               );
             },
           ),
@@ -117,10 +121,10 @@ class _GirisEkraniState extends State<GirisEkrani>
             ),
             SizedBox(height: ekranYuksekligi * 0.05),
             TextField(
-              controller: telefonController,
+              controller: tcController,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
-                labelText: "Telefon Numarası",
+                labelText: "TC Kimlik Numarası",
                 labelStyle: TextStyle(color: koyuKirmizi),
                 prefixIcon: Icon(Icons.phone, color: koyuKirmizi),
                 border: OutlineInputBorder(
@@ -176,26 +180,28 @@ class _GirisEkraniState extends State<GirisEkrani>
                     if (_tabController.index == 0) {
                       fonksiyonlar.kaydol(
                         context,
-                        telefonController.text,
+                        tcController.text,
                         sifreController.text,
-                        telefonController,
+                        tcController,
                         sifreController,
                       );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const HastaKayitOl()),
+                        MaterialPageRoute(
+                            builder: (context) => const HastaKayitOl()),
                       );
                     } else if (_tabController.index == 1) {
                       fonksiyonlar.kaydol(
                         context,
-                        telefonController.text,
+                        tcController.text,
                         sifreController.text,
-                        telefonController,
+                        tcController,
                         sifreController,
                       );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const DoktorKayitOl()),
+                        MaterialPageRoute(
+                            builder: (context) => const DoktorKayitOl()),
                       );
                     }
                   },

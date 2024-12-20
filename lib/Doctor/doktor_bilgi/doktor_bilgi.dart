@@ -210,7 +210,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                         children: [
                           SizedBox(height: ekranYuksekligi * 0.02),
                           Text(
-                            selectedDoctor?.Doctor_name ?? "",
+                            selectedDoctor?.name ?? "",
                             style: const TextStyle(
                                 fontSize: 19,
                                 fontFamily: "ABeeZee",
@@ -269,7 +269,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
             ),
             SizedBox(height: ekranYuksekligi * 0.02),
             Text(
-              selectedDoctor?.Doctor_about ?? "",
+              selectedDoctor?.about ?? "",
               style: TextStyle(
                   fontSize: fontSize,
                   fontFamily: "PtSans",

@@ -34,13 +34,13 @@ class _HastaKayitOlState extends State<HastaKayitOl> {
     if (_formKey.currentState!.validate()) {
       await hastakayitFonks.kayitOl(
         tc: tcController.text,
-        telefon: telefonController.text,
-        isim: isimController.text,
-        soyisim: soyisimController.text,
-        sifre: sifreController.text,
+        phoneNumber: telefonController.text,
+        name: isimController.text,
+        surname: soyisimController.text,
+        password: sifreController.text,
         email: emailController.text,
-        dogumTarihi: dogumTarihiController.text,
-        cinsiyet: _selectedCinsiyet!,
+        birthDate: dogumTarihiController.text,
+        gender: _selectedCinsiyet!,
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -260,13 +260,13 @@ class _HastaKayitOlState extends State<HastaKayitOl> {
                     onPressed: kayitOl,
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green, foregroundColor: beyaz),
-                    child: Text("Kayıt Ol"),
+                    child: const Text("Kayıt Ol"),
                   ),
                   ElevatedButton(
                     onPressed: iptal,
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red, foregroundColor: beyaz),
-                    child: Text("İptal"),
+                    child: const Text("İptal"),
                   ),
                 ],
               ),
