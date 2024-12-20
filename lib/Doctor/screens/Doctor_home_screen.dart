@@ -74,7 +74,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
-                          appointment.appointment_time,
+                          appointment.appointmentTime ?? "",
                           style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
@@ -89,7 +89,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                             vertical: screenWidth * 0.02),
                         decoration: BoxDecoration(
                           color: getStatusColor(
-                            appointment.Appointment_status
+                            appointment.appointmentStatus
                                 .toString()
                                 .split('.')
                                 .last,
@@ -97,13 +97,13 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
-                          appointment.Appointment_status
+                          appointment.appointmentStatus
                               .toString()
                               .split('.')
                               .last,
                           style: TextStyle(
                             color: getStatusColor(
-                              appointment.Appointment_status
+                              appointment.appointmentStatus
                                   .toString()
                                   .split('.')
                                   .last,
@@ -117,7 +117,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                   ),
                   SizedBox(height: screenHeight * 0.02),
                   Text(
-                    "Hasta İsmi: ${appointment.patient.Patient_name} ${appointment.patient.Patient_surname}",
+                    "Hasta İsmi: ${appointment.patient?.name} ${appointment.patient?.surname}",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontFamily: "ABeeZee",
@@ -126,7 +126,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                   ),
                   SizedBox(height: screenHeight * 0.01),
                   Text(
-                    "${appointment.Appointment_text}",
+                    "${appointment.appointmentText}",
                     style: TextStyle(
                       fontSize: screenWidth * 0.035 * fontScaleFactor,
                       fontFamily: "PTSans",

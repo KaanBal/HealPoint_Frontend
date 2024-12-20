@@ -316,8 +316,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                               children: [
                                 Text(
                                   doktorBilgiFonks.getNameAndSurname(
-                                      review.patient?.Patient_name ?? "",
-                                      review.patient?.Patient_surname ?? ""),
+                                      review.patient?.name ?? "",
+                                      review.patient?.surname ?? ""),
                                   style: TextStyle(
                                       fontSize: fontSize,
                                       fontWeight: FontWeight.bold,
