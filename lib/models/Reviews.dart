@@ -37,4 +37,16 @@ class Reviews {
           : DateTime.fromMillisecondsSinceEpoch(0),
     );
   }
+
+    Map<String, dynamic> toJson() {
+    return {
+      'reviewId': reviewId,
+      'comment': comment,
+      'points': points,
+      'createdAt': createdAt?.toIso8601String(),
+      'patient': patient?.toJson(),
+      'doctor': doctor?.toJson(),
+      'appointment': appointment?.toJson(),
+    };
+  }
 }

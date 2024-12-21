@@ -35,7 +35,9 @@ class GirisEkranFonks {
   ) async {
     if (username.isNotEmpty && sifre.isNotEmpty) {
       try {
-        final response = await authService.patientSignIn(username, sifre);
+        final response = isPatient
+            ? await authService.patientSignIn(username, sifre)
+            : await authService.doctorSignIn(username, sifre);
 
         if (response.statusCode == 200 || response.statusCode == 201) {
           if (isPatient) {

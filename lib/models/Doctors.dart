@@ -14,8 +14,8 @@ class Doctors {
   final String? city;
   final String? district;
   final String? address;
-  final double? avgPoint; // Updated to Dart's double
-  final bool? isAccountActive; // Updated to Dart's bool
+  final double? avgPoint;
+  final bool? isAccountActive;
   final List<Reviews>? reviews;
 
   Doctors({
@@ -57,4 +57,25 @@ class Doctors {
           .toList(),
     );
   }
+
+    Map<String, dynamic> toJson() {
+    return {
+      'tc': tc,
+      'name': name,
+      'branch': branch,
+      'surname': surname,
+      'phoneNumber': phoneNumber,
+      'about': about,
+      'password': password,
+      'gender': gender,
+      'email': email,
+      'city': city,
+      'district': district,
+      'address': address,
+      'avgPoint': avgPoint,
+      'isAccountActive': isAccountActive,
+      'reviews': reviews?.map((review) => review.toJson()).toList(),
+    };
+  }
+
 }

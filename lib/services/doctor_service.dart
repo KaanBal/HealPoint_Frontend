@@ -14,6 +14,7 @@ class DoctorService {
         throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
       }
 
+      print("$token");
       final response = await apiClient.dio.get(
         "doctors/list",
         options: Options(
@@ -29,7 +30,7 @@ class DoctorService {
     }
   }
 
-  Future<Response> getDoctorAvailabilities(String id, String date) async {
+  Future<Response> getDoctorAvailabilities(String id, DateTime date) async {
     try {
       final token = await tokenService.getToken();
 
@@ -55,7 +56,8 @@ class DoctorService {
     }
   }
 
-  Future<Response> saveDoctorAvailability(Map<String, dynamic> availabilityData) async {
+  Future<Response> saveDoctorAvailability(
+      Map<String, dynamic> availabilityData) async {
     try {
       final token = await tokenService.getToken();
 
@@ -79,7 +81,8 @@ class DoctorService {
     }
   }
 
-  Future<Response> updateDoctorAvailability(String id, Map<String, dynamic> availabilityData) async {
+  Future<Response> updateDoctorAvailability(
+      String id, Map<String, dynamic> availabilityData) async {
     try {
       final token = await tokenService.getToken();
 
@@ -173,7 +176,8 @@ class DoctorService {
     }
   }
 
-  Future<Response> updateDoctorById(String id, Map<String, dynamic> doctorData) async {
+  Future<Response> updateDoctorById(
+      String id, Map<String, dynamic> doctorData) async {
     try {
       final token = await tokenService.getToken();
 
