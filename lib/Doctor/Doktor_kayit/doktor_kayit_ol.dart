@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../renkler/renkler.dart';
 
 class DoktorKayitOl extends StatefulWidget {
@@ -15,22 +17,48 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
   final TextEditingController telefonController = TextEditingController();
   final TextEditingController isimController = TextEditingController();
   final TextEditingController soyisimController = TextEditingController();
-  final TextEditingController branchController = TextEditingController();
-  final TextEditingController cityController = TextEditingController();
-  final TextEditingController districtController = TextEditingController();
   final TextEditingController sifreController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController adresController = TextEditingController();
   final TextEditingController dogumTarihiController = TextEditingController();
 
   String? _selectedCinsiyet;
+  String? _selectedCity;
+  String? _selectedDistrict;
+  String? _selectedBranch;
+
+  Map<String, List<String>> cityDistrictMap = {};
+  List<String> _districts = [];
+
+  final List<String> branches = [
+    "Diş",
+    "Kalp",
+    "Ortopedi",
+    "Göz",
+    "Dahiliye",
+  ];
 
   @override
   void initState() {
     super.initState();
+    _loadCityDistrictData();
     telefonController.addListener(() {
       setState(() {});
     });
+  }
+
+  Future<void> _loadCityDistrictData() async {
+    try {
+      final String jsonString = await rootBundle.loadString('assets/sehir_ilce.json');
+      final Map<String, dynamic> jsonData = json.decode(jsonString);
+
+      setState(() {
+        cityDistrictMap = jsonData.map((key, value) =>
+            MapEntry(key, List<String>.from(value as List)));
+      });
+    } catch (e) {
+      debugPrint("Error loading JSON data: $e");
+    }
   }
 
   void kayitOl() {
@@ -48,11 +76,12 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
     soyisimController.clear();
     sifreController.clear();
     emailController.clear();
-    dogumTarihiController.clear();
-    branchController.clear();
-    cityController.clear();
-    districtController.clear();
     adresController.clear();
+    dogumTarihiController.clear();
+    _selectedCity = null;
+    _districts = [];
+    _selectedDistrict = null;
+    _selectedBranch = null;
     _selectedCinsiyet = null;
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -71,7 +100,7 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
     if (selectedDate != null && selectedDate != DateTime.now()) {
       setState(() {
         dogumTarihiController.text =
-            "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
+        "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
       });
     }
   }
@@ -91,134 +120,135 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
           key: _formKey,
           child: ListView(
             children: [
-              TextFormField(
-                controller: tcController,
+            DropdownButtonFormField<String>(
+            value: _selectedCity,
+            decoration: const InputDecoration(
+              labelText: "Şehir",
+              border: OutlineInputBorder(),
+            ),
+            items: cityDistrictMap.keys.map((city) {
+              return DropdownMenuItem(
+                value: city,
+                child: Text(city),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                _selectedCity = value;
+                _districts = cityDistrictMap[value] ?? [];
+                _selectedDistrict = null;
+              });
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Lütfen bir şehir seçin.";
+              }
+              return null;
+            },
+          ),
+
+            const SizedBox(height: 10),
+
+              // İlçe Dropdown
+              DropdownButtonFormField<String>(
+                value: _selectedDistrict,
                 decoration: const InputDecoration(
-                  labelText: "TC Kimlik Numarası",
+                  labelText: "İlçe",
                   border: OutlineInputBorder(),
                 ),
-                keyboardType: TextInputType.number,
-                maxLength: 11,
+                items: _districts
+                    .map((district) => DropdownMenuItem(
+                  value: district,
+                  child: Text(district),
+                ))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedDistrict = value;
+                  });
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Lütfen TC kimlik numaranızı girin.";
-                  }
-                  if (value.length != 11 || int.tryParse(value) == null) {
-                    return "TC kimlik numarası 11 haneli olmalı.";
+                    return "Lütfen bir ilçe seçin.";
                   }
                   return null;
                 },
               ),
 
               const SizedBox(height: 10),
+
+              // TC Kimlik No
+              TextFormField(
+                controller: tcController,
+                decoration: const InputDecoration(
+                  labelText: "TC Kimlik No",
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+                maxLength: 11,
+                validator: (value) {
+                  if (value == null || value.isEmpty || value.length != 11) {
+                    return "Lütfen geçerli bir TC Kimlik No girin.";
+                  }
+                  return null;
+                },
+              ),
+
+              const SizedBox(height: 10),
+
+              // Telefon
               TextFormField(
                 controller: telefonController,
                 decoration: const InputDecoration(
-                  labelText: "Telefon Numarası",
-                  hintText: "Telefon numaranızın başında 0 olmadan yazınız.",
+                  labelText: "Telefon",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.phone,
-                maxLength: 10,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Lütfen telefon numaranızı girin.";
                   }
-                  if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-                    return "Telefon numarası 10 haneli olmalı.";
-                  }
                   return null;
                 },
               ),
+
               const SizedBox(height: 10),
+
+              // İsim
               TextFormField(
                 controller: isimController,
                 decoration: const InputDecoration(
-                  labelText: "Adınız",
+                  labelText: "İsim",
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Lütfen adınızı girin.";
+                    return "Lütfen isminizi girin.";
                   }
                   return null;
                 },
               ),
+
               const SizedBox(height: 10),
+
+              // Soyisim
               TextFormField(
                 controller: soyisimController,
                 decoration: const InputDecoration(
-                  labelText: "Soyadınız",
+                  labelText: "Soyisim",
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Lütfen soyadınızı girin.";
+                    return "Lütfen soyisminizi girin.";
                   }
                   return null;
                 },
               ),
+
               const SizedBox(height: 10),
-              TextFormField(
-                controller: branchController,
-                decoration: const InputDecoration(
-                  labelText: "Branş",
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Lütfen branşınızı girin.";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: cityController,
-                decoration: const InputDecoration(
-                  labelText: "Şehir",
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Lütfen Şehir girin.";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: districtController,
-                decoration: const InputDecoration(
-                  labelText: "İlçe",
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Lütfen İlçe girin.";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: "Adres",
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Lütfen adresinizi girin.";
-                  }
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return "Geçerli bir e-posta adresi girin.";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
+
+              // Şifre
               TextFormField(
                 controller: sifreController,
                 decoration: const InputDecoration(
@@ -227,27 +257,60 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                 ),
                 obscureText: true,
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Lütfen şifrenizi girin.";
-                  }
-                  if (value.length < 6) {
-                    return "Şifre en az 6 karakter olmalı.";
+                  if (value == null || value.isEmpty || value.length < 6) {
+                    return "Lütfen en az 6 karakterli bir şifre girin.";
                   }
                   return null;
                 },
               ),
+
               const SizedBox(height: 10),
+
+              // Email
+              TextFormField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                  labelText: "Email",
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty || !value.contains('@')) {
+                    return "Lütfen geçerli bir email adresi girin.";
+                  }
+                  return null;
+                },
+              ),
+
+              const SizedBox(height: 10),
+
+              // Adres
+              TextFormField(
+                controller: adresController,
+                decoration: const InputDecoration(
+                  labelText: "Adres",
+                  border: OutlineInputBorder(),
+                ),
+                maxLines: 3,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Lütfen adresinizi girin.";
+                  }
+                  return null;
+                },
+              ),
+
+              const SizedBox(height: 10),
+
+              // Doğum Tarihi
               TextFormField(
                 controller: dogumTarihiController,
-                decoration: InputDecoration(
-                  labelText: "Doğum Tarihiniz",
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.calendar_today),
-                    onPressed: () => _selectDate(context),
-                  ),
+                decoration: const InputDecoration(
+                  labelText: "Doğum Tarihi",
+                  border: OutlineInputBorder(),
                 ),
                 readOnly: true,
+                onTap: () => _selectDate(context),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Lütfen doğum tarihinizi seçin.";
@@ -255,18 +318,20 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                   return null;
                 },
               ),
+
               const SizedBox(height: 10),
+
+              // Cinsiyet Dropdown
               DropdownButtonFormField<String>(
                 value: _selectedCinsiyet,
                 decoration: const InputDecoration(
                   labelText: "Cinsiyet",
                   border: OutlineInputBorder(),
                 ),
-                items: const [
-                  DropdownMenuItem(value: "Erkek", child: Text("Erkek")),
-                  DropdownMenuItem(value: "Kadın", child: Text("Kadın")),
-                  DropdownMenuItem(value: "Diğer", child: Text("Diğer")),
-                ],
+                items: ["Erkek", "Kadın"].map((cinsiyet) => DropdownMenuItem(
+                  value: cinsiyet,
+                  child: Text(cinsiyet),
+                )).toList(),
                 onChanged: (value) {
                   setState(() {
                     _selectedCinsiyet = value;
@@ -274,26 +339,68 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Lütfen cinsiyetinizi seçin.";
+                    return "Lütfen cinsiyet seçin.";
                   }
                   return null;
                 },
               ),
+
+              const SizedBox(height: 10),
+
+              // Branş Dropdown
+              DropdownButtonFormField<String>(
+                value: _selectedBranch,
+                decoration: const InputDecoration(
+                  labelText: "Branş",
+                  border: OutlineInputBorder(),
+                ),
+                items: branches.map((branch) => DropdownMenuItem(
+                  value: branch,
+                  child: Text(branch),
+                )).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedBranch = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Lütfen branş seçin.";
+                  }
+                  return null;
+                },
+              ),
+
               const SizedBox(height: 20),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
                     onPressed: kayitOl,
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green, foregroundColor: beyaz),
-                    child: const Text("Kayıt Ol"),
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    child: const Text(
+                      "Kayıt Ol",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: iptal,
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red, foregroundColor: beyaz),
-                    child: const Text("İptal"),
+                      backgroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    child: const Text(
+                      "İptal",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ],
               ),

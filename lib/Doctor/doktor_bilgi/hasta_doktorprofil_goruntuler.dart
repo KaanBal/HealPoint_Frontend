@@ -192,7 +192,7 @@ class _HastaDoktorprofilGoruntulerState
 class AboutSection extends StatelessWidget {
   final String aboutText;
 
-  const AboutSection({super.key, required this.aboutText});
+  const AboutSection({super.key, required this.aboutText, required Null Function(dynamic newValue) onEdit});
 
   @override
   Widget build(BuildContext context) {
