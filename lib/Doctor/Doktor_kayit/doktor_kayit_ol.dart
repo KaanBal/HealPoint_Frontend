@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Doctor/Doktor_kayit/doktorKayitOl_fonks.dart';
+import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:flutter/services.dart';
 import '../../renkler/renkler.dart';
 
@@ -38,6 +40,8 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
     "Dahiliye",
   ];
 
+  final DoktorkayitolFonks _kayitolFonks = DoktorkayitolFonks();
+
   @override
   void initState() {
     super.initState();
@@ -62,11 +66,35 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
     }
   }
 
-  void kayitOl() {
+  Future<void> kayitOl() async {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Kayıt Başarılı!")),
-      );
+      try {
+        Doctors doctor = Doctors(
+          tc: tcController.text,
+          phoneNumber: telefonController.text,
+          name: isimController.text,
+          surname: soyisimController.text,
+          branch: _selectedBranch,
+          city: _selectedCity,
+          district: _selectedDistrict,
+          email: emailController.text,
+          address: adresController.text,
+          gender: _selectedCinsiyet,
+          password: sifreController.text,
+        );
+
+        final doctorJson = doctor.toJson();
+
+        await _kayitolFonks.kayitOl(doctorJson);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Kayıt Başarılı!")),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Kayıt sırasında hata oluştu: $e")),
+        );
+      }
     }
   }
 
@@ -98,7 +126,7 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
       lastDate: DateTime.now(),
     );
 
-    if (selectedDate != null && selectedDate != DateTime.now()) {
+    if (selectedDate != null) {
       setState(() {
         dogumTarihiController.text =
             "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
@@ -175,7 +203,6 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                   return null;
                 },
               ),
-
               const SizedBox(height: 10),
 
               // TC Kimlik No

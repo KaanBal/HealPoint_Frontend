@@ -4,23 +4,51 @@ import 'package:flutter/services.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi_fonks.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
+import 'package:yazilim_projesi/services/doctor_service.dart';
 
 class DoctorBilgiEkran extends StatefulWidget {
-  const DoctorBilgiEkran({super.key});
+  final String doctorId;
+  final DateTime date;
+
+  const DoctorBilgiEkran(
+      {super.key, required this.doctorId, required this.date});
 
   @override
   State<DoctorBilgiEkran> createState() => _DoctorBilgiEkran();
 }
 
 class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
-  Doctors? selectedDoctor;
+  final DoctorService doctorService = DoctorService();
 
-  void _loadData() async {
+  Doctors? selectedDoctor;
+  List<String>? availableTimes;
+
+  void _loadDataFromMockData() async {
     const String jsonFile = 'assets/MockData/doctorInfo.json';
     final dataString = await rootBundle.loadString(jsonFile);
     final Map<String, dynamic> jsonData = json.decode(dataString);
     selectedDoctor = Doctors.fromJson(jsonData);
     setState(() {});
+  }
+
+  void _loadData() async {
+    
+  }
+
+  void _fetchAvailableCloksByDate() async {
+    try {
+      final response = await doctorService.getDoctorAvailabilities(
+          widget.doctorId, widget.date);
+      final Map<String, dynamic> data = response.data;
+
+      setState(() {
+        selectedDoctor = Doctors.fromJson(data);
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata: $e")),
+      );
+    }
   }
 
   void _showBottomSheet(BuildContext context) {
@@ -158,9 +186,9 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
     );
   }
 
-
   @override
   void initState() {
+    _fetchAvailableCloksByDate();
     _loadData();
     super.initState();
   }

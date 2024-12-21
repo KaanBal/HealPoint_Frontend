@@ -73,5 +73,47 @@ class AppointmentsService {
     }
   }
 
+  Future<Response> fetchAppointmentsByPatient() async {
+    try {
+      final token = await tokenService.getToken();
 
+      if (token == null) {
+        throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
+      }
+
+      final response = await apiClient.dio.get(
+        "appointments/list-patient",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Response> fetchAppointmentsByDoctor() async {
+    try {
+      final token = await tokenService.getToken();
+
+      if (token == null) {
+        throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
+      }
+
+      final response = await apiClient.dio.get(
+        "appointments/list-doctor",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
