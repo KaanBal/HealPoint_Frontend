@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Doctor/Doktor_kayit/doktorKayitOl_fonks.dart';
+import 'package:yazilim_projesi/models/Doctors.dart';
 import '../../renkler/renkler.dart';
 
 class DoktorKayitOl extends StatefulWidget {
@@ -25,19 +27,37 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
 
   String? _selectedCinsiyet;
 
-  @override
-  void initState() {
-    super.initState();
-    telefonController.addListener(() {
-      setState(() {});
-    });
-  }
+  final DoktorkayitolFonks _kayitolFonks = DoktorkayitolFonks();
 
-  void kayitOl() {
+  Future<void> kayitOl() async {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Kayıt Başarılı!")),
-      );
+      try {
+        Doctors doctor = Doctors(
+          tc: tcController.text,
+          phoneNumber: telefonController.text,
+          name: isimController.text,
+          surname: soyisimController.text,
+          branch: branchController.text,
+          city: cityController.text,
+          district: districtController.text,
+          email: emailController.text,
+          address: adresController.text,
+          gender: _selectedCinsiyet,
+          password: sifreController.text,
+        );
+
+        final doctorJson = doctor.toJson();
+
+        await _kayitolFonks.kayitOl(doctorJson);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Kayıt Başarılı!")),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Kayıt sırasında hata oluştu: $e")),
+        );
+      }
     }
   }
 
@@ -68,7 +88,7 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
       lastDate: DateTime.now(),
     );
 
-    if (selectedDate != null && selectedDate != DateTime.now()) {
+    if (selectedDate != null) {
       setState(() {
         dogumTarihiController.text =
             "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
@@ -109,7 +129,6 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                   return null;
                 },
               ),
-
               const SizedBox(height: 10),
               TextFormField(
                 controller: telefonController,

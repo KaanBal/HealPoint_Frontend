@@ -6,6 +6,7 @@ class AuthService {
   final ApiClient apiClient = ApiClient();
   final TokenService tokenService = TokenService();
 
+  // Hasta Kayıt Ol
   Future<Response> patientSignUp(Map<String, dynamic> patientData) async {
     try {
       final response = await apiClient.dio.post(
@@ -18,10 +19,47 @@ class AuthService {
     }
   }
 
+  // Hasta Giriş Yap
   Future<Response> patientSignIn(String username, String password) async {
     try {
       final response = await apiClient.dio.post(
         "login",
+        data: {
+          "username": username,
+          "password": password,
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final token = response.data["token"];
+        if (token != null) {
+          tokenService.writeToken(token);
+        }
+      }
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Doktor Kayıt Ol
+  Future<Response> doctorSignUp(Map<String, dynamic> doctorData) async {
+    try {
+      final response = await apiClient.dio.post(
+        "doctors/create",
+        data: doctorData,
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Doktor Giriş Yap
+  Future<Response> doctorSignIn(String username, String password) async {
+    try {
+      final response = await apiClient.dio.post(
+        "login-doctor",
         data: {
           "username": username,
           "password": password,

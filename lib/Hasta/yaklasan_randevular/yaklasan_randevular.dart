@@ -1,49 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // Tarih formatlamak için
+import 'package:yazilim_projesi/models/Appointments.dart';
 
 class YaklasanRandevular extends StatelessWidget {
-  final List<Map<String, String>> yaklasanRandevular = [
-    {
-      "saat": "09:30",
-      "tarih": "12.12.2024",
-      "doktorIsmi": "Dr. Ahmet Yılmaz",
-      "hastane": "Acıbadem Hastanesi",
-      "brans": "Kardiyoloji",
-      "durum": "Yaklaşan Randevu",
-    },
-    {
-      "saat": "09:00",
-      "tarih": "12.12.2024",
-      "doktorIsmi": "Prof. Dr. Zeynep İrem Adıgüzel",
-      "hastane": "Memorial Hastanesi",
-      "brans": "Dahiliye",
-      "durum": "Yaklaşan Randevu",
-    },
-    {
-      "saat": "16:00",
-      "tarih": "20.12.2024",
-      "doktorIsmi": "Dr. Mehmet Demir",
-      "hastane": "Florence Nightingale Hastanesi",
-      "brans": "Nöroloji",
-      "durum": "Yaklaşan Randevu",
-    },
-  ];
+  final List<Appointments> appointments;
 
-  YaklasanRandevular({super.key});
-
-  Map<String, String> getEnYakinRandevu() {
-    yaklasanRandevular.sort((a, b) {
-      DateTime tarihSaatA = DateTime.parse(
-          "${a["tarih"]!.split('.').reversed.join('-')} ${a["saat"]!}");
-      DateTime tarihSaatB = DateTime.parse(
-          "${b["tarih"]!.split('.').reversed.join('-')} ${b["saat"]!}");
-      return tarihSaatA.compareTo(tarihSaatB);
-    });
-    return yaklasanRandevular.first;
-  }
+  YaklasanRandevular({super.key, required this.appointments});
 
   @override
   Widget build(BuildContext context) {
-    final enYakinRandevu = getEnYakinRandevu();
+    final enYakinRandevu = appointments.isNotEmpty ? appointments[0] : null;
 
     return Scaffold(
       appBar: AppBar(
@@ -54,116 +20,116 @@ class YaklasanRandevular extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Card(
-              color: Colors.blue.withOpacity(0.2),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "En Yakın Randevu",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+            if (enYakinRandevu != null)
+              Card(
+                color: Colors.blue.withOpacity(0.2),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "En Yakın Randevu",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      "${enYakinRandevu["tarih"]} - ${enYakinRandevu["saat"]}",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                      const SizedBox(height: 8),
+                      Text(
+                        "${DateFormat('dd.MM.yyyy').format(enYakinRandevu.appointmentDate!)} - ${enYakinRandevu.appointmentTime!.hour.toString().padLeft(2, '0')}:${enYakinRandevu.appointmentTime!.minute.toString().padLeft(2, '0')}",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      "Doktor: ${enYakinRandevu["doktorIsmi"]}",
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    Text(
-                      "Hastane: ${enYakinRandevu["hastane"]}",
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ],
+                      Text(
+                        "Doktor: ${enYakinRandevu.doctor?.doctorName} ${enYakinRandevu.doctor?.doctorSurname}",
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      Text(
+                        "Branş: ${enYakinRandevu.doctor?.branch}",
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            else
+              const Center(
+                child: Text(
+                  "Yaklaşan bir randevunuz yok.",
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: yaklasanRandevular.length,
-                itemBuilder: (context, index) {
-                  final randevu = yaklasanRandevular[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "${randevu["tarih"]} - ${randevu["saat"]}",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 5,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.blue.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text(
-                                  randevu["durum"]!,
+            if (appointments.length > 1)
+              Expanded(
+                child: ListView.builder(
+                  itemCount: appointments.length - 1,
+                  itemBuilder: (context, index) {
+                    final appointment = appointments[index + 1];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "${DateFormat('dd.MM.yyyy').format(appointment.appointmentDate!)} - ${appointment.appointmentTime!.hour.toString().padLeft(2, '0')}:${appointment.appointmentTime!.minute.toString().padLeft(2, '0')}",
                                   style: const TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.blue,
                                   ),
                                 ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 5,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Text(
+                                    "Yaklaşan Randevu",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              "Doktor İsmi: ${appointment.doctor?.doctorName} ${appointment.doctor?.doctorSurname}",
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            "Doktor İsmi: ${randevu['doktorIsmi']}",
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
                             ),
-                          ),
-                          Text(
-                            "Branş: ${randevu['brans']}",
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.grey,
+                            Text(
+                              "Branş: ${appointment.doctor?.branch}",
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.grey,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            randevu["hastane"]!,
-                            style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
           ],
         ),
       ),

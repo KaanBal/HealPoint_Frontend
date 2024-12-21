@@ -39,4 +39,19 @@ class Patients {
           : null,
     );
   }
+
+    Map<String, dynamic> toJson() {
+    return {
+      'Tc': Tc,
+      'name': name,
+      'surname': surname,
+      'gender': gender,
+      'phoneNumber': phoneNumber,
+      'email': email,
+      'password': password,
+      'birthDate': birthDate?.toIso8601String(),
+      'appointments': appointments?.map((app) => app.toJson()).toList(),
+    };
+  }
+
 }
