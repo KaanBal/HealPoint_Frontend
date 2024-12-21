@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:yazilim_projesi/Doctor/DoktorProfil/doktor_abonelik.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
@@ -56,6 +58,140 @@ class _DoctorProfilState extends State<DoctorProfil> {
   String sifre = "1234";
   String about =
       "Dr. Anderson is a highly respected and experienced psychiatrist known for his compassionate care and comprehensive approach to mental health. With over 15 years of experience in the field, Dr. Anderson...";
+
+  String? _selectedCity;
+  String? _selectedDistrict;
+  Map<String, List<String>> cityDistrictMap = {};
+  List<String> _districts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCityDistrictData();
+  }
+
+  Future<void> _loadCityDistrictData() async {
+    try {
+      final String jsonString =
+          await rootBundle.loadString('assets/sehir_ilce.json');
+      final Map<String, dynamic> jsonData = json.decode(jsonString);
+
+      setState(() {
+        cityDistrictMap = jsonData.map(
+            (key, value) => MapEntry(key, List<String>.from(value as List)));
+      });
+    } catch (e) {
+      debugPrint("Error loading JSON data: $e");
+    }
+  }
+
+  // Şehir düzenleme dialogu
+  void showCityEditDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Şehir Seçin"),
+        content: DropdownButtonFormField<String>(
+          value: _selectedCity,
+          decoration: const InputDecoration(
+            labelText: "Şehir",
+            border: OutlineInputBorder(),
+          ),
+          items: cityDistrictMap.keys.map((city) {
+            return DropdownMenuItem(
+              value: city,
+              child: Text(city),
+            );
+          }).toList(),
+          onChanged: (value) {
+            setState(() {
+              _selectedCity = value;
+              _districts = cityDistrictMap[value] ?? [];
+              _selectedDistrict = null;
+            });
+          },
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "Lütfen bir şehir seçin.";
+            }
+            return null;
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("İptal", style: TextStyle(color: Colors.black)),
+          ),
+          TextButton(
+            onPressed: () {
+              if (_selectedCity != null) {
+                setState(() {
+                  city = _selectedCity!;
+                });
+                Navigator.of(context).pop();
+              }
+            },
+            child: const Text("Kaydet", style: TextStyle(color: Colors.black)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // İlçe düzenleme dialogu
+  void showDistrictEditDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("İlçe Seçin"),
+        content: DropdownButtonFormField<String>(
+          value: _selectedDistrict,
+          decoration: const InputDecoration(
+            labelText: "İlçe",
+            border: OutlineInputBorder(),
+          ),
+          items: _districts.map((district) {
+            return DropdownMenuItem(
+              value: district,
+              child: Text(district),
+            );
+          }).toList(),
+          onChanged: (value) {
+            setState(() {
+              _selectedDistrict = value;
+            });
+          },
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "Lütfen bir ilçe seçin.";
+            }
+            return null;
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("İptal", style: TextStyle(color: Colors.black)),
+          ),
+          TextButton(
+            onPressed: () {
+              if (_selectedDistrict != null) {
+                setState(() {
+                  district = _selectedDistrict!;
+                });
+                Navigator.of(context).pop();
+              }
+            },
+            child: const Text("Kaydet", style: TextStyle(color: Colors.black)),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,9 +274,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
         style: TextStyle(
           fontFamily: "ABeeZee",
           fontWeight: FontWeight.normal,
-          fontSize: MediaQuery.of(context).size.width *
-              0.04 *
-              fontScaleFactor,
+          fontSize: MediaQuery.of(context).size.width * 0.04 * fontScaleFactor,
         ),
       ),
     );
@@ -154,9 +288,8 @@ class _DoctorProfilState extends State<DoctorProfil> {
           "Dr. William Anderson",
           style: TextStyle(
             fontFamily: "ABeeZee",
-            fontSize: MediaQuery.of(context).size.width *
-                0.045 *
-                fontScaleFactor,
+            fontSize:
+                MediaQuery.of(context).size.width * 0.045 * fontScaleFactor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -170,10 +303,8 @@ class _DoctorProfilState extends State<DoctorProfil> {
         shape: BoxShape.circle,
         color: Colors.white,
       ),
-      width: MediaQuery.of(context).size.width *
-          0.3,
-      height: MediaQuery.of(context).size.width *
-          0.3,
+      width: MediaQuery.of(context).size.width * 0.3,
+      height: MediaQuery.of(context).size.width * 0.3,
       alignment: Alignment.center,
       child: const CircleAvatar(
         radius: 50,
@@ -187,8 +318,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
 
   Widget contactDetail(double screenWidth, double fontScaleFactor) {
     return Card(
-      margin: EdgeInsets.all(
-          screenWidth * 0.05),
+      margin: EdgeInsets.all(screenWidth * 0.05),
       color: Colors.white,
       child: Container(
         padding: const EdgeInsets.all(8.0),
@@ -198,33 +328,35 @@ class _DoctorProfilState extends State<DoctorProfil> {
               setState(() {
                 city = newValue;
               });
-            }, fontScaleFactor),
+              showCityEditDialog(context);
+            }, fontScaleFactor, isDropdown: true),
             buildEditableTile("İlçe", district, Icons.my_location, (newValue) {
               setState(() {
                 district = newValue;
               });
-            }, fontScaleFactor),
+              showDistrictEditDialog(context);
+            }, fontScaleFactor, isDropdown: true),
             buildEditableTile("Adres", address, Icons.location_pin, (newValue) {
               setState(() {
                 address = newValue;
               });
-            }, fontScaleFactor),
+            }, fontScaleFactor, isDropdown: false),
             buildEditableTile("Telefon No", phone, Icons.phone_android,
                 (newValue) {
               setState(() {
                 phone = newValue;
               });
-            }, fontScaleFactor),
+            }, fontScaleFactor, isDropdown: false),
             buildEditableTile("Email", email, Icons.mail, (newValue) {
               setState(() {
                 email = newValue;
               });
-            }, fontScaleFactor),
+            }, fontScaleFactor, isDropdown: false),
             buildEditableTile("Şifre", sifre, Icons.security, (newValue) {
               setState(() {
                 sifre = newValue;
               });
-            }, fontScaleFactor),
+            }, fontScaleFactor, isDropdown: false),
           ],
         ),
       ),
@@ -232,7 +364,8 @@ class _DoctorProfilState extends State<DoctorProfil> {
   }
 
   Widget buildEditableTile(String title, String value, IconData icon,
-      ValueChanged<String> onEdit, double fontScaleFactor) {
+      ValueChanged<String> onEdit, double fontScaleFactor,
+      {required bool isDropdown}) {
     return ListTile(
       iconColor: Colors.black,
       textColor: Colors.black,
@@ -242,31 +375,36 @@ class _DoctorProfilState extends State<DoctorProfil> {
         style: TextStyle(
             fontWeight: FontWeight.bold,
             fontFamily: "ABeeZee",
-            fontSize: MediaQuery.of(context).size.width *
-                0.04 *
-                fontScaleFactor),
+            fontSize:
+                MediaQuery.of(context).size.width * 0.04 * fontScaleFactor),
       ),
       subtitle: Text(
         value,
         style: TextStyle(
             color: Colors.black,
             fontFamily: "ABeeZee",
-            fontSize: MediaQuery.of(context).size.width *
-                0.035 *
-                fontScaleFactor),
+            fontSize:
+                MediaQuery.of(context).size.width * 0.035 * fontScaleFactor),
       ),
       dense: true,
-      trailing: IconButton(
-        icon: const Icon(Icons.edit),
-        onPressed: () => showEditDialog(context, title, value, onEdit),
-      ),
+      trailing: isDropdown
+          ? IconButton(
+              icon: const Icon(Icons.arrow_drop_down, color: Colors.blue),
+              onPressed: () => onEdit(value),
+            )
+          : IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                showEditDialog(context, title, value, onEdit);
+              },
+            ),
     );
   }
 
   Card contactStatus(double screenWidth, double fontScaleFactor) {
     return Card(
-      margin: EdgeInsets.fromLTRB(screenWidth * 0.05, 0, screenWidth * 0.05,
-          screenWidth * 0.05),
+      margin: EdgeInsets.fromLTRB(
+          screenWidth * 0.05, 0, screenWidth * 0.05, screenWidth * 0.05),
       color: Colors.white,
       child: ListTile(
         iconColor: Colors.black,
@@ -276,18 +414,16 @@ class _DoctorProfilState extends State<DoctorProfil> {
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontFamily: "ABeeZee",
-              fontSize: MediaQuery.of(context).size.width *
-                  0.04 *
-                  fontScaleFactor),
+              fontSize:
+                  MediaQuery.of(context).size.width * 0.04 * fontScaleFactor),
         ),
         subtitle: Text(
           "Aktif",
           style: TextStyle(
               color: Colors.black,
               fontFamily: "ABeeZee",
-              fontSize: MediaQuery.of(context).size.width *
-                  0.035 *
-                  fontScaleFactor),
+              fontSize:
+                  MediaQuery.of(context).size.width * 0.035 * fontScaleFactor),
         ),
         trailing: TextButton(
           onPressed: () {
@@ -302,9 +438,8 @@ class _DoctorProfilState extends State<DoctorProfil> {
               color: Colors.red,
               fontWeight: FontWeight.bold,
               fontFamily: "ABeeZee",
-              fontSize: MediaQuery.of(context).size.width *
-                  0.035 *
-                  fontScaleFactor,
+              fontSize:
+                  MediaQuery.of(context).size.width * 0.035 * fontScaleFactor,
             ),
           ),
         ),

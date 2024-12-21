@@ -31,26 +31,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+
     List<Doctors> exampleDoctors = [
       Doctors(
-        Doctor_name: "Dr. Ahmet Yılmaz",
+        name: "Dr. Ahmet Yılmaz",
         branch: "Kardiyoloji",
-        reviews: [], Doctor_tc: '12345678913', Doctor_surname: 'adigu',
+        reviews: [], surname: 'adigu',
       ),
       Doctors(
-        Doctor_name: "Dr. Elif Kaya",
+        name: "Dr. Elif Kaya",
         branch: "Dermatoloji",
-        reviews: [], Doctor_tc: '12345678911', Doctor_surname: 'kagabu',
+        reviews: [], surname: 'kagabu',
       ),
       Doctors(
-        Doctor_name: "Dr. Mehmet Kaya",
+        name: "Dr. Mehmet Kaya",
         branch: "Dermatoloji",
-        reviews: [], Doctor_tc: '12345678911', Doctor_surname: 'kagabu',
+        reviews: [], surname: 'kagabu',
       ),
       Doctors(
-        Doctor_name: "Dr. Şahmet Kaya",
+        name: "Dr. Şahmet Kaya",
         branch: "Dermatoloji",
-        reviews: [], Doctor_tc: '12345678911', Doctor_surname: 'kagabu',
+        reviews: [], surname: 'kagabu',
       ),
     ];
 
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: FilteredDoctorsScreen(filteredDoctors: exampleDoctors),
+      home: DoctorProfil(),
     );
   }
 }
