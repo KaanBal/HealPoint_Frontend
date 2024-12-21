@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi.dart';
 import 'package:yazilim_projesi/Hasta/HastaProfil/hasta_profil.dart';
 import 'package:yazilim_projesi/Hasta/gecmisRandevu/gecmis_randevu.dart';
 import 'package:yazilim_projesi/Hasta/yaklasan_randevular/yaklasan_randevular.dart';
@@ -25,20 +26,20 @@ class _AnaEkranState extends State<AnaEkran> {
 
   List<Doctors> doctors = [];
 
-Future<void> _loadData() async {
-  try {
-    final response = await doctorService.fetchAllDoctors();
-    final List<dynamic> data = response.data;
+  Future<void> _loadData() async {
+    try {
+      final response = await doctorService.fetchAllDoctors();
+      final List<dynamic> data = response.data;
 
-    setState(() {
-      doctors = data.map((doctorJson) => Doctors.fromJson(doctorJson)).toList();
-    });
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Hata: $e")),
-    );
+      setState(() {
+        doctors = data.map((doctorJson) => Doctors.fromJson(doctorJson)).toList();
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata: $e")),
+      );
+    }
   }
-}
 
   @override
   void initState() {
@@ -281,12 +282,22 @@ Future<void> _loadData() async {
                     SizedBox(height: screenHeight * 0.015),
                 itemBuilder: (context, index) {
                   final doctor = doctors[index];
-                  return DoctorCard(
-                    name: doctor.name ?? "",
-                    specialization: doctor.branch ?? "",
-                    rating: "",
-                    reviews: doctor.reviews?.length.toString() ?? "0",
-                    favourite: true,
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DoctorBilgiEkran(),
+                        ),
+                      );
+                    },
+                    child: DoctorCard(
+                      name: doctor.name ?? "",
+                      specialization: doctor.branch ?? "",
+                      rating: "",
+                      reviews: doctor.reviews?.length.toString() ?? "0",
+                      favourite: true,
+                    ),
                   );
                 },
               ),
