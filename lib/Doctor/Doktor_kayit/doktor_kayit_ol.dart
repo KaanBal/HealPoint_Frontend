@@ -53,12 +53,13 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
 
   Future<void> _loadCityDistrictData() async {
     try {
-      final String jsonString = await rootBundle.loadString('assets/sehir_ilce.json');
+      final String jsonString =
+          await rootBundle.loadString('assets/sehir_ilce.json');
       final Map<String, dynamic> jsonData = json.decode(jsonString);
 
       setState(() {
-        cityDistrictMap = jsonData.map((key, value) =>
-            MapEntry(key, List<String>.from(value as List)));
+        cityDistrictMap = jsonData.map(
+            (key, value) => MapEntry(key, List<String>.from(value as List)));
       });
     } catch (e) {
       debugPrint("Error loading JSON data: $e");
@@ -128,7 +129,7 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
     if (selectedDate != null) {
       setState(() {
         dogumTarihiController.text =
-        "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
+            "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
       });
     }
   }
@@ -148,34 +149,34 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
           key: _formKey,
           child: ListView(
             children: [
-            DropdownButtonFormField<String>(
-            value: _selectedCity,
-            decoration: const InputDecoration(
-              labelText: "Şehir",
-              border: OutlineInputBorder(),
-            ),
-            items: cityDistrictMap.keys.map((city) {
-              return DropdownMenuItem(
-                value: city,
-                child: Text(city),
-              );
-            }).toList(),
-            onChanged: (value) {
-              setState(() {
-                _selectedCity = value;
-                _districts = cityDistrictMap[value] ?? [];
-                _selectedDistrict = null;
-              });
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Lütfen bir şehir seçin.";
-              }
-              return null;
-            },
-          ),
+              DropdownButtonFormField<String>(
+                value: _selectedCity,
+                decoration: const InputDecoration(
+                  labelText: "Şehir",
+                  border: OutlineInputBorder(),
+                ),
+                items: cityDistrictMap.keys.map((city) {
+                  return DropdownMenuItem(
+                    value: city,
+                    child: Text(city),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedCity = value;
+                    _districts = cityDistrictMap[value] ?? [];
+                    _selectedDistrict = null;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Lütfen bir şehir seçin.";
+                  }
+                  return null;
+                },
+              ),
 
-            const SizedBox(height: 10),
+              const SizedBox(height: 10),
 
               // İlçe Dropdown
               DropdownButtonFormField<String>(
@@ -186,9 +187,9 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                 ),
                 items: _districts
                     .map((district) => DropdownMenuItem(
-                  value: district,
-                  child: Text(district),
-                ))
+                          value: district,
+                          child: Text(district),
+                        ))
                     .toList(),
                 onChanged: (value) {
                   setState(() {
@@ -355,10 +356,12 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                   labelText: "Cinsiyet",
                   border: OutlineInputBorder(),
                 ),
-                items: ["Erkek", "Kadın"].map((cinsiyet) => DropdownMenuItem(
-                  value: cinsiyet,
-                  child: Text(cinsiyet),
-                )).toList(),
+                items: ["Erkek", "Kadın"]
+                    .map((cinsiyet) => DropdownMenuItem(
+                          value: cinsiyet,
+                          child: Text(cinsiyet),
+                        ))
+                    .toList(),
                 onChanged: (value) {
                   setState(() {
                     _selectedCinsiyet = value;
@@ -381,10 +384,12 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                   labelText: "Branş",
                   border: OutlineInputBorder(),
                 ),
-                items: branches.map((branch) => DropdownMenuItem(
-                  value: branch,
-                  child: Text(branch),
-                )).toList(),
+                items: branches
+                    .map((branch) => DropdownMenuItem(
+                          value: branch,
+                          child: Text(branch),
+                        ))
+                    .toList(),
                 onChanged: (value) {
                   setState(() {
                     _selectedBranch = value;
