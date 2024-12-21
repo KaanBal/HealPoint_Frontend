@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi.dart';
 import 'package:yazilim_projesi/Hasta/HastaProfil/hasta_profil.dart';
 import 'package:yazilim_projesi/Hasta/gecmisRandevu/gecmis_randevu.dart';
 import 'package:yazilim_projesi/Hasta/yaklasan_randevular/yaklasan_randevular.dart';
@@ -184,7 +185,7 @@ Future<void> _loadData() async {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => YaklasanRandevular()));
+                            builder: (context) => YaklasanRandevular(appointments: [])));
                   },
                   child: Text(
                     " Görüntüle",
@@ -281,12 +282,23 @@ Future<void> _loadData() async {
                     SizedBox(height: screenHeight * 0.015),
                 itemBuilder: (context, index) {
                   final doctor = doctors[index];
-                  return DoctorCard(
-                    name: doctor.name ?? "",
-                    specialization: doctor.branch ?? "",
-                    rating: "",
-                    reviews: doctor.reviews?.length.toString() ?? "0",
-                    favourite: true,
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DoctorBilgiEkran(doctorId: "", date: DateTime(1)),
+                        ),
+                      );
+                    },
+
+                    child: DoctorCard(
+                      name: doctor.name ?? "",
+                      specialization: doctor.branch ?? "",
+                      rating: "",
+                      reviews: doctor.reviews?.length.toString() ?? "0",
+                      favourite: true,
+                    ),
                   );
                 },
               ),
