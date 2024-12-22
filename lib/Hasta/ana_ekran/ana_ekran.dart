@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi.dart';
 import 'package:yazilim_projesi/Hasta/HastaProfil/hasta_profil.dart';
 import 'package:yazilim_projesi/Hasta/gecmisRandevu/gecmis_randevu.dart';
 import 'package:yazilim_projesi/Hasta/yaklasan_randevular/yaklasan_randevular.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
+import 'package:yazilim_projesi/models/Appointments.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
+import 'package:yazilim_projesi/services/appointments_service.dart';
 import 'package:yazilim_projesi/services/doctor_service.dart';
+import 'package:yazilim_projesi/services/patient_service.dart';
 import 'anaekranfonk.dart';
 
 class AnaEkran extends StatefulWidget {
@@ -16,34 +20,67 @@ class AnaEkran extends StatefulWidget {
   State<AnaEkran> createState() => _AnaEkranState();
 }
 
-Future<void> ara(String aramaKelimesi) async {
-  print("Aramaya Basıldı ");
-}
-
 class _AnaEkranState extends State<AnaEkran> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final DoctorService doctorService = DoctorService();
+  final AppointmentsService appointmentsService = AppointmentsService();
+  final PatientService patientService = PatientService();
 
   List<Doctors> doctors = [];
-
-Future<void> _loadData() async {
-  try {
-    final response = await doctorService.fetchAllDoctors();
-    final List<dynamic> data = response.data;
-
-    setState(() {
-      doctors = data.map((doctorJson) => Doctors.fromJson(doctorJson)).toList();
-    });
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Hata: $e")),
-    );
+  List<Appointments> upcomingAppointments = [];
+  String? patientName;
+  
+  Future<void> _loadPatientName() async {
+    try {
+      final response = await patientService.getPatientName();
+      setState(() {
+        patientName = response.data;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Kullanıcı bilgileri alınamadı: $e")),
+      );
+    }
   }
-}
+
+  Future<void> _loadData() async {
+    try {
+      final response = await doctorService.fetchAllDoctors();
+      final List<dynamic> data = response.data;
+
+      setState(() {
+        doctors =
+            data.map((doctorJson) => Doctors.fromJson(doctorJson)).toList();
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata: $e")),
+      );
+    }
+  }
+
+  Future<void> _loadUpcomingAppointments() async {
+    try {
+      final response = await appointmentsService.fetchUpcomingAppointments();
+      final List<dynamic> data = response.data;
+
+      setState(() {
+        upcomingAppointments = data
+            .map((appointmentJson) => Appointments.fromJson(appointmentJson))
+            .toList();
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata: $e")),
+      );
+    }
+  }
 
   @override
   void initState() {
     _loadData();
+    _loadPatientName();
+    _loadUpcomingAppointments();
     super.initState();
   }
 
@@ -120,7 +157,7 @@ Future<void> _loadData() async {
             Row(
               children: [
                 Text(
-                  'Selam Kaan ',
+                  'Selam $patientName ',
                   style: TextStyle(
                     fontSize: fontSize,
                     fontFamily: "ABeeZee",
@@ -185,7 +222,7 @@ Future<void> _loadData() async {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => YaklasanRandevular(appointments: [])));
+                            builder: (context) => YaklasanRandevular(appointments: upcomingAppointments)));
                   },
                   child: Text(
                     " Görüntüle",
@@ -200,11 +237,8 @@ Future<void> _loadData() async {
               ],
             ),
             SizedBox(height: screenHeight * 0.03),
-            InkWell(
-              onTap: () {
-                print('Schedule tıklandı');
-              },
-              child: Container(
+            if (upcomingAppointments.isNotEmpty)
+              Container(
                 padding: EdgeInsets.all(screenWidth * 0.04),
                 decoration: BoxDecoration(
                   color: beyaz,
@@ -230,17 +264,25 @@ Future<void> _loadData() async {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Prof. Dr. Mehmet Eriş',
-                          style: TextStyle(
-                              fontSize: 17,
-                              fontFamily: "PtSans",
-                              fontWeight: FontWeight.bold),
+                        Text(
+                          upcomingAppointments[0].doctor?.doctorName ??
+                              "Doktor Bilgisi Yok",
+                          style: const TextStyle(
+                            fontSize: 17,
+                            fontFamily: "PtSans",
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Text(
-                          'Üroloji',
+                          upcomingAppointments[0].appointmentDate != null
+                              ? DateFormat('dd MMMM yyyy').format(
+                                  upcomingAppointments[0].appointmentDate!)
+                              : "Tarih Bilgisi Yok",
                           style: TextStyle(
-                              fontSize: 15, fontFamily: "PtSans", color: gri),
+                            fontSize: 15,
+                            fontFamily: "PtSans",
+                            color: gri,
+                          ),
                         ),
                         SizedBox(height: screenHeight * 0.02),
                         Row(
@@ -252,11 +294,14 @@ Future<void> _loadData() async {
                             ),
                             SizedBox(width: screenWidth * 0.03),
                             Text(
-                              'June 12, 9:30 AM',
+                              upcomingAppointments[0].appointmentTime != null
+                                  ? '${upcomingAppointments[0].appointmentTime!.hour.toString().padLeft(2, '0')}:${upcomingAppointments[0].appointmentTime!.minute.toString().padLeft(2, '0')}'
+                                  : "Saat Bilgisi Yok",
                               style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: "PtSans",
-                                  color: gri),
+                                fontSize: 18,
+                                fontFamily: "PtSans",
+                                color: gri,
+                              ),
                             ),
                           ],
                         ),
@@ -264,8 +309,18 @@ Future<void> _loadData() async {
                     ),
                   ],
                 ),
+              )
+            else
+              Center(
+                child: Text(
+                  "Henüz bir yaklaşan randevunuz yok.",
+                  style: TextStyle(
+                    fontSize: fontSize * 0.8,
+                    fontFamily: "PtSans",
+                    color: gri,
+                  ),
+                ),
               ),
-            ),
             SizedBox(height: screenHeight * 0.03),
             Text(
               'Favori Doktorlarım',
@@ -282,16 +337,15 @@ Future<void> _loadData() async {
                     SizedBox(height: screenHeight * 0.015),
                 itemBuilder: (context, index) {
                   final doctor = doctors[index];
-                  return GestureDetector(
+                  return InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DoctorBilgiEkran(doctorId: "", date: DateTime(1)),
+                          builder: (context) => DoctorBilgiEkran(doctorId: doctor.tc ?? ""),
                         ),
                       );
                     },
-
                     child: DoctorCard(
                       name: doctor.name ?? "",
                       specialization: doctor.branch ?? "",
@@ -309,3 +363,4 @@ Future<void> _loadData() async {
     );
   }
 }
+

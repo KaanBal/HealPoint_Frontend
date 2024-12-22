@@ -50,7 +50,7 @@ class Doctors {
       city: json['city'],
       district: json['district'],
       address: json['address'],
-      avgPoint: (json['avgPoint'] as num?)?.toDouble(), // Convert num to double
+      avgPoint: (json['avgPoint'] as num?)?.toDouble(), 
       isAccountActive: json['isAccountActive'] as bool?,
       reviews: (json['reviews'] as List<dynamic>?)
           ?.map((review) => Reviews.fromJson(review))

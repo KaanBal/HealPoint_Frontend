@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/services/api_client.dart';
 import 'package:yazilim_projesi/services/token_service.dart';
 
@@ -38,10 +39,12 @@ class DoctorService {
         throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
       }
 
+      final formattedDate = DateFormat('yyyy-MM-dd').format(date);
+
       final response = await apiClient.dio.get(
         "doctor/availability/times/$id",
         queryParameters: {
-          "date": date,
+          "date": formattedDate,
         },
         options: Options(
           headers: {
@@ -125,6 +128,7 @@ class DoctorService {
 
       return response;
     } catch (e) {
+      print(e);
       rethrow;
     }
   }

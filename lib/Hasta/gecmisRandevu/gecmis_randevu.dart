@@ -1,35 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Hasta/gecmisRandevu/gecmisRandevu_fonks.dart';
+import 'package:yazilim_projesi/models/Appointments.dart';
 
-class GecmisRandevular extends StatelessWidget {
+class GecmisRandevular extends StatefulWidget {
+  const GecmisRandevular({super.key});
 
-  final List<Map<String, String>> gecmisRandevular = [
-    {
-      "saat": "09:30",
-      "tarih": "10.12.2024",
-      "doktorIsmi": "Dr. Ahmet Yılmaz",
-      "hastane": "Acıbadem Hastanesi",
-      "brans": "Kardiyoloji",
-      "durum": "Muayene Olundu",
-    },
-    {
-      "saat": "14:00",
-      "tarih": "08.12.2024",
-      "doktorIsmi": "Dr. Zeynep Kaya",
-      "hastane": "Memorial Hastanesi",
-      "brans": "Dahiliye",
-      "durum": "İptal Edildi",
-    },
-    {
-      "saat": "16:00",
-      "tarih": "05.12.2024",
-      "doktorIsmi": "Dr. Mehmet Demir",
-      "hastane": "Florence Nightingale Hastanesi",
-      "brans": "Nöroloji",
-      "durum": "Muayene Olundu",
-    },
-  ];
+  @override
+  State<GecmisRandevular> createState() => _GecmisRandevularState();
+}
 
-  GecmisRandevular({super.key});
+class _GecmisRandevularState extends State<GecmisRandevular> {
+  final GecmisRandevuFonks fonks = GecmisRandevuFonks();
+  List<Appointments> pastAppointments = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    try {
+      final appointments = await fonks.fetchPastAppointments();
+      setState(() {
+        pastAppointments = appointments;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata oluştu: $e")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,88 +44,90 @@ class GecmisRandevular extends StatelessWidget {
         title: const Text("Geçmiş Randevular"),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView.builder(
-          itemCount: gecmisRandevular.length,
-          itemBuilder: (context, index) {
-            final randevu = gecmisRandevular[index];
-            return Card(
-              margin: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "${randevu["tarih"]} - ${randevu["saat"]}",
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ListView.builder(
+                itemCount: pastAppointments.length,
+                itemBuilder: (context, index) {
+                  final pastAppointment = pastAppointments[index];
+                  final statusText =
+                      fonks.statusToText(pastAppointment.appointmentStatus);
+                  final statusColor =
+                      fonks.statusColor(pastAppointment.appointmentStatus);
+
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "${pastAppointment.appointmentDate?.toLocal().toString().split(' ')[0]} - ${pastAppointment.appointmentTime?.format(context) ?? 'Saat Bilgisi Yok'}",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 5,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: statusColor.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  statusText,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: statusColor,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5,
-                          ),
-                          decoration: BoxDecoration(
-                            color: randevu["durum"] == "İptal Edildi"
-                                ? Colors.red.withOpacity(0.2)
-                                : Colors.green.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            randevu["durum"]!,
-                            style: TextStyle(
-                              fontSize: 14,
+                          const SizedBox(height: 8),
+                          Text(
+                            "Doktor İsmi: ${pastAppointment.doctor?.doctorName ?? 'Bilinmiyor'}",
+                            style: const TextStyle(
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: randevu["durum"] == "İptal Edildi"
-                                  ? Colors.red
-                                  : Colors.green,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      "Doktor İsmi: ${randevu['doktorIsmi']}",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                          Text(
+                            "Branş: ${pastAppointment.doctor?.branch ?? 'Bilinmiyor'}",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            pastAppointment.doctor?.city ??
+                                "Hastane Bilgisi Yok",
+                            style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Text(
-                      "Branş: ${randevu['brans']}",
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      randevu["hastane"]!,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
-            );
-          },
-        ),
-      ),
+            ),
     );
   }
 }
-
-

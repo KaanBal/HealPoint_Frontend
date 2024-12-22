@@ -2,16 +2,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi_fonks.dart';
+import 'package:yazilim_projesi/models/DoctorAvailability.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 import 'package:yazilim_projesi/services/doctor_service.dart';
 
 class DoctorBilgiEkran extends StatefulWidget {
   final String doctorId;
-  final DateTime date;
 
-  const DoctorBilgiEkran(
-      {super.key, required this.doctorId, required this.date});
+  const DoctorBilgiEkran({super.key, required this.doctorId});
 
   @override
   State<DoctorBilgiEkran> createState() => _DoctorBilgiEkran();
@@ -21,7 +20,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
   final DoctorService doctorService = DoctorService();
 
   Doctors? selectedDoctor;
-  List<String>? availableTimes;
+  DoctorAvailability? doctorAvailability;
 
   void _loadDataFromMockData() async {
     const String jsonFile = 'assets/MockData/doctorInfo.json';
@@ -32,13 +31,9 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
   }
 
   void _loadData() async {
-    
-  }
-
-  void _fetchAvailableCloksByDate() async {
     try {
-      final response = await doctorService.getDoctorAvailabilities(
-          widget.doctorId, widget.date);
+      print(widget.doctorId);
+      final response = await doctorService.getDoctorById(widget.doctorId);
       final Map<String, dynamic> data = response.data;
 
       setState(() {
@@ -49,6 +44,29 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
         SnackBar(content: Text("Hata: $e")),
       );
     }
+  }
+
+  void _fetchAvailableCloksByDate() async {
+    try {
+      final response = await doctorService.getDoctorAvailabilities(
+          widget.doctorId, DateTime.now());
+      final Map<String, dynamic> data = response.data;
+
+      setState(() {
+        doctorAvailability = DoctorAvailability.fromJson(data);
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata: $e")),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    _loadData();
+    _fetchAvailableCloksByDate();
+    super.initState();
   }
 
   void _showBottomSheet(BuildContext context) {
@@ -187,13 +205,6 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
   }
 
   @override
-  void initState() {
-    _fetchAvailableCloksByDate();
-    _loadData();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var ekranBilgisi = MediaQuery.of(context);
     final double ekranGenisligi = ekranBilgisi.size.width;
@@ -258,10 +269,13 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                                   color: Colors.yellow, size: 18),
                               const SizedBox(width: 5),
                               Text(
-                                  selectedDoctor?.reviews?.first.points
-                                          .toString() ??
-                                      "0",
-                                  style: const TextStyle(fontSize: 15)),
+                                selectedDoctor?.reviews != null &&
+                                        selectedDoctor!.reviews!.isNotEmpty
+                                    ? selectedDoctor!.reviews!.first.points
+                                        .toString()
+                                    : "0",
+                                style: const TextStyle(fontSize: 15),
+                              ),
                             ],
                           ),
                           SizedBox(height: ekranYuksekligi * 0.01),
@@ -313,11 +327,12 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
             ),
             SizedBox(height: ekranYuksekligi * 0.02),
             Text(
-              'Pazartesi - Cuma, 08:00  - 18:00 ',
+              '${doctorAvailability?.workingHoursStart ?? "Bilinmiyor"} - ${doctorAvailability?.workingHoursEnd ?? "Bilinmiyor"}',
               style: TextStyle(
-                  fontSize: fontSize,
-                  fontFamily: "ABeeZee",
-                  color: Colors.black87),
+                fontSize: fontSize,
+                fontFamily: "ABeeZee",
+                color: Colors.black87,
+              ),
             ),
             SizedBox(height: ekranYuksekligi * 0.04),
             Text(
@@ -329,9 +344,23 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
             ),
             SizedBox(height: ekranYuksekligi * 0.02),
             SizedBox(
-              height: ekranYuksekligi * 0.25,
-              child: selectedDoctor?.reviews != null
-                  ? ListView.builder(
+              child: (selectedDoctor?.reviews == null ||
+                      selectedDoctor!.reviews!.isEmpty)
+                  ? Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 10), // Daha küçük alan
+                        child: Text(
+                          "No reviews available",
+                          style: TextStyle(
+                            fontSize: fontSize * 0.8,
+                            fontFamily: "PtSans",
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    )
+                  : ListView.builder(
                       itemCount: selectedDoctor?.reviews?.length,
                       itemBuilder: (context, index) {
                         final review = selectedDoctor!.reviews![index];
@@ -353,7 +382,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                                 ),
                                 SizedBox(height: ekranYuksekligi * 0.01),
                                 Text(
-                                  review.comment ?? "",
+                                  review.comments ?? "",
                                   style: TextStyle(
                                       fontSize: fontSize * 0.9,
                                       fontFamily: "PtSans",
@@ -372,16 +401,6 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                           ),
                         );
                       },
-                    )
-                  : Center(
-                      child: Text(
-                        "No reviews available",
-                        style: TextStyle(
-                          fontSize: fontSize * 0.9,
-                          fontFamily: "PtSans",
-                          color: Colors.grey,
-                        ),
-                      ),
                     ),
             ),
             SizedBox(height: ekranYuksekligi * 0.07),
