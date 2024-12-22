@@ -83,7 +83,6 @@ flutter:
     - resimler/doktor.png
     - resimler/click.png
     - assets/MockData/
-    - assets/sehir_ilce.json
 
   # To add assets to your application, add an assets section, like this:
   # assets:

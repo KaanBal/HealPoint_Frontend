@@ -1,55 +1,50 @@
 [
   {
-    "Appointment_id": 1,
-    "Appointment_date": "2024-12-10",
-    "appointment_time": "09:30",
-    "Appointment_status": "TAMAMLANDI",
-    "Appointment_text": "Routine check-up",
-    "patient": {
-      "patientTc": "12345678901",
-      "Patient_name": "John",
-      "Patient_surname": "Doe"
-    },
+    "appointmentDate": "2024-12-25T00:00:00.000",
+    "appointmentTime": "10:30",
+    "appointmentStatus": "AKTIF",
+    "appointmentText": "Rutin kontrol için randevu.",
     "doctor": {
-      "Doctor_tc": "98765432101",
-      "Doctor_name": "Dr. Smith",
-      "Doctor_surname": "Doe"
-
+      "doctorName": "Dr. Ahmet Yılmaz",
+      "doctorSurname": "Yılmaz",
+      "branch": "Cardiology"
+    },
+    "patient": {
+      "patientName": "Ayşe Kara",
+      "patientSurname": "Kara",
+      "patientGender": "Kadın"
     }
   },
   {
-    "Appointment_id": 2,
-    "Appointment_date": "2024-12-12",
-    "appointment_time": "14:00",
-    "Appointment_status": "AKTIF",
-    "Appointment_text": "Follow-up for blood test results",
-    "patient": {
-      "patientTc": "12345678902",
-      "Patient_name": "Jane",
-      "Patient_surname": "Roe"
-    },
+    "appointmentDate": "2024-11-20T00:00:00.000",
+    "appointmentTime": "15:00",
+    "appointmentStatus": "TAMAMLANDI",
+    "appointmentText": "Cilt sorunları için dermatoloji randevusu.",
     "doctor": {
-      "Doctor_tc": "98765432102",
-      "Doctor_name": "Dr. Emily",
-      "Doctor_surname": "Johnson"
+      "doctorName": "Dr. Ahmet Yılmaz",
+      "doctorSurname": "Yılmaz",
+      "branch": "Dermatology"
+    },
+    "patient": {
+      "patientName": "Ayşe Kara",
+      "patientSurname": "Kara",
+      "patientGender": "Kadın"
     }
   },
   {
-    "Appointment_id": 3,
-    "Appointment_date": "2024-12-15",
-    "appointment_time": "11:00",
-    "Appointment_status": "IPTAL",
-    "Appointment_text": "Cancelled by patient due to illness",
-    "patient": {
-      "patientTc": "12345678903",
-      "Patient_name": "Mark",
-      "Patient_surname": "Lee"
-    },
+    "appointmentDate": "2024-10-12T00:00:00.000",
+    "appointmentTime": "09:00",
+    "appointmentStatus": "IPTAL",
+    "appointmentText": "Randevu hastanın isteği üzerine iptal edilmiştir.",
     "doctor": {
-      "Doctor_tc": "98765432103",
-      "Doctor_name": "Dr. Michael",
-      "Doctor_surname": "Brown"
+      "doctorName": "Dr. Ahmet Yılmaz",
+      "doctorSurname": "Yılmaz",
+      "branch": "Cardiology"
+    },
+    "patient": {
+      "patientName": "Ayşe Kara",
+      "patientSurname": "Kara",
+      "patientGender": "Kadın"
     }
   }
 ]
-  
