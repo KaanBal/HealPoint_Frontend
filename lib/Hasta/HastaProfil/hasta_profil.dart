@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:yazilim_projesi/Hasta/HastaProfil/hastaProfil_fonks.dart';
+import 'package:yazilim_projesi/models/Patients.dart';
 
 class HastaProfil extends StatefulWidget {
   const HastaProfil({super.key});
@@ -9,38 +11,39 @@ class HastaProfil extends StatefulWidget {
 }
 
 class HastaProfilState extends State<HastaProfil> {
-  String phone = '053485932482';
-  String email = 'ayberkoz@gmail.com';
-  String password = '1234';
-  String birthDate = '15/07/2003';
+  final HastaProfilFonks fonks = HastaProfilFonks();
 
-  int calculateAge(String birthDate) {
-    DateTime birthDateParsed = DateFormat('dd/MM/yyyy').parse(birthDate);
-    DateTime today = DateTime.now();
-    int age = today.year - birthDateParsed.year;
-    if (today.month < birthDateParsed.month ||
-        (today.month == birthDateParsed.month &&
-            today.day < birthDateParsed.day)) {
-      age--;
+  Patients? patient;
+
+  void _loadData() async {
+    try {
+      patient = await fonks.loadData();
+      setState(() {});
+    } catch (e) {
+      print("Error loading data: $e");
     }
-    return age;
+  }
+
+  @override
+  void initState() {
+    _loadData();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final double ekranYuksekligi = MediaQuery.of(context).size.height;
     final double ekranGenisligi = MediaQuery.of(context).size.width;
-    int age = calculateAge(birthDate);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-            "Profil",
+          "Profil",
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back,color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -69,9 +72,9 @@ class HastaProfilState extends State<HastaProfil> {
                         backgroundColor: Colors.white,
                       ),
                       SizedBox(height: ekranYuksekligi * 0.015),
-                      const Text(
-                        'Erza Scarlet',
-                        style: TextStyle(
+                      Text(
+                        patient?.name ?? "",
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18.0,
                         ),
@@ -87,8 +90,10 @@ class HastaProfilState extends State<HastaProfil> {
                   child: Center(
                     child: Card(
                       color: Colors.grey[200],
-                      margin: EdgeInsets.only(top: ekranYuksekligi * 0.04,left: ekranGenisligi * 0.1
-                          ,right: ekranGenisligi * 0.1),
+                      margin: EdgeInsets.only(
+                          top: ekranYuksekligi * 0.04,
+                          left: ekranGenisligi * 0.1,
+                          right: ekranGenisligi * 0.1),
                       child: Padding(
                         padding: EdgeInsets.all(ekranGenisligi * 0.08),
                         child: Column(
@@ -105,45 +110,60 @@ class HastaProfilState extends State<HastaProfil> {
                             const Divider(color: Colors.black12),
                             buildEditableTile(
                               "Telefon No",
-                              phone,
+                              patient?.phoneNumber ??
+                                  "Telefon Numarası Bulunamadı",
                               Icons.phone,
-                                  (newValue) {
+                              (newValue) {
                                 setState(() {
-                                  phone = newValue;
+                                  patient?.phoneNumber = newValue;
                                 });
                               },
                             ),
                             SizedBox(height: ekranYuksekligi * 0.02),
                             buildEditableTile(
                               "E Mail",
-                              email,
+                              patient?.email ?? "Email bulunamadı",
                               Icons.mail,
-                                  (newValue) {
+                              (newValue) {
                                 setState(() {
-                                  email = newValue;
+                                  patient?.email = newValue;
                                 });
                               },
                             ),
                             SizedBox(height: ekranYuksekligi * 0.02),
                             buildEditableTile(
                               "Şifre",
-                              password,
+                              patient?.password ?? "",
                               Icons.lock_outline,
-                                  (newValue) {
+                              (newValue) {
                                 setState(() {
-                                  password = newValue;
+                                  patient?.password = newValue;
                                 });
                               },
                             ),
                             SizedBox(height: ekranYuksekligi * 0.02),
                             buildEditableTile(
                               "Doğum Tarihi",
-                              birthDate,
+                              patient?.birthDate != null
+                                  ? DateFormat('dd/MM/yyyy')
+                                      .format(patient!.birthDate!)
+                                  : "", 
                               Icons.calendar_month,
-                                  (newValue) {
-                                setState(() {
-                                  birthDate = newValue;
-                                });
+                              (newValue) async {
+                                DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate:
+                                      patient?.birthDate ?? DateTime.now(),
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime.now(),
+                                );
+
+                                if (pickedDate != null) {
+                                  setState(() {
+                                    patient?.birthDate =
+                                        pickedDate;
+                                  });
+                                }
                               },
                             ),
                           ],
@@ -169,32 +189,32 @@ class HastaProfilState extends State<HastaProfil> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const Column(
+                    Column(
                       children: [
-                        Text(
+                        const Text(
                           'Ad',
                           style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
-                        SizedBox(height: 5.0),
+                        const SizedBox(height: 5.0),
                         Text(
-                          "Erza",
-                          style: TextStyle(
+                          patient?.name ?? "",
+                          style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 13.0,
                           ),
                         ),
                       ],
                     ),
-                    const Column(
+                    Column(
                       children: [
-                        Text(
+                        const Text(
                           'Soyad',
                           style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
-                        SizedBox(height: 5.0),
+                        const SizedBox(height: 5.0),
                         Text(
-                          'Scarlet',
-                          style: TextStyle(
+                          patient?.surname ?? "",
+                          style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 13.0,
                           ),
@@ -209,7 +229,7 @@ class HastaProfilState extends State<HastaProfil> {
                         ),
                         const SizedBox(height: 5.0),
                         Text(
-                          '$age yrs',
+                          '${patient?.age ?? "Unknown"} yrs',
                           style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 13.0,
@@ -268,7 +288,7 @@ class HastaProfilState extends State<HastaProfil> {
   void showEditDialog(BuildContext context, String title, String initialValue,
       ValueChanged<String> onEdit) {
     final TextEditingController controller =
-    TextEditingController(text: initialValue);
+        TextEditingController(text: initialValue);
 
     showDialog(
       context: context,

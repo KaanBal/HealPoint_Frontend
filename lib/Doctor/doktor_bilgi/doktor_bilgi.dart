@@ -32,7 +32,6 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
 
   void _loadData() async {
     try {
-      print(widget.doctorId);
       final response = await doctorService.getDoctorById(widget.doctorId);
       final Map<String, dynamic> data = response.data;
 
@@ -65,7 +64,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
   @override
   void initState() {
     _loadData();
-    _fetchAvailableCloksByDate();
+    //_fetchAvailableCloksByDate();
     super.initState();
   }
 
@@ -224,7 +223,9 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
         backgroundColor: acikKirmizi,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context); 
+          },
         ),
       ),
       body: SingleChildScrollView(
