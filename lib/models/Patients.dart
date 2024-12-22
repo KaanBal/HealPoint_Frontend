@@ -1,25 +1,27 @@
 import 'package:yazilim_projesi/models/Appointments.dart';
 
 class Patients {
-  final String Tc;
-  final String name;
-  final String surname;
-  final String? gender;
-  final String? phoneNumber;
-  final String? email;
-  final String? password;
-  final DateTime? birthDate;
-  final List<Appointments>? appointments;
+  String? Tc;
+  String? name;
+  String? surname;
+  String? gender;
+  String? phoneNumber;
+  String? email;
+  String? password;
+  DateTime? birthDate;
+  int? age; // Updated to int
+  List<Appointments>? appointments;
 
   Patients({
-    required this.Tc,
-    required this.name,
-    required this.surname,
+    this.Tc,
+    this.name,
+    this.surname,
     this.gender,
     this.phoneNumber,
     this.email,
     this.password,
     this.birthDate,
+    this.age,
     this.appointments,
   });
 
@@ -32,15 +34,18 @@ class Patients {
       phoneNumber: json['phoneNumber'],
       email: json['email'],
       password: json['password'],
-      birthDate: json['birthDate'],
+      birthDate: json['birthDate'] != null
+          ? DateTime.parse(json['birthDate']) // Parse DateTime
+          : null,
+      age: json['age'] != null ? json['age'] as int : null, // Ensure int type
       appointments: json['appointments'] != null
           ? List<Appointments>.from(
-              json['appointments'].map((app) => Appointments.fromJson(app)))
+              json['appointments'].map((app) => Appointments.fromJson(app))) // Map list of Appointments
           : null,
     );
   }
 
-    Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'Tc': Tc,
       'name': name,
@@ -49,9 +54,9 @@ class Patients {
       'phoneNumber': phoneNumber,
       'email': email,
       'password': password,
-      'birthDate': birthDate?.toIso8601String(),
-      'appointments': appointments?.map((app) => app.toJson()).toList(),
+      'birthDate': birthDate?.toIso8601String(), // Serialize as ISO-8601
+      'age': age, // Direct assignment as int
+      'appointments': appointments?.map((app) => app.toJson()).toList(), // Convert Appointments list
     };
   }
-
 }

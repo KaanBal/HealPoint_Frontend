@@ -66,7 +66,7 @@ class PatientService {
     }
   }
 
-  Future<Response> getPatients() async {
+  Future<Response> getPatientById() async {
     try {
       final token = await tokenService.getToken();
 
