@@ -348,7 +348,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                       selectedDoctor!.reviews!.isEmpty)
                   ? Center(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             vertical: 10), // Daha küçük alan
                         child: Text(
                           "No reviews available",

@@ -5,7 +5,7 @@ import 'package:yazilim_projesi/models/Appointments.dart';
 class YaklasanRandevular extends StatelessWidget {
   final List<Appointments> appointments;
 
-  YaklasanRandevular({super.key, required this.appointments});
+  const YaklasanRandevular({super.key, required this.appointments});
 
   @override
   Widget build(BuildContext context) {
