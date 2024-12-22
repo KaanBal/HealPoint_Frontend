@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi.dart';
 import 'package:yazilim_projesi/Hasta/HastaProfil/hasta_profil.dart';
@@ -29,7 +32,32 @@ class _AnaEkranState extends State<AnaEkran> {
   List<Doctors> doctors = [];
   List<Appointments> upcomingAppointments = [];
   String? patientName;
-  
+
+  void _loadDataFromMockData() async {
+    const String doctorsJsonFile = 'assets/MockData/doctors.json';
+    const String appointmentsJsonFile = 'assets/MockData/appointments.json';
+
+    try {
+      final doctorsDataString = await rootBundle.loadString(doctorsJsonFile);
+      final List<dynamic> doctorsJsonData = json.decode(doctorsDataString);
+
+      final appointmentsDataString =
+          await rootBundle.loadString(appointmentsJsonFile);
+      final List<dynamic> appointmentsJsonData =
+          json.decode(appointmentsDataString);
+
+      setState(() {
+        doctors =
+            doctorsJsonData.map((data) => Doctors.fromJson(data)).toList();
+        upcomingAppointments = appointmentsJsonData
+            .map((data) => Appointments.fromJson(data))
+            .toList();
+      });
+    } catch (e) {
+      print('Error loading mock data: $e');
+    }
+  }
+
   Future<void> _loadPatientName() async {
     try {
       final response = await patientService.getPatientName();
@@ -78,9 +106,10 @@ class _AnaEkranState extends State<AnaEkran> {
 
   @override
   void initState() {
-    _loadData();
-    _loadPatientName();
-    _loadUpcomingAppointments();
+    _loadDataFromMockData();
+    //_loadData();
+    //_loadPatientName();
+    //_loadUpcomingAppointments();
     super.initState();
   }
 
@@ -222,7 +251,8 @@ class _AnaEkranState extends State<AnaEkran> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => YaklasanRandevular(appointments: upcomingAppointments)));
+                            builder: (context) => YaklasanRandevular(
+                                appointments: upcomingAppointments)));
                   },
                   child: Text(
                     " Görüntüle",
@@ -342,7 +372,8 @@ class _AnaEkranState extends State<AnaEkran> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DoctorBilgiEkran(doctorId: doctor.tc ?? ""),
+                          builder: (context) =>
+                              DoctorBilgiEkran(doctorId: doctor.tc ?? ""),
                         ),
                       );
                     },
@@ -363,4 +394,3 @@ class _AnaEkranState extends State<AnaEkran> {
     );
   }
 }
-

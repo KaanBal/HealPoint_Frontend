@@ -1,133 +1,73 @@
 [
   {
-    "Doctor_name": "John",
-    "Doctor_surname": "Doe",
+    "tc": "12345678901",
+    "name": "Ahmet",
     "branch": "Cardiology",
-    "city": "New York",
-    "district": "Manhattan",
-    "address": "1234 Medical St.",
-    "Doctor_tc": "12345678901",
+    "surname": "Yılmaz",
+    "phoneNumber": "05551234567",
+    "about": "20 yıllık deneyime sahip bir doktor.",
+    "password": "securepassword123",
+    "gender": "Male",
+    "email": "ahmet.yilmaz@example.com",
+    "city": "Istanbul",
+    "district": "Kadıköy",
+    "address": "Barış Sokak No:10",
+    "avgPoint": 4.5,
+    "isAccountActive": true,
     "reviews": [
       {
-        "reviewId": 0,
-        "points": 5,
-        "comment": "Very attentive and professional. Highly recommended!"
+        "reviewerName": "Zeynep Kaya",
+        "rating": 5,
+        "comment": "Harika bir doktor, çok ilgili.",
+        "date": "2024-12-20"
       },
       {
-        "reviewId": 1,
-        "points": 4,
-        "comment": "Good doctor, but the wait time could be improved."
+        "reviewerName": "Ali Vural",
+        "rating": 4,
+        "comment": "Genel olarak memnun kaldım.",
+        "date": "2024-12-15"
       }
     ]
   },
   {
-    "Doctor_name": "Jane",
-    "Doctor_surname": "Smith",
+    "tc": "98765432109",
+    "name": "Zeynep",
     "branch": "Dermatology",
-    "city": "Los Angeles",
-    "district": "Downtown",
-    "address": "5678 Skin Care Ave.",
-    "Doctor_tc": "12345678902",
+    "surname": "Kaya",
+    "phoneNumber": "05559876543",
+    "about": "Cilt hastalıkları üzerine uzman.",
+    "password": "strongpassword456",
+    "gender": "Female",
+    "email": "zeynep.kaya@example.com",
+    "city": "Ankara",
+    "district": "Çankaya",
+    "address": "Cumhuriyet Mah. No:25",
+    "avgPoint": 4.8,
+    "isAccountActive": true,
     "reviews": [
       {
-        "reviewId": 2,
-        "points": 5,
-        "comment": "She was very thorough and made me feel comfortable during the appointment."
-      },
-      {
-        "reviewId": 3,
-        "points": 3,
-        "comment": "Good consultation, but the treatment didn’t work as expected."
+        "reviewerName": "Mehmet Yılmaz",
+        "rating": 5,
+        "comment": "Cok iyi bir doktor, tavsiye ederim.",
+        "date": "2024-12-18"
       }
     ]
   },
   {
-    "Doctor_name": "Michael",
-    "Doctor_surname": "Johnson",
-    "branch": "Neurology",
-    "city": "Chicago",
-    "district": "Lincoln Park",
-    "address": "7890 Brainwave Blvd.",
-    "Doctor_tc": "12345678903",
-    "reviews": [
-      {
-        "reviewId": 4,
-        "points": 5,
-        "comment": "Excellent care! Dr. Johnson is very knowledgeable and caring."
-      },
-      {
-        "reviewId": 5,
-        "points": 4,
-        "comment": "I appreciated his detailed explanation, but the wait time was long."
-      }
-    ]
-  },
-  {
-    "Doctor_name": "Emily",
-    "Doctor_surname": "Davis",
+    "tc": "11223344556",
+    "name": "Mehmet",
     "branch": "Pediatrics",
-    "city": "San Francisco",
-    "district": "Mission District",
-    "address": "1357 Children’s Rd.",
-    "Doctor_tc": "12345678904",
-    "reviews": [
-      {
-        "reviewId": 6,
-        "points": 5,
-        "comment": "Dr. Davis is amazing with kids. My son loved her!"
-      },
-      {
-
-        "reviewId": 7,
-        "points": 4,
-        "comment": "Great pediatrician, but the office could be more child-friendly."
-      }
-    ]
-  },
-  {
-    "Doctor_name": "David",
-    "Doctor_surname": "Martinez",
-    "branch": "Orthopedics",
-    "city": "Houston",
-    "district": "Galleria",
-    "address": "2468 Bone Health Ave.",
-    "Doctor_tc": "12345678905",
-    "reviews": [
-      {
-        "reviewId": 8,
-        "points": 5,
-        "comment": "Very skilled surgeon, I felt at ease during my procedure.",
-        "createdAt": "2024-12-10T10:30:00Z"
-      },
-      {
-        "reviewId": 9,
-        "points": 4,
-        "comment": "Great doctor, but the office staff could be more responsive.",
-        "createdAt": "2024-12-09T14:45:00Z"
-      }
-    ]
-  },
-  {
-    "Doctor_name": "Sarah",
-    "Doctor_surname": "Garcia",
-    "branch": "Endocrinology",
-    "city": "Dallas",
-    "district": "Uptown",
-    "address": "3579 Hormone Way",
-    "Doctor_tc": "12345678906",
-    "reviews": [
-      {
-        "reviewId": 10,
-        "points": 5,
-        "comment": "Dr. Garcia helped me manage my thyroid condition with great care.",
-        "createdAt": "2024-12-10T10:30:00Z"
-      },
-      {
-        "reviewId": 10,
-        "points": 4,
-        "comment": "Good consultation, but I would have preferred a more detailed explanation.",
-        "createdAt": "2024-12-09T14:45:00Z"
-      }
-    ]
+    "surname": "Öztürk",
+    "phoneNumber": "05556789012",
+    "about": "Çocuk sağlığı ve hastalıkları üzerine çalışıyor.",
+    "password": "mypassword789",
+    "gender": "Male",
+    "email": "mehmet.ozturk@example.com",
+    "city": "Izmir",
+    "district": "Karşıyaka",
+    "address": "Şehitler Sokak No:7",
+    "avgPoint": 4.3,
+    "isAccountActive": false,
+    "reviews": []
   }
 ]

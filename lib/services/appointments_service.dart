@@ -82,7 +82,7 @@ class AppointmentsService {
       }
 
       final response = await apiClient.dio.get(
-        "appointments/list-patient",
+        "appointments/list/patient/active-appointments",
         options: Options(
           headers: {
             "Authorization": "Bearer $token",
@@ -104,7 +104,7 @@ class AppointmentsService {
       }
 
       final response = await apiClient.dio.get(
-        "appointments/list-doctor",
+        "appointments/list/doctor/active-appointments",
         options: Options(
           headers: {
             "Authorization": "Bearer $token",
