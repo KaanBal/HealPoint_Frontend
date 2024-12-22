@@ -19,6 +19,29 @@ class PatientService {
     }
   }
 
+  Future<Response> getPatientName() async {
+    try {
+      final token = await tokenService.getToken();
+
+      if (token == null) {
+        throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
+      }
+
+      final response = await apiClient.dio.get(
+        "patients/name",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<Response> updatePatient(Map<String, dynamic> patientData) async {
     try {
       final token = await tokenService.getToken();

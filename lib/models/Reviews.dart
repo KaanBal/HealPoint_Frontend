@@ -3,8 +3,7 @@ import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/models/Patients.dart';
 
 class Reviews {
-  final int reviewId;
-  final String? comment;
+  final String? comments;
   final int? points;
   final DateTime? createdAt;
   final Patients? patient;
@@ -12,9 +11,8 @@ class Reviews {
   final Appointments? appointment;
 
   Reviews({
-    required this.reviewId,
     this.createdAt,
-    this.comment,
+    this.comments,
     this.points,
     this.patient,
     this.doctor,
@@ -23,8 +21,7 @@ class Reviews {
 
   factory Reviews.fromJson(Map<String, dynamic> json) {
     return Reviews(
-      reviewId: json['reviewId'],
-      comment: json['comment'],
+      comments: json['comments'],
       points: json['points'],
       patient:
           json['patient'] != null ? Patients.fromJson(json['patient']) : null,
@@ -40,8 +37,7 @@ class Reviews {
 
     Map<String, dynamic> toJson() {
     return {
-      'reviewId': reviewId,
-      'comment': comment,
+      'comments': comments,
       'points': points,
       'createdAt': createdAt?.toIso8601String(),
       'patient': patient?.toJson(),
