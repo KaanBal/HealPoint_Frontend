@@ -8,6 +8,7 @@ import 'package:yazilim_projesi/Doctor/screens/DoctorHomeScreen_fonks.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import 'package:yazilim_projesi/models/Appointments.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
+import 'package:yazilim_projesi/Doctor/gecmis_randevu/doctor_gecmis_randevu.dart';
 
 class DoctorHomeScreen extends StatefulWidget {
   const DoctorHomeScreen({super.key});
@@ -178,7 +179,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                             horizontal: screenWidth * 0.03,
                             vertical: screenWidth * 0.02),
                         decoration: BoxDecoration(
-                          color: getStatusColor(appointment.appointmentStatus.toString()).withOpacity(0.2),
+                          color: appointment.getStatusColor().withOpacity(0.2),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
@@ -187,7 +188,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                               .split('.')
                               .last,
                           style: TextStyle(
-                            color: getStatusColor(appointment.appointmentStatus.toString()).withOpacity(0.2),
+                            color: appointment.getStatusColor().withOpacity(0.2),
                             fontWeight: FontWeight.bold,
                             fontSize: screenWidth * 0.04 * fontScaleFactor,
                           ),
@@ -222,13 +223,4 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
     );
   }
 
-  Color getStatusColor(String status) {
-    if (status == "AKTIF") {
-      return Colors.green;
-    } else if (status == "IPTAL") {
-      return Colors.red;
-    } else {
-      return Colors.blue;
-    }
-  }
 }
