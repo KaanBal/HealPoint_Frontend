@@ -2,7 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:yazilim_projesi/Doctor/DoktorProfil/doktor_profil.dart';
+import 'package:yazilim_projesi/Doctor/gecmis_randevu/doctor_gecmis_randevu.dart';
 import 'package:yazilim_projesi/Doctor/screens/DoctorHomeScreen_fonks.dart';
+import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import 'package:yazilim_projesi/models/Appointments.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
@@ -54,7 +57,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
     return Scaffold(
       backgroundColor: beyaz,
       appBar: AppBar(
-        backgroundColor: beyaz,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           "Appointments List",
@@ -62,6 +65,78 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
             fontFamily: "ABeeZee",
             fontSize: screenWidth * 0.05 * fontScaleFactor,
           ),
+        ),
+      ),
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.red,
+              ),
+              child: Text(
+                'Menü',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: screenWidth * 0.06 * fontScaleFactor,
+                  fontFamily: "ABeeZee",
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.calendar_month_outlined),
+              title: Text(
+                'Geçmiş Randevular',
+                style: TextStyle(
+                  fontSize: screenWidth * 0.045 * fontScaleFactor,
+                  fontFamily: "PTSans",
+                ),
+              ),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => DoctorPastAppointments()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text(
+                'Profilim',
+                style: TextStyle(
+                  fontSize: screenWidth * 0.045 * fontScaleFactor,
+                  fontFamily: "PTSans",
+                ),
+              ),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => DoctorProfil()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.comment),
+              title: Text(
+                'Hakkımda',
+                style: TextStyle(
+                  fontSize: screenWidth * 0.045 * fontScaleFactor,
+                  fontFamily: "PTSans",
+                ),
+              ),
+              onTap: () {
+                //Yorum sayfası
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout, color: Colors.red,),
+              title: Text(
+                'Çıkış Yap',
+                style: TextStyle(
+                  fontSize: screenWidth * 0.045 * fontScaleFactor,
+                  fontFamily: "PTSans",
+                ),
+              ),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => GirisEkrani()));
+              },
+            ),
+          ],
         ),
       ),
       body: ListView.builder(
@@ -82,9 +157,9 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                         padding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.03,
                             vertical: screenWidth * 0.02),
-                        decoration: BoxDecoration(
-                          color: Colors.blue.shade100,
-                          borderRadius: BorderRadius.circular(10),
+                            decoration: BoxDecoration(
+                            color: Colors.blue.shade100,
+                            borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
                           appointment.appointmentTime != null
@@ -103,12 +178,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                             horizontal: screenWidth * 0.03,
                             vertical: screenWidth * 0.02),
                         decoration: BoxDecoration(
-                          color: getStatusColor(
-                            appointment.appointmentStatus
-                                .toString()
-                                .split('.')
-                                .last,
-                          ).withOpacity(0.2),
+                          color: getStatusColor(appointment.appointmentStatus.toString()).withOpacity(0.2),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
@@ -117,12 +187,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                               .split('.')
                               .last,
                           style: TextStyle(
-                            color: getStatusColor(
-                              appointment.appointmentStatus
-                                  .toString()
-                                  .split('.')
-                                  .last,
-                            ),
+                            color: getStatusColor(appointment.appointmentStatus.toString()).withOpacity(0.2),
                             fontWeight: FontWeight.bold,
                             fontSize: screenWidth * 0.04 * fontScaleFactor,
                           ),
@@ -158,13 +223,12 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
   }
 
   Color getStatusColor(String status) {
-    switch (status) {
-      case "AKTIF":
-        return Colors.green;
-      case "IPTAL":
-        return Colors.red;
-      default:
-        return Colors.blue;
+    if (status == "AKTIF") {
+      return Colors.green;
+    } else if (status == "IPTAL") {
+      return Colors.red;
+    } else {
+      return Colors.blue;
     }
   }
 }

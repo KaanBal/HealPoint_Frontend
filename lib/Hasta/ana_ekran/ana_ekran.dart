@@ -7,6 +7,7 @@ import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi.dart';
 import 'package:yazilim_projesi/Hasta/HastaProfil/hasta_profil.dart';
 import 'package:yazilim_projesi/Hasta/gecmisRandevu/gecmis_randevu.dart';
 import 'package:yazilim_projesi/Hasta/yaklasan_randevular/yaklasan_randevular.dart';
+import 'package:yazilim_projesi/Hasta/yorum/hasta_yorum.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import 'package:yazilim_projesi/models/Appointments.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
@@ -15,6 +16,7 @@ import 'package:yazilim_projesi/services/appointments_service.dart';
 import 'package:yazilim_projesi/services/doctor_service.dart';
 import 'package:yazilim_projesi/services/patient_service.dart';
 import 'anaekranfonk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AnaEkran extends StatefulWidget {
   const AnaEkran({super.key});
@@ -32,6 +34,7 @@ class _AnaEkranState extends State<AnaEkran> {
   List<Doctors> doctors = [];
   List<Appointments> upcomingAppointments = [];
   String? patientName;
+  bool _showRatingCard = false;
 
   void _loadDataFromMockData() async {
     const String doctorsJsonFile = 'assets/MockData/doctors.json';
@@ -111,6 +114,29 @@ class _AnaEkranState extends State<AnaEkran> {
     //_loadPatientName();
     //_loadUpcomingAppointments();
     super.initState();
+    _checkIfDoctorRated();
+  }
+
+  // Uygulamanın ilk açılışında doktor değerlendirme kartını gösterecek fonksiyon
+  _checkIfDoctorRated() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool hasRated = prefs.getBool('hasRatedDoctor') ?? false;
+
+    if (!hasRated) {
+      setState(() {
+        _showRatingCard = true;
+      });
+    }
+  }
+
+  // Doktoru değerlendirme işlemi yapıldıktan sonra "Evet" veya "Hayır" butonuna göre durumu günceller
+  void _handleRatingResponse(bool ratingGiven) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('hasRatedDoctor', ratingGiven);
+
+    setState(() {
+      _showRatingCard = false;
+    });
   }
 
   @override
@@ -158,6 +184,14 @@ class _AnaEkranState extends State<AnaEkran> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const HastaProfil()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.comment),
+              title: const Text(
+                'Değerlendirmelerim',),
+              onTap: () {
+                // Hasta yorum sayfasına
               },
             ),
             const Divider(),
@@ -215,6 +249,53 @@ class _AnaEkranState extends State<AnaEkran> {
               ),
             ),
             SizedBox(height: screenHeight * 0.02),
+            // Doktor değerlendirme card'ı
+            if (_showRatingCard)
+              Center(
+                child: Card(
+                  elevation: 5,
+                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 100),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Doktorunuzu Değerlendirmek İster Misiniz?",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DoctorRatingScreen(),
+                                  ),
+                                );
+                                _handleRatingResponse(true);
+                              },
+                              child: Text("Evet"),
+                            ),
+                            SizedBox(width: 20),
+                            ElevatedButton(
+                              onPressed: () => _handleRatingResponse(false),
+                              child: Text("Hayır"),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
