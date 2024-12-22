@@ -118,7 +118,7 @@ class _AnaEkranState extends State<AnaEkran> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => GecmisRandevular()));
+                        builder: (context) => const GecmisRandevular()));
               },
             ),
             ListTile(

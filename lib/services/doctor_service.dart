@@ -15,7 +15,7 @@ class DoctorService {
         throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
       }
 
-      print("$token");
+      print(token);
       final response = await apiClient.dio.get(
         "doctors/list",
         options: Options(
@@ -192,6 +192,52 @@ class DoctorService {
       final response = await apiClient.dio.put(
         "doctors/$id",
         data: doctorData,
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Response> addFavoriteDoctor(String doctorTc) async {
+    try {
+      final token = await tokenService.getToken();
+
+      if (token == null) {
+        throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
+      }
+
+      final response = await apiClient.dio.post(
+        "favorites/add/$doctorTc",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Response> getFavoriteDoctors() async {
+    try {
+      final token = await tokenService.getToken();
+
+      if (token == null) {
+        throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
+      }
+
+      final response = await apiClient.dio.get(
+        "favorites/list",
         options: Options(
           headers: {
             "Authorization": "Bearer $token",
