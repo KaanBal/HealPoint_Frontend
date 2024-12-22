@@ -1,25 +1,6 @@
 import 'package:flutter/material.dart';
-
-class Patient {
-  final String? patientName;
-  final String? patientSurname;
-
-  Patient({this.patientName, this.patientSurname});
-}
-
-class Appointment {
-  final DateTime? appointmentDate;
-  final TimeOfDay? appointmentTime;
-  final Patient? patient;
-  final String? appointmentText;
-
-  Appointment({
-    this.appointmentDate,
-    this.appointmentTime,
-    this.patient,
-    this.appointmentText,
-  });
-}
+import 'package:yazilim_projesi/models/Appointments.dart';
+import 'package:yazilim_projesi/models/Patients.dart';
 
 class DoctorPastAppointments extends StatefulWidget {
   const DoctorPastAppointments({super.key});
@@ -28,51 +9,6 @@ class DoctorPastAppointments extends StatefulWidget {
   State<DoctorPastAppointments> createState() => _DoctorPastAppointmentsState();
 }
 
-class _DoctorPastAppointmentsState extends State<DoctorPastAppointments> {
-  List<Appointment> pastAppointments = [];
-  bool isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadData();
-  }
-
-  // Geçmiş randevuları manuel olarak ekliyoruz
-  Future<void> _loadData() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    // Örnek randevular
-    pastAppointments = [
-      Appointment(
-        appointmentDate: DateTime(2023, 12, 20),
-        appointmentTime: TimeOfDay(hour: 10, minute: 30),
-        patient: Patient(patientName: 'Ahmet', patientSurname: 'Yılmaz'),
-        appointmentText: 'Diş tedavisi',
-      ),
-      Appointment(
-        appointmentDate: DateTime(2023, 12, 19),
-        appointmentTime: TimeOfDay(hour: 14, minute: 0),
-        patient: Patient(patientName: 'Ayşe', patientSurname: 'Kara'),
-        appointmentText: 'Ağrı tedavisi',
-      ),
-      Appointment(
-        appointmentDate: DateTime(2023, 12, 18),
-        appointmentTime: TimeOfDay(hour: 9, minute: 0),
-        patient: Patient(patientName: 'Mehmet', patientSurname: 'Öztürk'),
-        appointmentText: 'Kontrol',
-      ),
-    ];
-
-    // Randevuları tarihe göre sıralıyoruz (en yeni önce)
-    pastAppointments.sort((a, b) => b.appointmentDate!.compareTo(a.appointmentDate!));
-
-    setState(() {
-      isLoading = false;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +17,7 @@ class _DoctorPastAppointmentsState extends State<DoctorPastAppointments> {
         title: const Text("Doktor Geçmiş Randevular"),
         centerTitle: true,
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView.builder(
           itemCount: pastAppointments.length,
@@ -120,7 +54,7 @@ class _DoctorPastAppointmentsState extends State<DoctorPastAppointments> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "Hasta İsmi: ${pastAppointment.patient?.patientName ?? 'Bilinmiyor'} ${pastAppointment.patient?.patientSurname ?? ''}",
+                      "Hasta İsmi: ${pastAppointment.patient?.name ?? 'Bilinmiyor'} ${pastAppointment.patient?.surname ?? ''}",
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -132,6 +66,21 @@ class _DoctorPastAppointmentsState extends State<DoctorPastAppointments> {
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
                         color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                      decoration: BoxDecoration(
+                        color: pastAppointment.getStatusColor().withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        pastAppointment.status ?? 'Durum Bilgisi Yok',
+                        style: TextStyle(
+                          color: pastAppointment.getStatusColor(),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],

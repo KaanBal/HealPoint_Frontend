@@ -11,6 +11,7 @@ class Appointments {
   final String? appointmentText;
   final DoctorReview? doctor;
   final PatientReview? patient;
+  final String? status;
 
   Appointments({
     this.appointmentDate,
@@ -19,7 +20,21 @@ class Appointments {
     this.appointmentText,
     this.doctor,
     this.patient,
-  });
+    this.status,
+    });
+
+    Color getStatusColor() {
+    if (status == "AKTIF") {
+    return Colors.green;
+    } else if (status == "IPTAL") {
+    return Colors.red;
+    } else if (status == null) {
+    return Colors.grey; // Null durumunda varsayılan renk
+    } else {
+    return Colors.blue;
+    }
+    }
+
 
   factory Appointments.fromJson(Map<String, dynamic> json) {
     // Gelen JSON'u debug için kontrol edin

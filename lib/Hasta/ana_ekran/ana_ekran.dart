@@ -17,6 +17,8 @@ import 'package:yazilim_projesi/services/doctor_service.dart';
 import 'package:yazilim_projesi/services/patient_service.dart';
 import 'anaekranfonk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yazilim_projesi/models/Appointments.dart';
+import 'package:yazilim_projesi/models/Patients.dart';
 
 class AnaEkran extends StatefulWidget {
   const AnaEkran({super.key});
@@ -99,14 +101,29 @@ class _AnaEkranState extends State<AnaEkran> {
         upcomingAppointments = data
             .map((appointmentJson) => Appointments.fromJson(appointmentJson))
             .toList();
+
       });
+
+        // İlk randevunun durumunu kontrol et
+        if (upcomingAppointments.isNotEmpty) {
+          final status = upcomingAppointments[0].status; // Durum değerini al
+
+          // Null olup olmadığını kontrol et
+          if (status != null) {
+            _checkStatusAndShowCard(status);
+          } else {
+            // Durum null olduğunda yapılacak işlemi ekleyebilirsiniz
+            print('Durum bilgisi mevcut değil');
+          }
+        }
+
+
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Hata: $e")),
       );
     }
   }
-
   @override
   void initState() {
     _loadDataFromMockData();
@@ -137,6 +154,18 @@ class _AnaEkranState extends State<AnaEkran> {
     setState(() {
       _showRatingCard = false;
     });
+  }
+
+  void _checkStatusAndShowCard(String status) {
+    if (status == "tamamlandı") {
+      setState(() {
+        _showRatingCard = true;
+      });
+    } else {
+      setState(() {
+        _showRatingCard = false;
+      });
+    }
   }
 
   @override
