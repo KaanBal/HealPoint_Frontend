@@ -83,7 +83,7 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
                 _buildStars(averageRating.roundToDouble()), // Yıldızlar
                 const SizedBox(height: 8),
                 Text(
-                  "5 üzerinden ${averageRating.toStringAsFixed(2)}",
+                  "${averageRating.toStringAsFixed(2)}",
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
