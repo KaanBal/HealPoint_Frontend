@@ -14,6 +14,7 @@ import 'package:yazilim_projesi/Hasta//gecmisRandevu/gecmis_randevu.dart';
 import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al.dart';
 import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al_doktor_liste.dart';
 import 'package:yazilim_projesi/Hasta/yaklasan_randevular/yaklasan_randevular.dart';
+import 'package:yazilim_projesi/Hasta/yorum/doktor_yorum_ekran%C4%B1.dart';
 import 'package:yazilim_projesi/Hasta/yorum/hasta_yorum.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import '../Hasta/Hasta_kayit/hasta_kayit_ol.dart';
@@ -64,7 +65,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: DoctorRatingScreen(),
+      home: DoctorCommentsScreen(doctorId: '4344'),
     );
   }
 }

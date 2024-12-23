@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:yazilim_projesi/Doctor/DoktorProfil/doktor_profil.dart';
 import 'package:yazilim_projesi/Doctor/gecmis_randevu/doctor_gecmis_randevu.dart';
 import 'package:yazilim_projesi/Doctor/screens/DoctorHomeScreen_fonks.dart';
+import 'package:yazilim_projesi/Hasta/yorum/doktor_yorum_ekran%C4%B1.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import 'package:yazilim_projesi/models/Appointments.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
@@ -114,14 +115,14 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
             ListTile(
               leading: Icon(Icons.comment),
               title: Text(
-                'Hakkımda',
+                'Değerlendirmeler',
                 style: TextStyle(
                   fontSize: screenWidth * 0.045 * fontScaleFactor,
                   fontFamily: "PTSans",
                 ),
               ),
               onTap: () {
-                //Yorum sayfası
+                Navigator.push(context, MaterialPageRoute(builder: (context) => DoctorCommentsScreen(doctorId: '4344')));
               },
             ),
             ListTile(
