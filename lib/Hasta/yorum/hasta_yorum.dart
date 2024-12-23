@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class DoctorRatingScreen extends StatefulWidget {
-  const DoctorRatingScreen({Key? key}) : super(key: key);
+  const DoctorRatingScreen({super.key});
 
   @override
   State<DoctorRatingScreen> createState() => _DoctorRatingScreenState();
@@ -16,10 +16,9 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
   String branch = '';
   String appointmentDate = '';
 
-  // API URL'ini burada belirtin
-  final String apiUrl = 'https://api.example.com/getDoctorInfo'; // API URL'sini burada güncelleyin
+  final String apiUrl =
+      'https://api.example.com/getDoctorInfo'; // API URL'sini burada güncelleyin
 
-  // Verileri backend'den almak için bir method
   Future<void> _fetchDoctorData() async {
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -28,7 +27,6 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
         final data = jsonDecode(response.body);
 
         setState(() {
-          // Backend'den gelen verilere göre değerleri güncelle
           doctorName = data['doctorName'] ?? 'Bilinmiyor';
           branch = data['branch'] ?? 'Bilinmiyor';
           appointmentDate = data['appointmentDate'] ?? 'Bilinmiyor';
@@ -37,7 +35,6 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
         throw Exception('Veriler alınamadı');
       }
     } catch (e) {
-      // Hata durumunda kullanıcıyı bilgilendir
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Hata oluştu: $e')),
       );
@@ -47,14 +44,13 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchDoctorData(); // Sayfa açıldığında verileri backend'den al
+    _fetchDoctorData();
   }
 
   void _submitRating() {
-    // Burada, değerlendirme verilerini backend'e gönderebiliriz.
     print('Puan: $_rating, Yorum: $_comment');
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Değerlendirmeniz alındı!')),
+      const SnackBar(content: Text('Değerlendirmeniz alındı!')),
     );
   }
 
@@ -62,19 +58,20 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(77),
-       child: AppBar(
-        elevation: 6,
-        backgroundColor: Colors.red,
-         title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0), // Kenarlara boşluk eklenmiş
-           child: const Text(
-             'Doktor Değerlendirme',
-               style: TextStyle(
-              fontWeight: FontWeight.bold,
-               ),
-             ),
-           ),
+        preferredSize: const Size.fromHeight(77),
+        child: AppBar(
+          elevation: 6,
+          backgroundColor: Colors.red,
+          title: const Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: 16.0), // Kenarlara boşluk eklenmiş
+            child: Text(
+              'Doktor Değerlendirme',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           centerTitle: true,
         ),
       ),
@@ -88,7 +85,8 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
+                  border:
+                      Border(bottom: BorderSide(color: Colors.grey.shade300)),
                 ),
                 child: Text(
                   doctorName,
@@ -127,7 +125,7 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               RatingBar(
                 onRatingUpdate: (rating) {
                   setState(() {
@@ -157,7 +155,7 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.blueAccent),
+                    borderSide: const BorderSide(color: Colors.blueAccent),
                   ),
                 ),
                 onChanged: (value) {
@@ -178,7 +176,10 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
                 ),
                 child: const Text(
                   'Gönder',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
                 ),
               ),
             ],
@@ -193,7 +194,7 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
 class RatingBar extends StatefulWidget {
   final Function(double) onRatingUpdate;
 
-  const RatingBar({Key? key, required this.onRatingUpdate}) : super(key: key);
+  const RatingBar({super.key, required this.onRatingUpdate});
 
   @override
   State<RatingBar> createState() => _RatingBarState();
@@ -209,9 +210,7 @@ class _RatingBarState extends State<RatingBar> {
       children: List.generate(5, (index) {
         return IconButton(
           icon: Icon(
-            _currentRating >= index + 1
-                ? Icons.star
-                : Icons.star_border,
+            _currentRating >= index + 1 ? Icons.star : Icons.star_border,
             color: Colors.amber,
           ),
           onPressed: () {

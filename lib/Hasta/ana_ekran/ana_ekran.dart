@@ -283,13 +283,13 @@ class _AnaEkranState extends State<AnaEkran> {
               Center(
                 child: Card(
                   elevation: 5,
-                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 100),
+                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
+                        const Text(
                           "Doktorunuzu Değerlendirmek İster Misiniz?",
                           style: TextStyle(
                             fontSize: 18,
@@ -297,7 +297,7 @@ class _AnaEkranState extends State<AnaEkran> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -306,17 +306,17 @@ class _AnaEkranState extends State<AnaEkran> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => DoctorRatingScreen(),
+                                    builder: (context) => const DoctorRatingScreen(),
                                   ),
                                 );
                                 _handleRatingResponse(true);
                               },
-                              child: Text("Evet"),
+                              child: const Text("Evet"),
                             ),
-                            SizedBox(width: 20),
+                            const SizedBox(width: 20),
                             ElevatedButton(
                               onPressed: () => _handleRatingResponse(false),
-                              child: Text("Hayır"),
+                              child: const Text("Hayır"),
                             ),
                           ],
                         ),

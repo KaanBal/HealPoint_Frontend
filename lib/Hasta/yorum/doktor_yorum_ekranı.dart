@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class DoctorCommentsScreen extends StatefulWidget {
-  final String doctorId; // Doktorun kimlik bilgisi
+  final String doctorId; 
 
-  const DoctorCommentsScreen({Key? key, required this.doctorId})
-      : super(key: key);
+  const DoctorCommentsScreen({super.key, required this.doctorId});
 
   @override
   State<DoctorCommentsScreen> createState() => _DoctorCommentsScreenState();
@@ -17,9 +16,8 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
   double averageRating = 0.0;
   bool isLoading = true;
 
-  final String apiUrl = 'https://api.example.com/getDoctorComments'; // API URL
+  final String apiUrl = 'https://api.example.com/getDoctorComments'; 
 
-  // Doktorun yorumlarını backend'den çekme
   Future<void> _fetchComments() async {
     try {
       final response = await http.get(Uri.parse('$apiUrl?doctorId=${widget.doctorId}'));
@@ -28,7 +26,7 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
         final data = jsonDecode(response.body);
         setState(() {
           comments = List<Map<String, dynamic>>.from(data['comments'] ?? []);
-          averageRating = data['averageRating'] ?? 0.0; // Ortalama puan
+          averageRating = data['averageRating'] ?? 0.0; 
           isLoading = false;
         });
       } else {
@@ -83,7 +81,7 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
                 _buildStars(averageRating.roundToDouble()), // Yıldızlar
                 const SizedBox(height: 8),
                 Text(
-                  "${averageRating.toStringAsFixed(2)}",
+                  averageRating.toStringAsFixed(2),
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -104,7 +102,7 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: ListTile(
-                    title: Text(comment['rating'].toString() + ' Yıldız',
+                    title: Text('${comment['rating']} Yıldız',
                         style: const TextStyle(fontWeight: FontWeight.bold)),
                     subtitle: Text(comment['comment']),
                     trailing: Text(comment['date']),

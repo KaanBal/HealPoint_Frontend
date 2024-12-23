@@ -74,7 +74,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.red,
               ),
               child: Text(
@@ -87,7 +87,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.calendar_month_outlined),
+              leading: const Icon(Icons.calendar_month_outlined),
               title: Text(
                 'Geçmiş Randevular',
                 style: TextStyle(
@@ -96,11 +96,11 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                 ),
               ),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => DoctorPastAppointments()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const DoctorPastAppointments()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.person),
+              leading: const Icon(Icons.person),
               title: Text(
                 'Profilim',
                 style: TextStyle(
@@ -109,11 +109,11 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                 ),
               ),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => DoctorProfil()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const DoctorProfil()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.comment),
+              leading: const Icon(Icons.comment),
               title: Text(
                 'Değerlendirmeler',
                 style: TextStyle(
@@ -122,11 +122,11 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                 ),
               ),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => DoctorCommentsScreen(doctorId: '4344')));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const DoctorCommentsScreen(doctorId: '4344')));
               },
             ),
             ListTile(
-              leading: Icon(Icons.logout, color: Colors.red,),
+              leading: const Icon(Icons.logout, color: Colors.red,),
               title: Text(
                 'Çıkış Yap',
                 style: TextStyle(
@@ -135,7 +135,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                 ),
               ),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => GirisEkrani()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const GirisEkrani()));
               },
             ),
           ],
