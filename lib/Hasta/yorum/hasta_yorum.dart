@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Hasta/yorum/hastaYorum_fonks.dart';
+import 'package:yazilim_projesi/models/Appointments.dart';
+import 'package:yazilim_projesi/models/Reviews.dart';
 
 class DoctorRatingScreen extends StatefulWidget {
   const DoctorRatingScreen({super.key});
@@ -8,28 +11,69 @@ class DoctorRatingScreen extends StatefulWidget {
 }
 
 class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
+  final HastaYorumFonks hastaYorumFonks = HastaYorumFonks();
   double _rating = 0.0;
   String _comment = '';
-  String doctorName = '';
-  String branch = '';
-  String appointmentDate = '';
+  String doctorName = 'Yükleniyor...';
+  String branch = 'Yükleniyor...';
+  String appointmentDate = 'Yükleniyor...';
+  Appointments? appointment;
 
+  Future<void> _fetchAppointmentData() async {
+    try {
+      appointment = await hastaYorumFonks.getAppointmentDetails();
+      if (appointment != null) {
+        setState(() {
+          doctorName = appointment?.doctor?.doctorName ?? "";
+          branch = appointment?.doctor?.branch ?? "";
+          appointmentDate = appointment?.appointmentDate?.toString() ?? "";
+        });
+      } else {
+        setState(() {
+          doctorName = 'Randevu bulunamadı';
+          branch = '---';
+          appointmentDate = '---';
+        });
+      }
+    } catch (e) {
+      print("Error fetching appointment details: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Randevu bilgileri alınamadı.')),
+      );
+    }
+  }
 
-  Future<void> _fetchDoctorData() async {
-    
+  void _submitRating() async {
+    if (_rating == 0 || _comment.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Lütfen bir puan ve yorum girin.')),
+      );
+      return;
+    }
+
+    try {
+      if (appointment != null) {
+        final review = Reviews(
+            comments: _comment, points: _rating.toInt(), appointment: appointment);
+        await hastaYorumFonks.createReview(review);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Değerlendirmeniz alındı!')),
+        );
+
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      print("Error submitting review: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Değerlendirme gönderilemedi.')),
+      );
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    _fetchDoctorData();
-  }
-
-  void _submitRating() {
-    print('Puan: $_rating, Yorum: $_comment');
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Değerlendirmeniz alındı!')),
-    );
+    _fetchAppointmentData();
   }
 
   @override
@@ -41,8 +85,7 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
           elevation: 6,
           backgroundColor: Colors.red,
           title: const Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: 16.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
               'Doktor Değerlendirme',
               style: TextStyle(
@@ -69,7 +112,7 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
                   doctorName,
                   style: const TextStyle(
                     fontSize: 24,
-                    fontWeight: FontWeight.bold, // Kalın yazı tipi
+                    fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                 ),
@@ -79,8 +122,8 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
                 'Branş: $branch',
                 style: const TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold, // Kalın yazı tipi
-                  color: Colors.black, // Renk değiştirilebilir
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
               const SizedBox(height: 8),
@@ -94,7 +137,6 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
               ),
               const SizedBox(height: 24),
 
-              // Yıldız Puanlama
               const Text(
                 'Puanlama',
                 style: TextStyle(
@@ -167,7 +209,6 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
   }
 }
 
-// Yıldız Puanlama Widget'ı
 class RatingBar extends StatefulWidget {
   final Function(double) onRatingUpdate;
 
