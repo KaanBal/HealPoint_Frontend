@@ -14,8 +14,6 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
   String branch = '';
   String appointmentDate = '';
 
-  final String apiUrl =
-      'https://api.example.com/getDoctorInfo'; // API URL'sini burada güncelleyin
 
   Future<void> _fetchDoctorData() async {
     

@@ -291,14 +291,22 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                   right: 15,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HastaDoktorprofilGoruntuler(
-                            doctor: selectedDoctor,
+                      if (selectedDoctor != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HastaDoktorprofilGoruntuler(
+                              doctor: selectedDoctor!,
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Doktor bilgisi mevcut değil."),
+                          ),
+                        );
+                      }
                     },
                     child: Image.asset(
                       'resimler/click.png',
