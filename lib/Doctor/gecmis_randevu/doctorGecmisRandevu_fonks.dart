@@ -1,12 +1,13 @@
 import 'package:yazilim_projesi/models/Appointments.dart';
 import 'package:yazilim_projesi/services/appointments_service.dart';
 
-class DoctorHomeScreenFonks {
+class DoctorGecmisRandevuFonks {
   final AppointmentsService appointmentsService = AppointmentsService();
 
-  Future<List<Appointments>> fetchAppointments() async {
+  Future<List<Appointments>> fetchPastAppointments() async {
     try {
-      final response = await appointmentsService.fetchAppointmentsByDoctor();
+      final response =
+          await appointmentsService.fetchCompletedAndCancelledAppointments();
       final List<dynamic> data = response.data;
 
       return data

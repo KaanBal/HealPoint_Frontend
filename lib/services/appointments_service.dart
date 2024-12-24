@@ -116,4 +116,27 @@ class AppointmentsService {
       rethrow;
     }
   }
+
+  Future<Response> fetchPastAppointmentsByDoctor() async {
+    try {
+      final token = await tokenService.getToken();
+
+      if (token == null) {
+        throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
+      }
+
+      final response = await apiClient.dio.get(
+        "appointments/list/doctor/completed-cancelled",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
 }
