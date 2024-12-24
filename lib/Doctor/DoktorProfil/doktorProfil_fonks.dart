@@ -2,7 +2,6 @@ import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/services/doctor_service.dart';
 
 class DoktorProfilFonks {
-
   final DoctorService doctorService = DoctorService();
 
   Future<Doctors?> loadData() async {
@@ -19,10 +18,9 @@ class DoktorProfilFonks {
   Future<void> updateDoctor(String id, Doctors doctorData) async {
     try {
       final response = await doctorService.updateDoctorById(id, doctorData);
+      print(response);
     } catch (e) {
       print("Hata oluştu: $e");
-      return null;
     }
   }
-  
 }

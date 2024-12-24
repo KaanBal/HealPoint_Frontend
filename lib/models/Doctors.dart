@@ -1,22 +1,21 @@
-
 import 'package:yazilim_projesi/models/Reviews.dart';
 
 class Doctors {
-  final String? tc;
-  final String? name;
-  final String? branch;
-  final String? surname;
-  final String? phoneNumber;
-  final String? about;
-  final String? password;
-  final String? gender;
-  final String? email;
-  final String? city;
-  final String? district;
-  final String? address;
-  final double? avgPoint;
-  final bool? isAccountActive;
-  final List<Reviews>? reviews;
+  String? tc;
+  String? name;
+  String? branch;
+  String? surname;
+  String? phoneNumber;
+  String? about;
+  String? password;
+  String? gender;
+  String? email;
+  String? city;
+  String? district;
+  String? address;
+  double? avgPoint;
+  bool? isAccountActive;
+  List<Reviews>? reviews;
 
   Doctors({
     this.tc,
@@ -50,7 +49,7 @@ class Doctors {
       city: json['city'],
       district: json['district'],
       address: json['address'],
-      avgPoint: (json['avgPoint'] as num?)?.toDouble(), 
+      avgPoint: (json['avgPoint'] as num?)?.toDouble(),
       isAccountActive: json['isAccountActive'] as bool?,
       reviews: (json['reviews'] as List<dynamic>?)
           ?.map((review) => Reviews.fromJson(review))
@@ -58,7 +57,7 @@ class Doctors {
     );
   }
 
-    Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'tc': tc,
       'name': name,
@@ -77,5 +76,4 @@ class Doctors {
       'reviews': reviews?.map((review) => review.toJson()).toList(),
     };
   }
-
 }

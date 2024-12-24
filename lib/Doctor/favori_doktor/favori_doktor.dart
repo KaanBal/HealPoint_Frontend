@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Doctor/favori_doktor/favoriDoktor_fonks.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
-import 'package:yazilim_projesi/Hasta/ana_ekran/anaekranfonk.dart';
 
+class FavoriteDoctorsPage extends StatefulWidget {
+  const FavoriteDoctorsPage({Key? key}) : super(key: key);
 
-class FavoriteDoctorsPage extends StatelessWidget {
-  final double fontSize = 20.0;
-  final double screenHeight = 800; // Ekran yüksekliğini dinamik yapmak için MediaQuery kullanılabilir.
+  @override
+  _FavoriteDoctorsPageState createState() => _FavoriteDoctorsPageState();
+}
 
-  final List<Doctors> doctors = [
-    Doctors(
-      name: "Ahmet",
-      branch: "Cardiology",
-      tc: "12345",
-    ),
-    Doctors(
-      name: "Zeynep",
-      branch: "Dermatology",
-      tc: "67890",
-    ),
-    Doctors(
-      name: "Mehmet",
-      branch: "Pediatrics",
-      tc: "54321",
-    ),
-  ];
+class _FavoriteDoctorsPageState extends State<FavoriteDoctorsPage> {
+  final FavoriDoktorFonks fonks = FavoriDoktorFonks();
+
+  List<Doctors>? doctors;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  void _loadData() async {
+    try {
+      final fetchedDoctors = await fonks.fetchFavDoctors();
+      setState(() {
+        doctors = fetchedDoctors;
+      });
+    } catch (e) {
+      print("Error loading data: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,55 +46,56 @@ class FavoriteDoctorsPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ListView.separated(
-                itemCount: doctors.length,
-                separatorBuilder: (context, index) =>
-                    SizedBox(height: screenHeight * 0.015),
-                itemBuilder: (context, index) {
-                  final doctor = doctors[index];
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              DoctorBilgiEkran(doctorId: doctor.tc ?? ""),
+        child: doctors == null
+            ? const Center(child: CircularProgressIndicator())
+            : doctors!.isEmpty
+                ? const Center(
+                    child: Text(
+                      "Favori doktor bulunamadı.",
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  )
+                : ListView.separated(
+                    itemCount: doctors!.length,
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: screenHeight * 0.015),
+                    itemBuilder: (context, index) {
+                      final doctor = doctors![index];
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DoctorBilgiEkran(doctorId: doctor.tc ?? ""),
+                            ),
+                          );
+                        },
+                        child: DoctorCard(
+                          name: doctor.name ?? "",
+                          specialization: doctor.branch ?? "",
+                          rating: "", // Derecelendirme bilgisi eklenebilir.
+                          reviews: doctor.reviews?.length.toString() ?? "0",
+                          favourite: true,
                         ),
                       );
                     },
-                    child: DoctorCard(
-                      name: doctor.name ?? "",
-                      specialization: doctor.branch ?? "",
-                      rating: "", // Derecelendirme bilgisi eklenebilir.
-                      reviews: doctor.reviews?.length.toString() ?? "0",
-                      favourite: true,
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+                  ),
       ),
     );
   }
 }
 
-
 class DoctorBilgiEkran extends StatelessWidget {
   final String doctorId;
 
-  DoctorBilgiEkran({required this.doctorId});
+  const DoctorBilgiEkran({Key? key, required this.doctorId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Doktor Bilgi Ekranı"),
+        title: const Text("Doktor Bilgi Ekranı"),
         backgroundColor: Colors.redAccent,
       ),
       body: Center(
@@ -98,4 +105,36 @@ class DoctorBilgiEkran extends StatelessWidget {
   }
 }
 
+class DoctorCard extends StatelessWidget {
+  final String name;
+  final String specialization;
+  final String rating;
+  final String reviews;
+  final bool favourite;
 
+  const DoctorCard({
+    Key? key,
+    required this.name,
+    required this.specialization,
+    required this.rating,
+    required this.reviews,
+    required this.favourite,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        title: Text(name),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(specialization),
+            Text("Reviews: $reviews"),
+          ],
+        ),
+        trailing: favourite ? const Icon(Icons.favorite, color: Colors.red) : null,
+      ),
+    );
+  }
+}
