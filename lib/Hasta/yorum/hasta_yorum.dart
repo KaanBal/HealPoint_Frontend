@@ -20,25 +20,7 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
       'https://api.example.com/getDoctorInfo'; // API URL'sini burada güncelleyin
 
   Future<void> _fetchDoctorData() async {
-    try {
-      final response = await http.get(Uri.parse(apiUrl));
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-
-        setState(() {
-          doctorName = data['doctorName'] ?? 'Bilinmiyor';
-          branch = data['branch'] ?? 'Bilinmiyor';
-          appointmentDate = data['appointmentDate'] ?? 'Bilinmiyor';
-        });
-      } else {
-        throw Exception('Veriler alınamadı');
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Hata oluştu: $e')),
-      );
-    }
+    
   }
 
   @override

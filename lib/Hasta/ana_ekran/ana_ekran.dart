@@ -17,8 +17,6 @@ import 'package:yazilim_projesi/services/doctor_service.dart';
 import 'package:yazilim_projesi/services/patient_service.dart';
 import 'anaekranfonk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:yazilim_projesi/models/Appointments.dart';
-import 'package:yazilim_projesi/models/Patients.dart';
 
 class AnaEkran extends StatefulWidget {
   const AnaEkran({super.key});
