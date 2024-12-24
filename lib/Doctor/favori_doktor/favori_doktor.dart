@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi.dart';
 import 'package:yazilim_projesi/Doctor/favori_doktor/favoriDoktor_fonks.dart';
+import 'package:yazilim_projesi/Hasta/ana_ekran/anaekranfonk.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 
 class FavoriteDoctorsPage extends StatefulWidget {
@@ -74,66 +76,13 @@ class _FavoriteDoctorsPageState extends State<FavoriteDoctorsPage> {
                         child: DoctorCard(
                           name: doctor.name ?? "",
                           specialization: doctor.branch ?? "",
-                          rating: "", // Derecelendirme bilgisi eklenebilir.
+                          rating: "",
                           reviews: doctor.reviews?.length.toString() ?? "0",
                           favourite: true,
                         ),
                       );
                     },
                   ),
-      ),
-    );
-  }
-}
-
-class DoctorBilgiEkran extends StatelessWidget {
-  final String doctorId;
-
-  const DoctorBilgiEkran({Key? key, required this.doctorId}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Doktor Bilgi Ekranı"),
-        backgroundColor: Colors.redAccent,
-      ),
-      body: Center(
-        child: Text("Doktor ID: $doctorId"),
-      ),
-    );
-  }
-}
-
-class DoctorCard extends StatelessWidget {
-  final String name;
-  final String specialization;
-  final String rating;
-  final String reviews;
-  final bool favourite;
-
-  const DoctorCard({
-    Key? key,
-    required this.name,
-    required this.specialization,
-    required this.rating,
-    required this.reviews,
-    required this.favourite,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: Text(name),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(specialization),
-            Text("Reviews: $reviews"),
-          ],
-        ),
-        trailing: favourite ? const Icon(Icons.favorite, color: Colors.red) : null,
       ),
     );
   }
