@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi.dart';
+import 'package:yazilim_projesi/Doctor/favori_doktor/favori_doktor.dart';
 import 'package:yazilim_projesi/Hasta/HastaProfil/hasta_profil.dart';
 import 'package:yazilim_projesi/Hasta/gecmisRandevu/gecmis_randevu.dart';
+import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al.dart';
 import 'package:yazilim_projesi/Hasta/yaklasan_randevular/yaklasan_randevular.dart';
 import 'package:yazilim_projesi/Hasta/yorum/hasta_yorum.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
@@ -30,11 +32,13 @@ class _AnaEkranState extends State<AnaEkran> {
   final DoctorService doctorService = DoctorService();
   final AppointmentsService appointmentsService = AppointmentsService();
   final PatientService patientService = PatientService();
+  bool isLoggedOut = false;
 
   List<Doctors> doctors = [];
   List<Appointments> upcomingAppointments = [];
   String? patientName;
   bool _showRatingCard = false;
+
 
   void _loadDataFromMockData() async {
     const String doctorsJsonFile = 'assets/MockData/doctors.json';
@@ -45,9 +49,9 @@ class _AnaEkranState extends State<AnaEkran> {
       final List<dynamic> doctorsJsonData = json.decode(doctorsDataString);
 
       final appointmentsDataString =
-          await rootBundle.loadString(appointmentsJsonFile);
+      await rootBundle.loadString(appointmentsJsonFile);
       final List<dynamic> appointmentsJsonData =
-          json.decode(appointmentsDataString);
+      json.decode(appointmentsDataString);
 
       setState(() {
         doctors =
@@ -99,29 +103,24 @@ class _AnaEkranState extends State<AnaEkran> {
         upcomingAppointments = data
             .map((appointmentJson) => Appointments.fromJson(appointmentJson))
             .toList();
-
       });
 
-        // İlk randevunun durumunu kontrol et
-        if (upcomingAppointments.isNotEmpty) {
-          final status = upcomingAppointments[0].status; // Durum değerini al
+      // İlk randevunun durumunu kontrol et
+      if (upcomingAppointments.isNotEmpty) {
+        final status = upcomingAppointments[0].status;
 
-          // Null olup olmadığını kontrol et
-          if (status != null) {
-            _checkStatusAndShowCard(status);
-          } else {
-            // Durum null olduğunda yapılacak işlemi ekleyebilirsiniz
-            print('Durum bilgisi mevcut değil');
-          }
+        if (status == "tamamlandı") {
+          // Kartı göster
+          _checkIfDoctorRated();
         }
-
-
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Hata: $e")),
       );
     }
   }
+
   @override
   void initState() {
     _loadDataFromMockData();
@@ -132,7 +131,6 @@ class _AnaEkranState extends State<AnaEkran> {
     _checkIfDoctorRated();
   }
 
-  // Uygulamanın ilk açılışında doktor değerlendirme kartını gösterecek fonksiyon
   _checkIfDoctorRated() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool hasRated = prefs.getBool('hasRatedDoctor') ?? false;
@@ -144,15 +142,22 @@ class _AnaEkranState extends State<AnaEkran> {
     }
   }
 
-  // Doktoru değerlendirme işlemi yapıldıktan sonra "Evet" veya "Hayır" butonuna göre durumu günceller
   void _handleRatingResponse(bool ratingGiven) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('hasRatedDoctor', ratingGiven);
+    await prefs.setBool('hasRatedDoctor', true);
 
     setState(() {
       _showRatingCard = false;
     });
+
+    if (ratingGiven) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const DoctorRatingScreen()),
+      );
+    }
   }
+
 
   void _checkStatusAndShowCard(String status) {
     if (status == "tamamlandı") {
@@ -168,337 +173,356 @@ class _AnaEkranState extends State<AnaEkran> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    double screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
     double fontSize = screenWidth * 0.05;
     double avatarRadius = screenWidth * 0.1;
     double buttonPadding = screenWidth * 0.05;
 
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: beyaz,
-      endDrawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: acikKirmizi,
-              ),
-              child: Text(
-                'Sağlıklı Günler',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: fontSize,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.calendar_month_outlined),
-              title: const Text('Geçmiş Randevular'),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const GecmisRandevular()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Profilim'),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const HastaProfil()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.comment),
-              title: const Text(
-                'Değerlendirmelerim',),
-              onTap: () {
-                // Hasta yorum sayfasına
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.logout, color: Colors.red),
-              title: const Text(
-                'Çıkış Yap',
-                style: TextStyle(color: Colors.red),
-              ),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const GirisEkrani()));
-              },
-            ),
-          ],
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-            top: 50.0, right: 16.0, left: 16.0, bottom: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+    return WillPopScope(
+        onWillPop: () async {
+          // Geri tuşu davranışı, yalnızca çıkış yapıldıysa engellenir.
+          if (isLoggedOut) {
+            // Eğer çıkış yapılmışsa geri tuşunu engelle
+            return false;
+          } else {
+            // Çıkış yapılmamışsa, geri tuşu normal şekilde çalışır.
+            return true;
+          }
+        },
+        child: Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: beyaz,
+          endDrawer: Drawer(
+            child: ListView(
+              padding: EdgeInsets.zero,
               children: [
-                Text(
-                  'Selam $patientName ',
-                  style: TextStyle(
-                    fontSize: fontSize,
-                    fontFamily: "ABeeZee",
-                    fontWeight: FontWeight.bold,
+                DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: acikKirmizi,
                   ),
-                ),
-                const Spacer(),
-                InkWell(
-                  onTap: () {
-                    _scaffoldKey.currentState?.openEndDrawer();
-                  },
-                  child: Image.asset(
-                    'resimler/menu.png',
-                    width: screenWidth * 0.08,
-                    height: screenHeight * 0.08,
-                  ),
-                ),
-              ],
-            ),
-            Text(
-              "Sağlıklı Günler",
-              style: TextStyle(
-                fontSize: fontSize * 0.8,
-                fontFamily: "PtSans",
-                color: gri,
-              ),
-            ),
-            SizedBox(height: screenHeight * 0.02),
-            // Doktor değerlendirme card'ı
-            if (_showRatingCard)
-              Center(
-                child: Card(
-                  elevation: 5,
-                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
-                          "Doktorunuzu Değerlendirmek İster Misiniz?",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const DoctorRatingScreen(),
-                                  ),
-                                );
-                                _handleRatingResponse(true);
-                              },
-                              child: const Text("Evet"),
-                            ),
-                            const SizedBox(width: 20),
-                            ElevatedButton(
-                              onPressed: () => _handleRatingResponse(false),
-                              child: const Text("Hayır"),
-                            ),
-                          ],
-                        ),
-                      ],
+                  child: Text(
+                    'Sağlıklı Günler',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: fontSize,
                     ),
                   ),
                 ),
-              ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: acikKirmizi,
-                foregroundColor: beyaz,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                ),
-                padding: EdgeInsets.symmetric(
-                  horizontal: buttonPadding,
-                  vertical: screenHeight * 0.015,
-                ),
-              ),
-              child: const Text(
-                "Randevu Al",
-                style: TextStyle(fontFamily: "ABeeZee"),
-              ),
-            ),
-            SizedBox(height: screenHeight * 0.02),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  "Yaklaşan Randevular",
-                  style: TextStyle(
-                    fontFamily: "ABeeZee",
-                    fontWeight: FontWeight.bold,
-                    fontSize: fontSize,
-                  ),
-                ),
-                GestureDetector(
+                ListTile(
+                  leading: const Icon(Icons.calendar_month_outlined),
+                  title: const Text('Geçmiş Randevular'),
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => YaklasanRandevular(
-                                appointments: upcomingAppointments)));
+                            builder: (context) => const GecmisRandevular()));
                   },
-                  child: Text(
-                    " Görüntüle",
-                    style: TextStyle(
-                      fontFamily: "ABeeZee",
-                      fontWeight: FontWeight.normal,
-                      fontSize: fontSize * 0.6,
-                      color: acikKirmizi,
-                    ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.person),
+                  title: const Text('Profilim'),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HastaProfil()));
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.favorite_border),
+                  title: const Text(
+                    'Favori Doktorlarım',),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => FavoriteDoctorsPage()));
+                  },
+                ),
+                const Divider(),
+                ListTile(
+                  leading: const Icon(Icons.logout, color: Colors.red),
+                  title: const Text(
+                    'Çıkış Yap',
+                    style: TextStyle(color: Colors.red),
                   ),
+                  onTap: () {
+                    setState(() {
+                      isLoggedOut = true;  // Çıkış yapıldı
+                    });
+                    // Giriş ekranına yönlendirme
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => GirisEkrani()),
+                    );
+                  },
                 ),
               ],
             ),
-            SizedBox(height: screenHeight * 0.03),
-            if (upcomingAppointments.isNotEmpty)
-              Container(
-                padding: EdgeInsets.all(screenWidth * 0.04),
-                decoration: BoxDecoration(
-                  color: beyaz,
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: acikGri.withOpacity(0.8),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Row(
+          ),
+          body: Padding(
+            padding: const EdgeInsets.only(
+                top: 50.0, right: 16.0, left: 16.0, bottom: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    CircleAvatar(
-                      radius: avatarRadius,
-                      backgroundImage: const NetworkImage(
-                        'https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg=',
+                    Text(
+                      'Selam $patientName ',
+                      style: TextStyle(
+                        fontSize: fontSize,
+                        fontFamily: "ABeeZee",
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(width: screenWidth * 0.04),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          upcomingAppointments[0].doctor?.doctorName ??
-                              "Doktor Bilgisi Yok",
-                          style: const TextStyle(
-                            fontSize: 17,
-                            fontFamily: "PtSans",
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          upcomingAppointments[0].appointmentDate != null
-                              ? DateFormat('dd MMMM yyyy').format(
-                                  upcomingAppointments[0].appointmentDate!)
-                              : "Tarih Bilgisi Yok",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontFamily: "PtSans",
-                            color: gri,
-                          ),
-                        ),
-                        SizedBox(height: screenHeight * 0.02),
-                        Row(
-                          children: [
-                            Image.asset(
-                              'resimler/calendar.png',
-                              width: screenWidth * 0.05,
-                              height: screenWidth * 0.05,
-                            ),
-                            SizedBox(width: screenWidth * 0.03),
-                            Text(
-                              upcomingAppointments[0].appointmentTime != null
-                                  ? '${upcomingAppointments[0].appointmentTime!.hour.toString().padLeft(2, '0')}:${upcomingAppointments[0].appointmentTime!.minute.toString().padLeft(2, '0')}'
-                                  : "Saat Bilgisi Yok",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: "PtSans",
-                                color: gri,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                    const Spacer(),
+                    InkWell(
+                      onTap: () {
+                        _scaffoldKey.currentState?.openEndDrawer();
+                      },
+                      child: Image.asset(
+                        'resimler/menu.png',
+                        width: screenWidth * 0.08,
+                        height: screenHeight * 0.08,
+                      ),
                     ),
                   ],
                 ),
-              )
-            else
-              Center(
-                child: Text(
-                  "Henüz bir yaklaşan randevunuz yok.",
+                Text(
+                  "Sağlıklı Günler",
                   style: TextStyle(
                     fontSize: fontSize * 0.8,
                     fontFamily: "PtSans",
                     color: gri,
                   ),
                 ),
-              ),
-            SizedBox(height: screenHeight * 0.03),
-            Text(
-              'Favori Doktorlarım',
-              style: TextStyle(
-                  fontSize: fontSize,
-                  fontFamily: "ABeeZee",
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: screenHeight * 0.01),
-            Expanded(
-              child: ListView.separated(
-                itemCount: doctors.length,
-                separatorBuilder: (context, index) =>
-                    SizedBox(height: screenHeight * 0.015),
-                itemBuilder: (context, index) {
-                  final doctor = doctors[index];
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              DoctorBilgiEkran(doctorId: doctor.tc ?? ""),
+                SizedBox(height: screenHeight * 0.02),
+                // Doktor değerlendirme card'ı
+                if (_showRatingCard)
+                  Positioned(
+                    top: 20,
+                    left: 20,
+                    right: 20,
+                    child: Card(
+                      elevation: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              "Doktorunuzu Değerlendirmek İster Misiniz?",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () => _handleRatingResponse(true),
+                                  child: const Text("Evet"),
+                                ),
+                                const SizedBox(width: 20),
+                                ElevatedButton(
+                                  onPressed: () => _handleRatingResponse(false),
+                                  child: const Text("Hayır"),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => const RandevuAl()));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: acikKirmizi,
+                    foregroundColor: beyaz,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(screenWidth * 0.05),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: buttonPadding,
+                      vertical: screenHeight * 0.015,
+                    ),
+                  ),
+                  child: const Text(
+                    "Randevu Al",
+                    style: TextStyle(fontFamily: "ABeeZee"),
+                  ),
+                ),
+                SizedBox(height: screenHeight * 0.02),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      "Yaklaşan Randevular",
+                      style: TextStyle(
+                        fontFamily: "ABeeZee",
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSize,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    YaklasanRandevular(
+                                        appointments: upcomingAppointments)));
+                      },
+                      child: Text(
+                        " Görüntüle",
+                        style: TextStyle(
+                          fontFamily: "ABeeZee",
+                          fontWeight: FontWeight.normal,
+                          fontSize: fontSize * 0.6,
+                          color: acikKirmizi,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: screenHeight * 0.03),
+                if (upcomingAppointments.isNotEmpty)
+                  Container(
+                    padding: EdgeInsets.all(screenWidth * 0.04),
+                    decoration: BoxDecoration(
+                      color: beyaz,
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: [
+                        BoxShadow(
+                          color: acikGri.withOpacity(0.8),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: avatarRadius,
+                          backgroundImage: const NetworkImage(
+                            'https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg=',
+                          ),
+                        ),
+                        SizedBox(width: screenWidth * 0.04),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              upcomingAppointments[0].doctor?.doctorName ??
+                                  "Doktor Bilgisi Yok",
+                              style: const TextStyle(
+                                fontSize: 17,
+                                fontFamily: "PtSans",
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              upcomingAppointments[0].appointmentDate != null
+                                  ? DateFormat('dd MMMM yyyy').format(
+                                  upcomingAppointments[0].appointmentDate!)
+                                  : "Tarih Bilgisi Yok",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontFamily: "PtSans",
+                                color: gri,
+                              ),
+                            ),
+                            SizedBox(height: screenHeight * 0.02),
+                            Row(
+                              children: [
+                                Image.asset(
+                                  'resimler/calendar.png',
+                                  width: screenWidth * 0.05,
+                                  height: screenWidth * 0.05,
+                                ),
+                                SizedBox(width: screenWidth * 0.03),
+                                Text(
+                                  upcomingAppointments[0].appointmentTime !=
+                                      null
+                                      ? '${upcomingAppointments[0]
+                                      .appointmentTime!.hour.toString()
+                                      .padLeft(
+                                      2, '0')}:${upcomingAppointments[0]
+                                      .appointmentTime!.minute.toString()
+                                      .padLeft(2, '0')}'
+                                      : "Saat Bilgisi Yok",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontFamily: "PtSans",
+                                    color: gri,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  Center(
+                    child: Text(
+                      "Henüz bir yaklaşan randevunuz yok.",
+                      style: TextStyle(
+                        fontSize: fontSize * 0.8,
+                        fontFamily: "PtSans",
+                        color: gri,
+                      ),
+                    ),
+                  ),
+                SizedBox(height: screenHeight * 0.03),
+                Text(
+                  'Tüm Doktorlar',
+                  style: TextStyle(
+                      fontSize: fontSize,
+                      fontFamily: "ABeeZee",
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: screenHeight * 0.01),
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: doctors.length,
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: screenHeight * 0.015),
+                    itemBuilder: (context, index) {
+                      final doctor = doctors[index];
+                      return InkWell(
+                        onTap: () {
+                          //
+                        },
+                        child: DoctorCard(
+                          name: doctor.name ?? "",
+                          specialization: doctor.branch ?? "",
+                          rating: "",
+                          reviews: doctor.reviews?.length.toString() ?? "0",
+                          favourite: false,
                         ),
                       );
                     },
-                    child: DoctorCard(
-                      name: doctor.name ?? "",
-                      specialization: doctor.branch ?? "",
-                      rating: "",
-                      reviews: doctor.reviews?.length.toString() ?? "0",
-                      favourite: true,
-                    ),
-                  );
-                },
-              ),
-            )
-          ],
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
-}
+
