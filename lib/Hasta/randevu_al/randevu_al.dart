@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al_doktor_liste.dart';
 import '../../renkler/renkler.dart';
+import 'package:intl/intl.dart';
 
 class RandevuAl extends StatefulWidget {
   const RandevuAl({super.key});
@@ -9,12 +11,19 @@ class RandevuAl extends StatefulWidget {
 }
 
 class _RandevuAlState extends State<RandevuAl> {
-  String? selectedHospital;
+  String? selectedSehir;
+  String? selectedIlce;
   String? selectedBranch;
   DateTime? selectedDate;
   String? selectedTime;
 
-  final List<String> hospitals = ["Hastane A", "Hastane B", "Hastane C"];
+  final List<String> sehirs = ["İstanbul", "Ankara", "İzmir", "Trabzon"];
+  final Map<String, List<String>> ilceler = {
+    "İstanbul": ["Kadıköy", "Beşiktaş", "Üsküdar"],
+    "Ankara": ["Çankaya", "Keçiören", "Sincan"],
+    "İzmir": ["Konak", "Bornova", "Karşıyaka"],
+    "Trabzon": ["Ortahisar", "Akçaabat", "Yomra"],
+  };
   final List<String> branches = ["Kardiyoloji", "Ortopedi", "Nöroloji"];
   final List<String> times = ["08:00", "10:00", "12:00"];
 
@@ -37,7 +46,8 @@ class _RandevuAlState extends State<RandevuAl> {
       context,
       '/filteredDoctors',
       arguments: {
-        'hospital': selectedHospital,
+        'sehir': selectedSehir,
+        'ilce': selectedIlce,
         'branch': selectedBranch,
         'date': selectedDate,
         'time': selectedTime,
@@ -57,7 +67,9 @@ class _RandevuAlState extends State<RandevuAl> {
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
       body: Padding(
@@ -66,25 +78,49 @@ class _RandevuAlState extends State<RandevuAl> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Hastane',
+              'Şehir',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             DropdownButton<String>(
-              hint: const Text("Hastane Seçin"),
-              value: selectedHospital,
+              hint: const Text("Şehir Seçin"),
+              value: selectedSehir,
               isExpanded: true,
               onChanged: (value) {
                 setState(() {
-                  selectedHospital = value;
+                  selectedSehir = value;
+                  selectedIlce = null; // Şehir değiştiğinde ilçe sıfırlanır
                 });
               },
-              items: hospitals.map((hospital) {
+              items: sehirs.map((sehir) {
                 return DropdownMenuItem(
-                  value: hospital,
-                  child: Text(hospital),
+                  value: sehir,
+                  child: Text(sehir),
                 );
               }).toList(),
             ),
+            if (selectedSehir != null) ...[
+              const SizedBox(height: 20),
+              const Text(
+                'İlçe',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              DropdownButton<String>(
+                hint: const Text("İlçe Seçin"),
+                value: selectedIlce,
+                isExpanded: true,
+                onChanged: (value) {
+                  setState(() {
+                    selectedIlce = value;
+                  });
+                },
+                items: ilceler[selectedSehir]!.map((ilce) {
+                  return DropdownMenuItem(
+                    value: ilce,
+                    child: Text(ilce),
+                  );
+                }).toList(),
+              ),
+            ],
             const SizedBox(height: 20),
             const Text(
               'Branş',
@@ -123,7 +159,7 @@ class _RandevuAlState extends State<RandevuAl> {
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Text(
-                  'Seçilen Tarih: ${selectedDate!.toLocal()}'.split(' ')[0],
+                  'Seçilen Tarih: ${DateFormat('dd MMMM yyyy').format(selectedDate!)}',
                   style: const TextStyle(fontSize: 16),
                 ),
               ),
@@ -151,7 +187,13 @@ class _RandevuAlState extends State<RandevuAl> {
             const Spacer(),
             Center(
               child: ElevatedButton(
-                onPressed: _applyFilters,
+                onPressed: () {
+                  _applyFilters();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FilteredDoctorsScreen(filteredDoctors: "")), // YeniSayfa, geçmek istediğiniz sayfa.
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
                   backgroundColor: acikKirmizi,
@@ -160,6 +202,7 @@ class _RandevuAlState extends State<RandevuAl> {
                 child: const Text(
                   "Filtreleri Uygula",
                   style: TextStyle(fontSize: 16),
+
                 ),
               ),
             ),
