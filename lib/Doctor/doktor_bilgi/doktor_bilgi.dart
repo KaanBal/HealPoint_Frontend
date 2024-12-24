@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi_fonks.dart';
+import 'package:yazilim_projesi/Doctor/doktor_bilgi/hasta_doktorprofil_goruntuler.dart';
 import 'package:yazilim_projesi/models/DoctorAvailability.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
@@ -56,7 +57,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: $e")),
+        SnackBar(content: Text("We cant find availability")),
       );
     }
   }
@@ -64,7 +65,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
   @override
   void initState() {
     _loadData();
-    //_fetchAvailableCloksByDate();
+    _fetchAvailableCloksByDate();
     super.initState();
   }
 
@@ -224,7 +225,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); 
+            Navigator.pop(context);
           },
         ),
       ),
@@ -290,7 +291,14 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                   right: 15,
                   child: GestureDetector(
                     onTap: () {
-                      print("Resim tıklandı!");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HastaDoktorprofilGoruntuler(
+                            doctor: selectedDoctor,
+                          ),
+                        ),
+                      );
                     },
                     child: Image.asset(
                       'resimler/click.png',

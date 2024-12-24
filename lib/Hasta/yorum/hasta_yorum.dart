@@ -44,7 +44,7 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
           backgroundColor: Colors.red,
           title: const Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: 16.0), // Kenarlara boşluk eklenmiş
+                horizontal: 16.0),
             child: Text(
               'Doktor Değerlendirme',
               style: TextStyle(
@@ -61,7 +61,6 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Doktor Bilgileri
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 decoration: BoxDecoration(
