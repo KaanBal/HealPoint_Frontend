@@ -32,13 +32,13 @@ class _AnaEkranState extends State<AnaEkran> {
   final DoctorService doctorService = DoctorService();
   final AppointmentsService appointmentsService = AppointmentsService();
   final PatientService patientService = PatientService();
+
   bool isLoggedOut = false;
 
   List<Doctors> doctors = [];
   List<Appointments> upcomingAppointments = [];
   String? patientName;
   bool _showRatingCard = false;
-
 
   void _loadDataFromMockData() async {
     const String doctorsJsonFile = 'assets/MockData/doctors.json';
@@ -49,9 +49,9 @@ class _AnaEkranState extends State<AnaEkran> {
       final List<dynamic> doctorsJsonData = json.decode(doctorsDataString);
 
       final appointmentsDataString =
-      await rootBundle.loadString(appointmentsJsonFile);
+          await rootBundle.loadString(appointmentsJsonFile);
       final List<dynamic> appointmentsJsonData =
-      json.decode(appointmentsDataString);
+          json.decode(appointmentsDataString);
 
       setState(() {
         doctors =
@@ -117,12 +117,24 @@ class _AnaEkranState extends State<AnaEkran> {
     }
   }
 
+  Future<void> _saveFavoriteDoctor(Doctors doctor) async {
+    try {
+      if (doctor != null && doctor.tc != null) {
+        await doctorService.addFavoriteDoctor(doctor!.tc!);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata: $e")),
+      );
+    }
+  }
+
   @override
   void initState() {
-    _loadDataFromMockData();
-    //_loadData();
-    //_loadPatientName();
-    //_loadUpcomingAppointments();
+    //_loadDataFromMockData();
+    _loadData();
+    _loadPatientName();
+    _loadUpcomingAppointments();
     super.initState();
     _checkIfDoctorRated();
   }
@@ -150,7 +162,6 @@ class _AnaEkranState extends State<AnaEkran> {
       );
     }
   }
-
 
   void _showRatingDialog() {
     showDialog(
@@ -232,14 +243,8 @@ class _AnaEkranState extends State<AnaEkran> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    double screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     double fontSize = screenWidth * 0.05;
     double avatarRadius = screenWidth * 0.1;
     double buttonPadding = screenWidth * 0.05;
@@ -398,8 +403,10 @@ class _AnaEkranState extends State<AnaEkran> {
                 ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => const RandevuAl()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RandevuAl()));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: acikKirmizi,
@@ -480,7 +487,7 @@ class _AnaEkranState extends State<AnaEkran> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            upcomingAppointments[0].doctor?.doctorName ??
+                            upcomingAppointments[0].doctor?.name ??
                                 "Doktor Bilgisi Yok",
                             style: const TextStyle(
                               fontSize: 17,
@@ -491,7 +498,7 @@ class _AnaEkranState extends State<AnaEkran> {
                           Text(
                             upcomingAppointments[0].appointmentDate != null
                                 ? DateFormat('dd MMMM yyyy').format(
-                                upcomingAppointments[0].appointmentDate!)
+                                    upcomingAppointments[0].appointmentDate!)
                                 : "Tarih Bilgisi Yok",
                             style: TextStyle(
                               fontSize: 15,
@@ -509,14 +516,8 @@ class _AnaEkranState extends State<AnaEkran> {
                               ),
                               SizedBox(width: screenWidth * 0.03),
                               Text(
-                                upcomingAppointments[0].appointmentTime !=
-                                    null
-                                    ? '${upcomingAppointments[0]
-                                    .appointmentTime!.hour.toString()
-                                    .padLeft(
-                                    2, '0')}:${upcomingAppointments[0]
-                                    .appointmentTime!.minute.toString()
-                                    .padLeft(2, '0')}'
+                                upcomingAppointments[0].appointmentTime != null
+                                    ? '${upcomingAppointments[0].appointmentTime!.hour.toString().padLeft(2, '0')}:${upcomingAppointments[0].appointmentTime!.minute.toString().padLeft(2, '0')}'
                                     : "Saat Bilgisi Yok",
                                 style: TextStyle(
                                   fontSize: 18,
@@ -560,7 +561,15 @@ class _AnaEkranState extends State<AnaEkran> {
                     final doctor = doctors[index];
                     return InkWell(
                       onTap: () {
-                        //
+                        if (doctor.tc != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DoctorBilgiEkran(doctorId: doctor.tc!),
+                            ),
+                          );
+                        }
                       },
                       child: DoctorCard(
                         name: doctor.name ?? "",
@@ -568,11 +577,14 @@ class _AnaEkranState extends State<AnaEkran> {
                         rating: "",
                         reviews: doctor.reviews?.length.toString() ?? "0",
                         favourite: false,
+                        onFavoriteTap: () {
+                          _saveFavoriteDoctor(doctor);
+                        },
                       ),
                     );
                   },
                 ),
-              )
+              ),
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
+import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/services/api_client.dart';
 import 'package:yazilim_projesi/services/token_service.dart';
 
@@ -133,6 +134,30 @@ class DoctorService {
     }
   }
 
+    Future<Response> getDoctorByToken() async {
+    try {
+      final token = await tokenService.getToken();
+
+      if (token == null) {
+        throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
+      }
+
+      final response = await apiClient.dio.get(
+        "doctors/list-token",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+
+      return response;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
   Future<Response> deleteDoctorById(String id) async {
     try {
       final token = await tokenService.getToken();
@@ -181,7 +206,7 @@ class DoctorService {
   }
 
   Future<Response> updateDoctorById(
-      String id, Map<String, dynamic> doctorData) async {
+      String id, Doctors doctorData) async {
     try {
       final token = await tokenService.getToken();
 
@@ -250,4 +275,28 @@ class DoctorService {
       rethrow;
     }
   }
+
+    Future<Response> removeFavoriteDoctor(String doctorTc) async {
+    try {
+      final token = await tokenService.getToken();
+
+      if (token == null) {
+        throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
+      }
+
+      final response = await apiClient.dio.delete(
+        "favorites/remove/$doctorTc",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
 }

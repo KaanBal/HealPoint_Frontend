@@ -45,7 +45,7 @@ class YaklasanRandevular extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "Doktor: ${enYakinRandevu.doctor?.doctorName} ${enYakinRandevu.doctor?.doctorSurname}",
+                        "Doktor: ${enYakinRandevu.doctor?.name} ${enYakinRandevu.doctor?.surname}",
                         style: const TextStyle(fontSize: 14),
                       ),
                       Text(
@@ -109,7 +109,7 @@ class YaklasanRandevular extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              "Doktor İsmi: ${appointment.doctor?.doctorName} ${appointment.doctor?.doctorSurname}",
+                              "Doktor İsmi: ${appointment.doctor?.name} ${appointment.doctor?.surname}",
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

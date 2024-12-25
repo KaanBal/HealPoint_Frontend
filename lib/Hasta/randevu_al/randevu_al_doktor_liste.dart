@@ -1,67 +1,89 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
-import 'package:yazilim_projesi/renkler/renkler.dart';
-import '../ana_ekran/anaekranfonk.dart';
+import '../../models/filterValues.dart';
 
-class FilteredDoctorsScreen extends StatelessWidget {
-  final List<Doctors> filteredDoctors;
+class FilteredDoctorsScreen extends StatefulWidget {
+  final FilterValues filterValues;
 
   const FilteredDoctorsScreen({
     super.key,
-    required this.filteredDoctors,
+    required this.filterValues,
   });
 
   @override
-  Widget build(BuildContext context) {
-    var ekranBilgisi = MediaQuery.of(context);
-    final double ekranYuksekligi = ekranBilgisi.size.height;
-    final double ekranGenisligi = ekranBilgisi.size.width;
+  State<FilteredDoctorsScreen> createState() => _FilteredDoctorsScreenState();
+}
 
+class _FilteredDoctorsScreenState extends State<FilteredDoctorsScreen> {
+  List<Doctors> filteredDoctors = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchFilteredDoctors(); // Fetch doctors based on filterCriteria
+  }
+
+  Future<void> _fetchFilteredDoctors() async {
+    // Simulate backend request or local filtering
+    await Future.delayed(const Duration(seconds: 1)); // Mock delay
+
+    // Add logic to fetch doctors based on widget.filterCriteria
+    // For now, we'll use a mock list
+    setState(() {
+      filteredDoctors = [
+        Doctors(name: "Dr. Ahmet", branch: "Kardiyoloji"),
+        Doctors(name: "Dr. Mehmet", branch: "Ortopedi"),
+      ];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Filtrelenen Doktorlar',
-          style: TextStyle(fontFamily: "ABeeZee", color: Colors.white),
-        ),
-        centerTitle: true,
-        backgroundColor: acikKirmizi,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-           // Navigator.pop(context);
-          },
-        ),
+        title: const Text("Filtrelenen Doktorlar"),
+        backgroundColor: Colors.redAccent,
       ),
       body: Padding(
-        padding: EdgeInsets.all(ekranGenisligi * 0.05),
-        child: filteredDoctors.isNotEmpty
-            ? ListView.builder(
-                itemCount: filteredDoctors.length,
-                itemBuilder: (context, index) {
-                  final doctor = filteredDoctors[index];
-                  return DoctorCard(
-                    name: doctor.name ?? "",
-                    specialization: doctor.branch ?? "",
-                    rating: doctor.reviews?.isNotEmpty == true
-                        ? doctor.reviews![0].points.toString()
-                        : "0",
-                    reviews: doctor.reviews?.length.toString() ?? "0",
-                    favourite: true,
-                  );
-                },
-                prototypeItem: SizedBox(height: ekranYuksekligi * 0.1),
-              )
-            : Center(
-                child: Text(
-                  "Seçilen filtrelere uygun doktor bulunamadı!",
-                  style: TextStyle(
-                    fontSize: ekranGenisligi / 22,
-                    fontFamily: "ABeeZee",
-                    color: Colors.grey,
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Filtreler:",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            Text("Şehir: ${widget.filterValues.city ?? 'Seçilmedi'}"),
+            Text("İlçe: ${widget.filterValues.district ?? 'Seçilmedi'}"),
+            Text("Branş: ${widget.filterValues.branch ?? 'Seçilmedi'}"),
+            Text(
+              "Tarih: ${widget.filterValues.date != null ? DateFormat('dd MMMM yyyy').format(widget.filterValues.date!) : 'Seçilmedi'}",
+            ),
+            Text("Saat: ${widget.filterValues.time ?? 'Seçilmedi'}"),
+            const SizedBox(height: 20),
+            const Text(
+              "Doktorlar:",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            filteredDoctors.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : Expanded(
+                    child: ListView.builder(
+                      itemCount: filteredDoctors.length,
+                      itemBuilder: (context, index) {
+                        final doctor = filteredDoctors[index];
+                        return Card(
+                          child: ListTile(
+                            title: Text(doctor.name ?? "Doktor İsmi Yok"),
+                            subtitle: Text(doctor.branch ?? "Branş Yok"),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+          ],
+        ),
       ),
     );
   }

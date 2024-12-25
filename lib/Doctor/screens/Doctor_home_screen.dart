@@ -198,7 +198,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                   ),
                   SizedBox(height: screenHeight * 0.02),
                   Text(
-                    "Hasta İsmi: ${appointment.patient?.patientName} ${appointment.patient?.patientSurname}",
+                    "Hasta İsmi: ${appointment.patient?.name} ${appointment.patient?.surname}",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontFamily: "ABeeZee",

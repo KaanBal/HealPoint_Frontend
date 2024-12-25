@@ -85,7 +85,7 @@ class _DoctorPastAppointmentsState extends State<DoctorPastAppointments> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            "Hasta İsmi: ${pastAppointment.patient?.patientName ?? 'Bilinmiyor'} ${pastAppointment.patient?.patientSurname ?? ''}",
+                            "Hasta İsmi: ${pastAppointment.patient?.name ?? 'Bilinmiyor'} ${pastAppointment.patient?.surname ?? ''}",
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,

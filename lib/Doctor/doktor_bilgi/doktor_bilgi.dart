@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi_fonks.dart';
+import 'package:yazilim_projesi/Doctor/doktor_bilgi/hasta_doktorprofil_goruntuler.dart';
+import 'package:yazilim_projesi/models/Appointments.dart';
 import 'package:yazilim_projesi/models/DoctorAvailability.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
@@ -18,7 +20,7 @@ class DoctorBilgiEkran extends StatefulWidget {
 
 class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
   final DoctorService doctorService = DoctorService();
-
+  final DoktorBilgiFonks fonks = DoktorBilgiFonks();
   Doctors? selectedDoctor;
   DoctorAvailability? doctorAvailability;
 
@@ -45,10 +47,10 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
     }
   }
 
-  void _fetchAvailableCloksByDate() async {
+  Future<void> _fetchAvailableCloksByDate(DateTime date) async {
     try {
-      final response = await doctorService.getDoctorAvailabilities(
-          widget.doctorId, DateTime.now());
+      final response =
+          await doctorService.getDoctorAvailabilities(widget.doctorId, date);
       final Map<String, dynamic> data = response.data;
 
       setState(() {
@@ -56,7 +58,17 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: $e")),
+        const SnackBar(content: Text("Uygun saat bilgisi alınamadı.")),
+      );
+    }
+  }
+
+  Future<void> saveAppointments(Appointments appointment) async {
+    try {
+      await fonks.createAppointment(appointment);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Kayıt sırasında hata oluştu: $e")),
       );
     }
   }
@@ -64,7 +76,6 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
   @override
   void initState() {
     _loadData();
-    //_fetchAvailableCloksByDate();
     super.initState();
   }
 
@@ -80,11 +91,19 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
         firstDate: DateTime(2023),
         lastDate: DateTime(2025),
       );
+
       if (pickedDate != null && pickedDate != selectedDate) {
         bottomSheetSetState(() {
           selectedDate = pickedDate;
-          availableTimes = ['08:00', '10:00', '12:00'];
-          selectedTime = availableTimes[0];
+        });
+
+        // Wait for the availability data to be fetched
+        await _fetchAvailableCloksByDate(pickedDate);
+
+        // Update the available times after data is fetched
+        bottomSheetSetState(() {
+          availableTimes = doctorAvailability?.availableTimes ?? [];
+          selectedTime = availableTimes.isNotEmpty ? availableTimes[0] : null;
         });
       }
     }
@@ -182,6 +201,23 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
+                        if (selectedDate != null && selectedTime != null) {
+                          // Parse selected time into TimeOfDay
+                          final timeParts = selectedTime!.split(':');
+                          final selectedTimeOfDay = TimeOfDay(
+                            hour: int.parse(timeParts[0]),
+                            minute: int.parse(timeParts[1]),
+                          );
+
+                          final appointment = Appointments(
+                            appointmentDate: selectedDate,
+                            appointmentTime: selectedTimeOfDay,
+                            doctor: selectedDoctor,
+                            status: "AKTIF",
+                          );
+
+                          saveAppointments(appointment);
+                        }
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
@@ -224,7 +260,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); 
+            Navigator.pop(context);
           },
         ),
       ),
@@ -290,7 +326,22 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                   right: 15,
                   child: GestureDetector(
                     onTap: () {
-                      print("Resim tıklandı!");
+                      if (selectedDoctor != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HastaDoktorprofilGoruntuler(
+                              doctor: selectedDoctor!,
+                            ),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Doktor bilgisi mevcut değil."),
+                          ),
+                        );
+                      }
                     },
                     child: Image.asset(
                       'resimler/click.png',
@@ -328,7 +379,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
             ),
             SizedBox(height: ekranYuksekligi * 0.02),
             Text(
-              '${doctorAvailability?.workingHoursStart ?? "Bilinmiyor"} - ${doctorAvailability?.workingHoursEnd ?? "Bilinmiyor"}',
+              '09.00 - 18.00',
               style: TextStyle(
                 fontSize: fontSize,
                 fontFamily: "ABeeZee",

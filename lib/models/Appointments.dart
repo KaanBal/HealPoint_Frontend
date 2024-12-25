@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yazilim_projesi/models/DoctorReview.dart';
-import 'package:yazilim_projesi/models/PatientReview.dart';
+import 'package:yazilim_projesi/models/Doctors.dart';
+import 'package:yazilim_projesi/models/Patients.dart';
 
 enum AppointmentStatus { AKTIF, IPTAL, TAMAMLANDI }
 
@@ -9,8 +9,8 @@ class Appointments {
   final TimeOfDay? appointmentTime; // TimeOfDay ile tanımlama
   final AppointmentStatus? appointmentStatus;
   final String? appointmentText;
-  final DoctorReview? doctor;
-  final PatientReview? patient;
+  final Doctors? doctor;
+  final Patients? patient;
   final String? status;
 
   Appointments({
@@ -21,20 +21,19 @@ class Appointments {
     this.doctor,
     this.patient,
     this.status,
-    });
+  });
 
-    Color getStatusColor() {
+  Color getStatusColor() {
     if (status == "AKTIF") {
-    return Colors.green;
+      return Colors.green;
     } else if (status == "IPTAL") {
-    return Colors.red;
+      return Colors.red;
     } else if (status == null) {
-    return Colors.grey; // Null durumunda varsayılan renk
+      return Colors.grey;
     } else {
-    return Colors.blue;
+      return Colors.blue;
     }
-    }
-
+  }
 
   factory Appointments.fromJson(Map<String, dynamic> json) {
     // Gelen JSON'u debug için kontrol edin
@@ -54,12 +53,10 @@ class Appointments {
       appointmentStatus: AppointmentStatus.values.firstWhere((e) =>
           e.toString() == 'AppointmentStatus.${json['appointmentStatus']}'),
       appointmentText: json['appointmentText'],
-      doctor: json['doctor'] != null
-          ? DoctorReview.fromJson(
-              json['doctor']) 
-          : null,
+      doctor:
+          json['doctor'] != null ? Doctors.fromJson(json['doctor']) : null,
       patient: json['patient'] != null
-          ? PatientReview.fromJson(json['patient'])
+          ? Patients.fromJson(json['patient'])
           : null,
     );
   }
