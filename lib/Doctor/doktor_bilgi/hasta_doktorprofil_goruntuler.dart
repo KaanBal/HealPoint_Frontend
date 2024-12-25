@@ -9,9 +9,9 @@ class HastaDoktorprofilGoruntuler extends StatefulWidget {
   final Doctors doctor;
 
   const HastaDoktorprofilGoruntuler({
-    Key? key,
+    super.key,
     required this.doctor,
-  }) : super(key: key);
+  });
 
   @override
   State<HastaDoktorprofilGoruntuler> createState() =>

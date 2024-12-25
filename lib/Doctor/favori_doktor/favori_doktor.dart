@@ -5,7 +5,7 @@ import 'package:yazilim_projesi/Hasta/ana_ekran/anaekranfonk.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 
 class FavoriteDoctorsPage extends StatefulWidget {
-  const FavoriteDoctorsPage({Key? key}) : super(key: key);
+  const FavoriteDoctorsPage({super.key});
 
   @override
   _FavoriteDoctorsPageState createState() => _FavoriteDoctorsPageState();

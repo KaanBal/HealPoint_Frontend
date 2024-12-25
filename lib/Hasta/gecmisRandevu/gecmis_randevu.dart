@@ -97,7 +97,7 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            "Doktor İsmi: ${pastAppointment.doctor?.doctorName ?? 'Bilinmiyor'}",
+                            "Doktor İsmi: ${pastAppointment.doctor?.name ?? 'Bilinmiyor'}",
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,

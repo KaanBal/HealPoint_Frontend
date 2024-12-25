@@ -24,7 +24,7 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
       appointment = await hastaYorumFonks.getAppointmentDetails();
       if (appointment != null) {
         setState(() {
-          doctorName = appointment?.doctor?.doctorName ?? "";
+          doctorName = appointment?.doctor?.name ?? "";
           branch = appointment?.doctor?.branch ?? "";
           appointmentDate = appointment?.appointmentDate?.toString() ?? "";
         });

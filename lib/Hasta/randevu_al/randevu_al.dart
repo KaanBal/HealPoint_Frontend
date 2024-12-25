@@ -8,7 +8,7 @@ import 'package:yazilim_projesi/models/filterValues.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
 class RandevuAl extends StatefulWidget {
-  const RandevuAl({Key? key}) : super(key: key);
+  const RandevuAl({super.key});
 
   @override
   State<RandevuAl> createState() => _RandevuAlState();

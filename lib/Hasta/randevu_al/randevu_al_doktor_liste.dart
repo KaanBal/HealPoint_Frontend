@@ -7,9 +7,9 @@ class FilteredDoctorsScreen extends StatefulWidget {
   final FilterValues filterValues;
 
   const FilteredDoctorsScreen({
-    Key? key,
+    super.key,
     required this.filterValues,
-  }) : super(key: key);
+  });
 
   @override
   State<FilteredDoctorsScreen> createState() => _FilteredDoctorsScreenState();
