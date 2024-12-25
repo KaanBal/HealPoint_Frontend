@@ -42,7 +42,6 @@ class _AnaEkranState extends State<AnaEkran> {
   List<Doctors> favDoctors = [];
   List<Appointments> upcomingAppointments = [];
   String? patientName;
-  bool _showRatingCard = false;
 
   void _loadDataFromMockData() async {
     const String doctorsJsonFile = 'assets/MockData/doctors.json';
@@ -98,6 +97,12 @@ class _AnaEkranState extends State<AnaEkran> {
     }
   }
 
+  /* SharedPreferences'da randevu değerlendirmelerini takip etmek için key oluşturma fonksiyonu
+  String _getRatingKey(String appointmentId) {
+    return 'hasRatedDoctor_$appointmentId';
+  } */
+
+
   Future<void> _loadUpcomingAppointments() async {
     try {
       final response = await appointmentsService.fetchUpcomingAppointments();
@@ -113,6 +118,12 @@ class _AnaEkranState extends State<AnaEkran> {
           upcomingAppointments[0].status == "tamamlandı") {
         _checkIfDoctorRated();
       }
+      /*Tüm randevuları kontrol et
+      for (var appointment in upcomingAppointments) {
+        if (appointment.status == "tamamlandı") {
+          _checkIfDoctorRated(appointment);
+        }
+      } */
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Hata: $e")),
@@ -207,6 +218,35 @@ class _AnaEkranState extends State<AnaEkran> {
     }
   }
 
+  /* _checkIfDoctorRated(Appointments appointment) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String ratingKey = _getRatingKey(appointment.id ?? '');
+    bool hasRated = prefs.getBool(ratingKey) ?? false;
+
+    if (!hasRated && mounted) {
+      _showRatingDialog(appointment);
+    }
+  } */
+
+   /* void _handleRatingResponse(bool ratingGiven, Appointments appointment) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String ratingKey = _getRatingKey(appointment.id ?? '');
+    await prefs.setBool(ratingKey, true);
+
+    if (ratingGiven && mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DoctorRatingScreen(
+            doctorId: appointment.doctor?.tc ?? '',
+            appointmentId: appointment.id ?? '',
+            doctorName: appointment.doctor?.name ?? '',
+          ),
+        ),
+      );
+    }
+  } */
+
   void _handleRatingResponse(bool ratingGiven) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('hasRatedDoctor', true);
@@ -218,6 +258,84 @@ class _AnaEkranState extends State<AnaEkran> {
       );
     }
   }
+
+  /* void _showRatingDialog(Appointments appointment) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          title: const Text(
+            "Doktor Değerlendirmesi",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "${appointment.doctor?.name ?? 'Doktor'} ile ${DateFormat('dd MMMM yyyy').format(appointment.appointmentDate!)} tarihindeki randevunuz tamamlandı.",
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                "Doktorunuzu değerlendirmek ister misiniz?",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _handleRatingResponse(true, appointment);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: acikKirmizi,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
+                    ),
+                    child: const Text(
+                      "Evet",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _handleRatingResponse(false, appointment);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
+                    ),
+                    child: const Text(
+                      "Hayır",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }  */
 
   void _showRatingDialog() {
     showDialog(
@@ -257,6 +375,7 @@ class _AnaEkranState extends State<AnaEkran> {
                       backgroundColor: acikKirmizi,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 10),
+
                     ),
                     child: const Text(
                       "Evet",
@@ -287,17 +406,6 @@ class _AnaEkranState extends State<AnaEkran> {
     );
   }
 
-  void _checkStatusAndShowCard(String status) {
-    if (status == "tamamlandı") {
-      setState(() {
-        _showRatingCard = true;
-      });
-    } else {
-      setState(() {
-        _showRatingCard = false;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -357,8 +465,7 @@ class _AnaEkranState extends State<AnaEkran> {
               ListTile(
                 leading: const Icon(Icons.favorite_border),
                 title: const Text(
-                  'Favori Doktorlarım',
-                ),
+                  'Favori Doktorlarım',),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -383,8 +490,7 @@ class _AnaEkranState extends State<AnaEkran> {
                   });
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const GirisEkrani()),
+                    MaterialPageRoute(builder: (context) => GirisEkrani()),
                   );
                 },
               ),
@@ -429,44 +535,6 @@ class _AnaEkranState extends State<AnaEkran> {
                 ),
               ),
               SizedBox(height: screenHeight * 0.02),
-              if (_showRatingCard)
-                Positioned(
-                  top: 20,
-                  left: 20,
-                  right: 20,
-                  child: Card(
-                    elevation: 5,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text(
-                            "Doktorunuzu Değerlendirmek İster Misiniz?",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () => _handleRatingResponse(true),
-                                child: const Text("Evet"),
-                              ),
-                              const SizedBox(width: 20),
-                              ElevatedButton(
-                                onPressed: () => _handleRatingResponse(false),
-                                child: const Text("Hayır"),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -508,8 +576,9 @@ class _AnaEkranState extends State<AnaEkran> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => YaklasanRandevular(
-                                  appointments: upcomingAppointments)));
+                              builder: (context) =>
+                                  YaklasanRandevular(
+                                      appointments: upcomingAppointments)));
                     },
                     child: Text(
                       " Görüntüle",

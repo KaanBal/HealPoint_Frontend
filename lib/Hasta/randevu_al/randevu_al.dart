@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al_doktor_liste.dart';
+import 'package:yazilim_projesi/models/Doctors.dart';
+import '../../renkler/renkler.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al_doktor_liste.dart';
@@ -15,6 +18,7 @@ class RandevuAl extends StatefulWidget {
 }
 
 class _RandevuAlState extends State<RandevuAl> {
+
   final FilterValues filterValues = FilterValues();
   List<Doctors> doctors = [];
   final List<String> branches = ["Kardiyoloji", "Ortopedi", "Nöroloji"];

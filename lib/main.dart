@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yazilim_projesi/Doctor/favori_doktor/favori_doktor.dart';
+import 'package:yazilim_projesi/Doctor/screens/Doctor_home_screen.dart';
 import 'package:yazilim_projesi/Hasta/ana_ekran/ana_ekran.dart';
 import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al.dart';
 import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al_doktor_liste.dart';
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const AnaEkran(),
+      home: const DoctorHomeScreen(),
     );
   }
 }

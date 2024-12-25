@@ -19,6 +19,7 @@ class DoctorHomeScreen extends StatefulWidget {
 
 class _DoctorHomeScreen extends State<DoctorHomeScreen> {
   final DoctorHomeScreenFonks fonks = DoctorHomeScreenFonks();
+  bool isLoggedOut = false;
 
   List<Appointments> appointments = [];
 
@@ -55,172 +56,201 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
 
     double fontScaleFactor = 0.8;
 
-    return Scaffold(
-      backgroundColor: beyaz,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Text(
-          "Appointments List",
-          style: TextStyle(
-            fontFamily: "ABeeZee",
-            fontSize: screenWidth * 0.05 * fontScaleFactor,
+    return WillPopScope(
+      onWillPop: () async {
+        if (isLoggedOut) {
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: Scaffold(
+        backgroundColor: beyaz,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          title: Text(
+            "Appointments List",
+            style: TextStyle(
+              fontFamily: "ABeeZee",
+              fontSize: screenWidth * 0.05 * fontScaleFactor,
+            ),
           ),
         ),
-      ),
-      endDrawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Colors.red,
-              ),
-              child: Text(
-                'Menü',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: screenWidth * 0.06 * fontScaleFactor,
-                  fontFamily: "ABeeZee",
+        endDrawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                ),
+                child: Text(
+                  'Menü',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: screenWidth * 0.06 * fontScaleFactor,
+                    fontFamily: "ABeeZee",
+                  ),
                 ),
               ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.calendar_month_outlined),
-              title: Text(
-                'Geçmiş Randevular',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.045 * fontScaleFactor,
-                  fontFamily: "PTSans",
+              ListTile(
+                leading: const Icon(Icons.calendar_month_outlined),
+                title: Text(
+                  'Geçmiş Randevular',
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.045 * fontScaleFactor,
+                    fontFamily: "PTSans",
+                  ),
                 ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const DoctorPastAppointments()));
+                },
               ),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const DoctorPastAppointments()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: Text(
-                'Profilim',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.045 * fontScaleFactor,
-                  fontFamily: "PTSans",
+              ListTile(
+                leading: const Icon(Icons.person),
+                title: Text(
+                  'Profilim',
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.045 * fontScaleFactor,
+                    fontFamily: "PTSans",
+                  ),
                 ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DoctorProfil()));
+                },
               ),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const DoctorProfil()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.comment),
-              title: Text(
-                'Değerlendirmeler',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.045 * fontScaleFactor,
-                  fontFamily: "PTSans",
+              ListTile(
+                leading: const Icon(Icons.comment),
+                title: Text(
+                  'Değerlendirmeler',
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.045 * fontScaleFactor,
+                    fontFamily: "PTSans",
+                  ),
                 ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const DoctorCommentsScreen(doctorId: '4344')));
+                },
               ),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const DoctorCommentsScreen(doctorId: '4344')));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout, color: Colors.red,),
-              title: Text(
-                'Çıkış Yap',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.045 * fontScaleFactor,
-                  fontFamily: "PTSans",
-                ),
-              ),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const GirisEkrani()));
-              },
-            ),
-          ],
+              ListTile(
+                  leading: const Icon(
+                    Icons.logout,
+                    color: Colors.red,
+                  ),
+                  title: Text(
+                    'Çıkış Yap',
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.045 * fontScaleFactor,
+                      fontFamily: "PTSans",
+                    ),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      isLoggedOut = true;
+                    });
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => GirisEkrani()),
+                    );
+                  }),
+            ],
+          ),
         ),
-      ),
-      body: ListView.builder(
-        itemCount: appointments.length,
-        itemBuilder: (context, index) {
-          final appointment = appointments[index];
-          return Card(
-            color: beyaz,
-            margin: EdgeInsets.all(screenWidth * 0.03),
-            child: Padding(
-              padding: EdgeInsets.all(screenWidth * 0.04),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.03,
-                            vertical: screenWidth * 0.02),
-                            decoration: BoxDecoration(
+        body: ListView.builder(
+          itemCount: appointments.length,
+          itemBuilder: (context, index) {
+            final appointment = appointments[index];
+            return Card(
+              color: beyaz,
+              margin: EdgeInsets.all(screenWidth * 0.03),
+              child: Padding(
+                padding: EdgeInsets.all(screenWidth * 0.04),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.03,
+                              vertical: screenWidth * 0.02),
+                          decoration: BoxDecoration(
                             color: Colors.blue.shade100,
                             borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          appointment.appointmentTime != null
-                              ? '${appointment.appointmentTime!.hour.toString().padLeft(2, '0')}:${appointment.appointmentTime!.minute.toString().padLeft(2, '0')}'
-                              : "Saat Bilgisi Yok",
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                            fontSize: screenWidth * 0.04 * fontScaleFactor,
+                          ),
+                          child: Text(
+                            appointment.appointmentTime != null
+                                ? '${appointment.appointmentTime!.hour.toString().padLeft(2, '0')}:${appointment.appointmentTime!.minute.toString().padLeft(2, '0')}'
+                                : "Saat Bilgisi Yok",
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                              fontSize: screenWidth * 0.04 * fontScaleFactor,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: screenWidth * 0.02),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.03,
-                            vertical: screenWidth * 0.02),
-                        decoration: BoxDecoration(
-                          color: appointment.getStatusColor().withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          appointment.appointmentStatus
-                              .toString()
-                              .split('.')
-                              .last,
-                          style: TextStyle(
-                            color: appointment.getStatusColor().withOpacity(0.2),
-                            fontWeight: FontWeight.bold,
-                            fontSize: screenWidth * 0.04 * fontScaleFactor,
+                        SizedBox(width: screenWidth * 0.02),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.03,
+                              vertical: screenWidth * 0.02),
+                          decoration: BoxDecoration(
+                            color:
+                                appointment.getStatusColor().withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            appointment.appointmentStatus
+                                .toString()
+                                .split('.')
+                                .last,
+                            style: TextStyle(
+                              color:
+                                  appointment.getStatusColor().withOpacity(0.2),
+                              fontWeight: FontWeight.bold,
+                              fontSize: screenWidth * 0.04 * fontScaleFactor,
+                            ),
                           ),
                         ),
+                      ],
+                    ),
+                    SizedBox(height: screenHeight * 0.02),
+                    Text(
+                      "Hasta İsmi: ${appointment.patient?.name} ${appointment.patient?.surname}",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "ABeeZee",
+                        fontSize: screenWidth * 0.045 * fontScaleFactor,
                       ),
-                    ],
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
-                  Text(
-                    "Hasta İsmi: ${appointment.patient?.name} ${appointment.patient?.surname}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "ABeeZee",
-                      fontSize: screenWidth * 0.045 * fontScaleFactor,
                     ),
-                  ),
-                  SizedBox(height: screenHeight * 0.01),
-                  Text(
-                    "${appointment.appointmentText}",
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.035 * fontScaleFactor,
-                      fontFamily: "PTSans",
-                      color: Colors.grey,
+                    SizedBox(height: screenHeight * 0.01),
+                    Text(
+                      "${appointment.appointmentText}",
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.035 * fontScaleFactor,
+                        fontFamily: "PTSans",
+                        color: Colors.grey,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
-
 }
