@@ -105,14 +105,10 @@ class _AnaEkranState extends State<AnaEkran> {
             .toList();
       });
 
-      // İlk randevunun durumunu kontrol et
-      if (upcomingAppointments.isNotEmpty) {
-        final status = upcomingAppointments[0].status;
-
-        if (status == "tamamlandı") {
-          // Kartı göster
-          _checkIfDoctorRated();
-        }
+      // Tamamlanan randevu kontrolü
+      if (upcomingAppointments.isNotEmpty &&
+          upcomingAppointments[0].status == "tamamlandı") {
+        _checkIfDoctorRated();
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -148,9 +144,10 @@ class _AnaEkranState extends State<AnaEkran> {
     bool hasRated = prefs.getBool('hasRatedDoctor') ?? false;
 
     if (!hasRated) {
-      setState(() {
-        _showRatingCard = true;
-      });
+      // Dialog'u göster
+      if (mounted) {
+        _showRatingDialog();
+      }
     }
   }
 
@@ -158,16 +155,78 @@ class _AnaEkranState extends State<AnaEkran> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('hasRatedDoctor', true);
 
-    setState(() {
-      _showRatingCard = false;
-    });
-
-    if (ratingGiven) {
+    if (ratingGiven && mounted) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const DoctorRatingScreen()),
       );
     }
+  }
+
+  void _showRatingDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Dialog dışına tıklanarak kapatılamaz
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          title: const Text(
+            "Doktor Değerlendirmesi",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "Son randevunuz tamamlandı. Doktorunuzu değerlendirmek ister misiniz?",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _handleRatingResponse(true);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: acikKirmizi,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    ),
+                    child: const Text(
+                      "Evet",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context); // Dialog'u kapat
+                      _handleRatingResponse(false);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    ),
+                    child: const Text(
+                      "Hayır",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   void _checkStatusAndShowCard(String status) {
@@ -240,13 +299,10 @@ class _AnaEkranState extends State<AnaEkran> {
               ListTile(
                 leading: const Icon(Icons.favorite_border),
                 title: const Text(
-                  'Favori Doktorlarım',
-                ),
+                  'Favori Doktorlarım',),
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const FavoriteDoctorsPage()));
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => FavoriteDoctorsPage()));
                 },
               ),
               const Divider(),
@@ -258,12 +314,11 @@ class _AnaEkranState extends State<AnaEkran> {
                 ),
                 onTap: () {
                   setState(() {
-                    isLoggedOut = true; // Çıkış yapıldı
+                    isLoggedOut = true;
                   });
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const GirisEkrani()),
+                    MaterialPageRoute(builder: (context) => GirisEkrani()),
                   );
                 },
               ),
@@ -308,7 +363,6 @@ class _AnaEkranState extends State<AnaEkran> {
                 ),
               ),
               SizedBox(height: screenHeight * 0.02),
-              // Doktor değerlendirme card'ı
               if (_showRatingCard)
                 Positioned(
                   top: 20,
@@ -388,8 +442,9 @@ class _AnaEkranState extends State<AnaEkran> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => YaklasanRandevular(
-                                  appointments: upcomingAppointments)));
+                              builder: (context) =>
+                                  YaklasanRandevular(
+                                      appointments: upcomingAppointments)));
                     },
                     child: Text(
                       " Görüntüle",
