@@ -5,6 +5,7 @@ import 'package:yazilim_projesi/models/Patients.dart';
 enum AppointmentStatus { AKTIF, IPTAL, TAMAMLANDI }
 
 class Appointments {
+
   final DateTime? appointmentDate;
   final TimeOfDay? appointmentTime; // TimeOfDay ile tanımlama
   final AppointmentStatus? appointmentStatus;
