@@ -21,15 +21,11 @@ class _FilteredDoctorsScreenState extends State<FilteredDoctorsScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchFilteredDoctors(); // Fetch doctors based on filterCriteria
+    _fetchFilteredDoctors();
   }
 
   Future<void> _fetchFilteredDoctors() async {
-    // Simulate backend request or local filtering
-    await Future.delayed(const Duration(seconds: 1)); // Mock delay
-
-    // Add logic to fetch doctors based on widget.filterCriteria
-    // For now, we'll use a mock list
+    await Future.delayed(const Duration(seconds: 1));
     setState(() {
       filteredDoctors = [
         Doctors(name: "Dr. Ahmet", branch: "Kardiyoloji"),

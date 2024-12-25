@@ -35,14 +35,16 @@ class _FavoriteDoctorsPageState extends State<FavoriteDoctorsPage> {
 
   Future<void> _removeFavorite(Doctors doctor) async {
     try {
+      print('Favori doktor silme işlemi başladı. Doktor: ${doctor.tc}');
       await fonks.removeFavorite(doctor);
       setState(() {
-        doctors!.remove(doctor); 
+        doctors!.remove(doctor);
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Doktor favorilerden kaldırıldı.")),
       );
     } catch (e) {
+      print('Favori doktor silme işlemi başarısız oldu. Hata: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Hata: Doktor favorilerden kaldırılamadı. $e")),
       );

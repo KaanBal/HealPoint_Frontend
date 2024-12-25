@@ -208,15 +208,15 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                             hour: int.parse(timeParts[0]),
                             minute: int.parse(timeParts[1]),
                           );
+                          if (selectedDoctor?.tc != null) {
+                            final appointment = Appointments(
+                                appointmentDate: selectedDate,
+                                appointmentTime: selectedTimeOfDay,
+                                doctor: selectedDoctor,
+                                doctorTc: selectedDoctor!.tc!);
 
-                          final appointment = Appointments(
-                            appointmentDate: selectedDate,
-                            appointmentTime: selectedTimeOfDay,
-                            doctor: selectedDoctor,
-                            status: "AKTIF",
-                          );
-
-                          saveAppointments(appointment);
+                            saveAppointments(appointment);
+                          }
                         }
                         Navigator.pop(context);
                       },
