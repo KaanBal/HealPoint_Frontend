@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/renkler/renkler.dart';
 
 class DoctorRatingScreen extends StatefulWidget {
   const DoctorRatingScreen({super.key});
@@ -37,26 +38,25 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(77),
-        child: AppBar(
-          elevation: 6,
-          backgroundColor: Colors.red,
-          title: const Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: 16.0), // Kenarlara boşluk eklenmiş
-            child: Text(
-              'Doktor Değerlendirme',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+      appBar: AppBar(
+        elevation: 6,
+        backgroundColor: acikKirmizi,
+        title: const Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: 16.0), // Kenarlara boşluk eklenmiş
+          child: Text(
+            'Doktor Değerlendirme',
+            style: TextStyle(
+              fontFamily: "ABeeZee",
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
-          centerTitle: true,
         ),
+        centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(12.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,6 +71,7 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
                 child: Text(
                   doctorName,
                   style: const TextStyle(
+                    fontFamily: "ABeeZee",
                     fontSize: 24,
                     fontWeight: FontWeight.bold, // Kalın yazı tipi
                     color: Colors.black,
@@ -81,6 +82,7 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
               Text(
                 'Branş: $branch',
                 style: const TextStyle(
+                  fontFamily: "ABeeZee",
                   fontSize: 18,
                   fontWeight: FontWeight.bold, // Kalın yazı tipi
                   color: Colors.black, // Renk değiştirilebilir
@@ -90,6 +92,7 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
               Text(
                 'Randevu Tarihi: $appointmentDate',
                 style: const TextStyle(
+                  fontFamily: "ABeeZee",
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                   color: Colors.grey,
@@ -101,6 +104,7 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
               const Text(
                 'Puanlama',
                 style: TextStyle(
+                  fontFamily: "ABeeZee",
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -119,6 +123,7 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
               const Text(
                 'Yorum',
                 style: TextStyle(
+                  fontFamily: "ABeeZee",
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -128,7 +133,10 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
                 maxLines: 5,
                 decoration: InputDecoration(
                   hintText: 'Yorumunuzu yazınız...',
-                  hintStyle: TextStyle(color: Colors.grey.shade500),
+                  hintStyle: TextStyle(
+                      color: Colors.grey.shade500,
+                      fontFamily: "ABeeZee",
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: Colors.grey.shade300),
@@ -148,19 +156,8 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
               ElevatedButton(
                 onPressed: _submitRating,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                ),
-                child: const Text(
-                  'Gönder',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                ),
+                    backgroundColor: Colors.red, foregroundColor: beyaz),
+                child: const Text("Gönder"),
               ),
             ],
           ),
@@ -191,7 +188,7 @@ class _RatingBarState extends State<RatingBar> {
         return IconButton(
           icon: Icon(
             _currentRating >= index + 1 ? Icons.star : Icons.star_border,
-            color: Colors.amber,
+            color: koyuKirmizi,
           ),
           onPressed: () {
             setState(() {

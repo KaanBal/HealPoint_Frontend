@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al_doktor_liste.dart';
+import 'package:yazilim_projesi/models/Doctors.dart';
 import '../../renkler/renkler.dart';
 import 'package:intl/intl.dart';
 
@@ -16,6 +17,7 @@ class _RandevuAlState extends State<RandevuAl> {
   String? selectedBranch;
   DateTime? selectedDate;
   String? selectedTime;
+  List<Doctors> doctors = [];
 
   final List<String> sehirs = ["İstanbul", "Ankara", "İzmir", "Trabzon"];
   final Map<String, List<String>> ilceler = {
@@ -191,7 +193,7 @@ class _RandevuAlState extends State<RandevuAl> {
                   _applyFilters();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FilteredDoctorsScreen(filteredDoctors: "")), // YeniSayfa, geçmek istediğiniz sayfa.
+                    MaterialPageRoute(builder: (context) => FilteredDoctorsScreen(filteredDoctors: doctors)),
                   );
                 },
                 style: ElevatedButton.styleFrom(
