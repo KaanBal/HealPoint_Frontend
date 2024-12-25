@@ -275,4 +275,28 @@ class DoctorService {
       rethrow;
     }
   }
+
+    Future<Response> removeFavoriteDoctor(String doctorTc) async {
+    try {
+      final token = await tokenService.getToken();
+
+      if (token == null) {
+        throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
+      }
+
+      final response = await apiClient.dio.delete(
+        "favorites/remove/$doctorTc",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
 }

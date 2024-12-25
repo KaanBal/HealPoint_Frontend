@@ -22,7 +22,7 @@ class _FavoriteDoctorsPageState extends State<FavoriteDoctorsPage> {
     _loadData();
   }
 
-  void _loadData() async {
+  Future<void> _loadData() async {
     try {
       final fetchedDoctors = await fonks.fetchFavDoctors();
       setState(() {
@@ -30,6 +30,22 @@ class _FavoriteDoctorsPageState extends State<FavoriteDoctorsPage> {
       });
     } catch (e) {
       print("Error loading data: $e");
+    }
+  }
+
+  Future<void> _removeFavorite(Doctors doctor) async {
+    try {
+      await fonks.removeFavorite(doctor);
+      setState(() {
+        doctors!.remove(doctor); 
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Doktor favorilerden kaldırıldı.")),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata: Doktor favorilerden kaldırılamadı. $e")),
+      );
     }
   }
 
@@ -79,6 +95,9 @@ class _FavoriteDoctorsPageState extends State<FavoriteDoctorsPage> {
                           rating: "",
                           reviews: doctor.reviews?.length.toString() ?? "0",
                           favourite: true,
+                          onFavoriteTap: () {
+                            _removeFavorite(doctor);
+                          },
                         ),
                       );
                     },

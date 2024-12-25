@@ -32,6 +32,7 @@ class _AnaEkranState extends State<AnaEkran> {
   final DoctorService doctorService = DoctorService();
   final AppointmentsService appointmentsService = AppointmentsService();
   final PatientService patientService = PatientService();
+
   bool isLoggedOut = false;
 
   List<Doctors> doctors = [];
@@ -112,6 +113,18 @@ class _AnaEkranState extends State<AnaEkran> {
           // Kartı göster
           _checkIfDoctorRated();
         }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata: $e")),
+      );
+    }
+  }
+
+  Future<void> _saveFavoriteDoctor(Doctors doctor) async {
+    try {
+      if (doctor != null && doctor.tc != null) {
+        await doctorService.addFavoriteDoctor(doctor!.tc!);
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -498,7 +511,7 @@ class _AnaEkranState extends State<AnaEkran> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  DoctorBilgiEkran(doctorId: doctor!.tc!),
+                                  DoctorBilgiEkran(doctorId: doctor.tc!),
                             ),
                           );
                         }
@@ -509,6 +522,9 @@ class _AnaEkranState extends State<AnaEkran> {
                         rating: "",
                         reviews: doctor.reviews?.length.toString() ?? "0",
                         favourite: false,
+                        onFavoriteTap: () {
+                          _saveFavoriteDoctor(doctor);
+                        },
                       ),
                     );
                   },
