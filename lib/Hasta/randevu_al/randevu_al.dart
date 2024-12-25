@@ -18,10 +18,56 @@ class RandevuAl extends StatefulWidget {
 }
 
 class _RandevuAlState extends State<RandevuAl> {
-
   final FilterValues filterValues = FilterValues();
   List<Doctors> doctors = [];
-  final List<String> branches = ["Kardiyoloji", "Ortopedi", "Nöroloji"];
+
+final List<String> branches = [
+  "Kardiyoloji",
+  "Ortopedi",
+  "Nöroloji",
+  "Aile Hekimliği",
+  "Anesteziyoloji ve Reanimasyon",
+  "Çocuk Sağlığı ve Hastalıkları",
+  "Çocuk Cerrahisi",
+  "Deri ve Zührevi Hastalıklar (Dermatoloji)",
+  "Endokrinoloji ve Metabolizma Hastalıkları",
+  "Fiziksel Tıp ve Rehabilitasyon",
+  "Gastroenteroloji",
+  "Genel Cerrahi",
+  "Göğüs Hastalıkları",
+  "Göğüs Cerrahisi",
+  "Göz Hastalıkları",
+  "Hematoloji",
+  "Kadın Hastalıkları ve Doğum",
+  "Kalp ve Damar Cerrahisi",
+  "Kulak Burun Boğaz Hastalıkları",
+  "Medikal Onkoloji",
+  "Nefroloji",
+  "Nöroşirürji (Beyin ve Sinir Cerrahisi)",
+  "Plastik, Rekonstrüktif ve Estetik Cerrahi",
+  "Psikiyatri",
+  "Radyasyon Onkolojisi",
+  "Radyoloji",
+  "Romatoloji",
+  "Spor Hekimliği",
+  "Tıbbi Genetik",
+  "Tıbbi Mikrobiyoloji",
+  "Tıbbi Patoloji",
+  "Üroloji",
+  "İç Hastalıkları (Dahiliye)",
+  "Enfeksiyon Hastalıkları ve Klinik Mikrobiyoloji",
+  "Göğüs Cerrahisi",
+  "İmmünoloji ve Alerji Hastalıkları",
+  "Ağız, Diş ve Çene Cerrahisi",
+  "Ağız, Diş ve Çene Radyolojisi",
+  "Endodonti",
+  "Ortodonti",
+  "Pedodonti (Çocuk Diş Hekimliği)",
+  "Periodontoloji",
+  "Protetik Diş Tedavisi",
+  "Restoratif Diş Tedavisi"
+];
+
   final List<String> times = [
     "09:00",
     "10:00",
@@ -32,7 +78,6 @@ class _RandevuAlState extends State<RandevuAl> {
     "15:00",
     "16:00",
     "17:00",
-    "18:00"
   ];
 
   Map<String, List<String>> cityDistrictMap = {};
@@ -40,13 +85,18 @@ class _RandevuAlState extends State<RandevuAl> {
   Future<void> _loadCityDistrictData() async {
     try {
       final String jsonString =
-          await rootBundle.loadString('assets/sehir_ilce.json');
+          await rootBundle.loadString('assets/MockData/sehir_ilce.json');
+      debugPrint(
+          "JSON Loaded Successfully: $jsonString"); // Debug print for raw JSON
       final Map<String, dynamic> jsonData = json.decode(jsonString);
 
       setState(() {
         cityDistrictMap = jsonData.map(
             (key, value) => MapEntry(key, List<String>.from(value as List)));
       });
+
+      debugPrint(
+          "CityDistrictMap: $cityDistrictMap"); // Debug print for parsed map
     } catch (e) {
       debugPrint("Error loading JSON data: $e");
     }

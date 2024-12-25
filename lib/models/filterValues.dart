@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class FilterValues {
   String? city;
   String? district;
@@ -12,4 +14,5 @@ class FilterValues {
     this.date,
     this.time,
   });
+
 }

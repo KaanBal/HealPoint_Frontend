@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yazilim_projesi/Doctor/DoktorProfil/abonelik_onaylama.dart';
+import 'package:yazilim_projesi/models/SubscriptionPlan.dart';
+import 'package:yazilim_projesi/services/subscription_service.dart';
 
 class AboneOl extends StatefulWidget {
   const AboneOl({super.key});
@@ -9,25 +11,46 @@ class AboneOl extends StatefulWidget {
 }
 
 class _SubscriptionScreenState extends State<AboneOl> {
-  String selectedSubscription = '';
+  SubscriptionPlan? selectedSubscription;
 
-  void toggleSelection(String subscription) {
-    setState(() {
-      if (selectedSubscription == subscription) {
-        selectedSubscription = '';
+  SubscriptionService subsService = SubscriptionService();
+  List<SubscriptionPlan> subscriptionPlans = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchSubscriptionPlans();
+  }
+
+  Future<void> fetchSubscriptionPlans() async {
+    try {
+      final response = await subsService.getAllPlans();
+      if (response.statusCode == 200) {
+        final List<dynamic> plansJson = response.data;
+        final plans =
+            plansJson.map((plan) => SubscriptionPlan.fromJson(plan)).toList();
+        setState(() {
+          subscriptionPlans = plans;
+          if (subscriptionPlans.isNotEmpty) {
+            selectedSubscription = subscriptionPlans.first;
+          }
+        });
       } else {
-        selectedSubscription = subscription;
+        print("Failed to fetch plans: ${response.statusCode}");
       }
-    });
+    } catch (e) {
+      print("Error: $e");
+    }
   }
 
   void navigateToConfirmation(BuildContext context) {
-    if (selectedSubscription.isNotEmpty) {
+    if (selectedSubscription != null) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              AbonelikOnaylama(subscription: selectedSubscription),
+          builder: (context) => AbonelikOnaylama(
+            subPlan: selectedSubscription, 
+          ),
         ),
       );
     } else {
@@ -46,41 +69,49 @@ class _SubscriptionScreenState extends State<AboneOl> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SubscriptionCard(
-              title: '3 Aylık Abonelik',
-              description: 'Yalnızca 3 ay boyunca erişim sağlayın.',
-              price: '₺99.99',
-              color: Colors.blueAccent,
-              isSelected: selectedSubscription == '3 Aylık',
-              onPressed: () {
-                toggleSelection('3 Aylık');
-              },
-            ),
-            const SizedBox(height: 16),
-            SubscriptionCard(
-              title: '1 Yıllık Abonelik',
-              description: 'İlk ay ücretsiz! 1 yıl boyunca erişim.',
-              price: '₺299.99',
-              color: Colors.greenAccent,
-              isSelected: selectedSubscription == '1 Yıllık',
-              onPressed: () {
-                toggleSelection('1 Yıllık');
-              },
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () => navigateToConfirmation(context),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                textStyle: const TextStyle(fontSize: 16),
+        child: subscriptionPlans.isEmpty
+            ? const Center(
+                child: Text(
+                  'Plan bulunamadı!',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+              )
+            : ListView.builder(
+                itemCount: subscriptionPlans.length,
+                itemBuilder: (context, index) {
+                  final plan = subscriptionPlans[index];
+                  return Column(
+                    children: [
+                      SubscriptionCard(
+                        title: plan.name ?? "",
+                        description: '${plan.durationInMonths} ay boyunca erişim.',
+                        price: '₺${plan.price?.toStringAsFixed(2)}',
+                        color: index.isEven
+                            ? Colors.blueAccent
+                            : Colors.greenAccent,
+                        isSelected: selectedSubscription == plan,
+                        onPressed: () {
+                          setState(() {
+                            selectedSubscription = plan;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  );
+                },
               ),
-              child: const Text('Onayla'),
-            ),
-          ],
-        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          navigateToConfirmation(context);
+        },
+        label: const Text('Onayla'),
+        icon: const Icon(Icons.check),
       ),
     );
   }
@@ -94,7 +125,8 @@ class SubscriptionCard extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onPressed;
 
-  const SubscriptionCard({super.key, 
+  const SubscriptionCard({
+    super.key,
     required this.title,
     required this.description,
     required this.price,

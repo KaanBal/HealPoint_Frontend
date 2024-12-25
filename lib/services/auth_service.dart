@@ -46,7 +46,7 @@ class AuthService {
   Future<Response> doctorSignUp(Map<String, dynamic> doctorData) async {
     try {
       final response = await apiClient.dio.post(
-        "doctors/create",
+        "doctors/save",
         data: doctorData,
       );
       return response;

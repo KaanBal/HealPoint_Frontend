@@ -340,7 +340,7 @@ class _AnaEkranState extends State<AnaEkran> {
   void _showRatingDialog() {
     showDialog(
       context: context,
-      barrierDismissible: false, // Dialog dışına tıklanarak kapatılamaz
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(

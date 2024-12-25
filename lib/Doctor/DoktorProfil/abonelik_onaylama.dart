@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:yazilim_projesi/models/Payments.dart';
+import 'package:yazilim_projesi/models/SubscriptionPlan.dart';
+import 'package:yazilim_projesi/services/payment_service.dart';
+import 'package:yazilim_projesi/services/subscription_service.dart';
 
 class AbonelikOnaylama extends StatefulWidget {
-  final String subscription;
+  final SubscriptionPlan? subPlan;
 
-  const AbonelikOnaylama({super.key, required this.subscription});
+  const AbonelikOnaylama({
+    super.key,
+    required this.subPlan,
+  });
 
   @override
   _ConfirmationScreenState createState() => _ConfirmationScreenState();
@@ -16,6 +23,8 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
   final TextEditingController expiryDateController = TextEditingController();
   final TextEditingController cvvController = TextEditingController();
   final TextEditingController adsoyadController = TextEditingController();
+  final PaymentService paymentService = PaymentService();
+  final SubscriptionService subscriptionService = SubscriptionService();
 
   @override
   void initState() {
@@ -46,25 +55,67 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
     setState(() {});
   }
 
-  void processPayment() {
+  void processPayment() async {
+    if (widget.subPlan == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Seçilen bir abonelik planı yok.')),
+      );
+      return;
+    }
+
+    final payment = Payment(
+      amount: widget.subPlan!.price,
+      cardNumber: cardNumberController.text,
+      cardHolderName: adsoyadController.text,
+      expiryDate: expiryDateController.text,
+      cvv: cvvController.text,
+      planId: widget.subPlan!.id,
+    );
+
     setState(() {
       isLoading = true;
     });
 
-    Future.delayed(const Duration(seconds: 3), () {
+    try {
+      final paymentResponse =
+          await paymentService.processPayment(payment.toJson());
+      if (paymentResponse.statusCode == 200) {
+        final subscriptionResponse =
+            await subscriptionService.manageSubscription(widget.subPlan!.id!);
+        if (subscriptionResponse.statusCode == 200) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Abonelik başarıyla kaydedildi.')),
+          );
+          Navigator.pop(context); 
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text(
+                    'Abonelik kaydedilemedi: ${subscriptionResponse.statusMessage}')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content:
+                  Text('Ödeme başarısız: ${paymentResponse.statusMessage}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Bir hata oluştu: $e')),
+      );
+    } finally {
       setState(() {
         isLoading = false;
       });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Ödeme başarıyla tamamlandı.')),
-      );
-    });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    String price = widget.subscription == '3 Aylık' ? '₺99.99' : '₺299.99';
+    String price =
+        widget.subPlan?.price?.toStringAsFixed(2) ?? "Fiyat bulunamadı";
 
     return Scaffold(
       appBar: AppBar(
@@ -77,12 +128,12 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Seçilen Abonelik: ${widget.subscription}',
+              'Seçilen Abonelik: ${widget.subPlan?.name}',
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             Text(
-              'Tutar: $price',
+              'Tutar: $price TL',
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 24),
@@ -94,8 +145,8 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
               ),
               keyboardType: TextInputType.name,
               inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(
-                    r'[a-zA-ZğüşöçıİĞÜŞÖÇ\s]')),
+                FilteringTextInputFormatter.allow(
+                    RegExp(r'[a-zA-ZğüşöçıİĞÜŞÖÇ\s]')),
                 LengthLimitingTextInputFormatter(50),
               ],
             ),

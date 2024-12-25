@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
+import 'package:yazilim_projesi/services/doctor_service.dart';
 import '../../models/filterValues.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi.dart';
 
@@ -18,40 +19,35 @@ class FilteredDoctorsScreen extends StatefulWidget {
 
 class _FilteredDoctorsScreenState extends State<FilteredDoctorsScreen> {
   List<Doctors> filteredDoctors = [];
+  final doctorService = DoctorService();
 
   @override
   void initState() {
     super.initState();
-    _fetchFilteredDoctors(); // Fetch doctors based on filterCriteria
+    _fetchFilteredDoctors();
   }
 
-  Future<void> _fetchFilteredDoctors() async {
-    try {
-      await Future.delayed(const Duration(seconds: 1));
+Future<void> _fetchFilteredDoctors() async {
 
-      // Mock data - gerçek uygulamada API'den gelecek
-      final List<Doctors> allDoctors = [
-        Doctors(name: "Dr. Ahmet Kaya", branch: "Dermatoloji"),
-        Doctors(name: "Dr. Mehmet", branch: "Ortopedi"),
-      ];
+  try {
+    final response = await doctorService.filterDoctors(widget.filterValues);
 
-      final filtered = allDoctors.where((doctor) {
-        if (widget.filterValues.branch != null &&
-            doctor.branch != widget.filterValues.branch) {
-          return false;
-        }
-        return true;
-      }).toList();
-
+    if (response.statusCode == 200) {
+      final List<dynamic> data = response.data;
       setState(() {
-        filteredDoctors = filtered;
+        filteredDoctors = data.map((doctorJson) => Doctors.fromJson(doctorJson)).toList();
       });
-    } catch (e) {
-      setState(() {
-        filteredDoctors = [];
-      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${response.statusCode}")),
+      );
     }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("An error occurred: $e")),
+    );
   }
+}
 
 
   @override
@@ -97,7 +93,7 @@ class _FilteredDoctorsScreenState extends State<FilteredDoctorsScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DoctorBilgiEkran(doctorId: "343"), //öylesine yazıldı id
+                            builder: (context) => DoctorBilgiEkran(doctorId: doctor.tc!), 
                           ),
                         );
                       },
