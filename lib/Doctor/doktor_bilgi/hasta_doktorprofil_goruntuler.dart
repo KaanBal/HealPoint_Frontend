@@ -6,7 +6,12 @@ import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
 class HastaDoktorprofilGoruntuler extends StatefulWidget {
-  const HastaDoktorprofilGoruntuler({super.key});
+  final Doctors doctor;
+
+  const HastaDoktorprofilGoruntuler({
+    super.key,
+    required this.doctor,
+  });
 
   @override
   State<HastaDoktorprofilGoruntuler> createState() =>
@@ -15,20 +20,21 @@ class HastaDoktorprofilGoruntuler extends StatefulWidget {
 
 class _HastaDoktorprofilGoruntulerState
     extends State<HastaDoktorprofilGoruntuler> {
-  Doctors? selectedDoctor;
   final DoktorBilgiFonks doktorBilgiFonks = DoktorBilgiFonks();
+
+  Doctors? doctor;
 
   void _loadData() async {
     const String jsonFile = 'assets/MockData/doctorInfo.json';
     final dataString = await rootBundle.loadString(jsonFile);
     final Map<String, dynamic> jsonData = json.decode(dataString);
-    selectedDoctor = Doctors.fromJson(jsonData);
+    doctor = Doctors.fromJson(jsonData);
     setState(() {});
   }
 
   @override
   void initState() {
-    _loadData();
+    doctor = widget.doctor;
     super.initState();
   }
 
@@ -48,8 +54,7 @@ class _HastaDoktorprofilGoruntulerState
           titleTextStyle: const TextStyle(
             color: Colors.white,
           ),
-          toolbarHeight:
-              screenHeight * 0.35, 
+          toolbarHeight: screenHeight * 0.35,
           title: Padding(
             padding: EdgeInsets.only(top: screenHeight * 0.05),
             child: Column(
@@ -95,13 +100,11 @@ class _HastaDoktorprofilGoruntulerState
     return Padding(
       padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
       child: Text(
-        selectedDoctor?.branch ?? "",
+        doctor?.branch ?? "",
         style: TextStyle(
           fontFamily: "ABeeZee",
           fontWeight: FontWeight.normal,
-          fontSize: MediaQuery.of(context).size.width *
-              0.04 *
-              fontScaleFactor, 
+          fontSize: MediaQuery.of(context).size.width * 0.04 * fontScaleFactor,
         ),
       ),
     );
@@ -112,12 +115,12 @@ class _HastaDoktorprofilGoruntulerState
       padding: const EdgeInsets.only(top: 8.0),
       child: Center(
         child: Text(
-          doktorBilgiFonks.getNameAndSurname(selectedDoctor?.name ?? "", selectedDoctor?.surname ?? ""),    
+          doktorBilgiFonks.getNameAndSurname(
+              doctor?.name ?? "", doctor?.surname ?? ""),
           style: TextStyle(
             fontFamily: "ABeeZee",
-            fontSize: MediaQuery.of(context).size.width *
-                0.045 *
-                fontScaleFactor,
+            fontSize:
+                MediaQuery.of(context).size.width * 0.045 * fontScaleFactor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -150,12 +153,16 @@ class _HastaDoktorprofilGoruntulerState
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            buildTile("Şehir", selectedDoctor?.city ?? "", Icons.location_city, fontScaleFactor),
-            buildTile("İlçe", selectedDoctor?.district ?? "", Icons.my_location, fontScaleFactor),
-            buildTile("Adres", selectedDoctor?.address ?? "", Icons.location_pin, fontScaleFactor),
-            buildTile(
-                "Telefon No", selectedDoctor?.phoneNumber ?? "", Icons.phone_android, fontScaleFactor),
-            buildTile("Email", selectedDoctor?.email ?? "", Icons.mail, fontScaleFactor),
+            buildTile("Şehir", doctor?.city ?? "", Icons.location_city,
+                fontScaleFactor),
+            buildTile("İlçe", doctor?.district ?? "", Icons.my_location,
+                fontScaleFactor),
+            buildTile("Adres", doctor?.address ?? "",
+                Icons.location_pin, fontScaleFactor),
+            buildTile("Telefon No", doctor?.phoneNumber ?? "",
+                Icons.phone_android, fontScaleFactor),
+            buildTile("Email", doctor?.email ?? "", Icons.mail,
+                fontScaleFactor),
           ],
         ),
       ),
@@ -170,9 +177,7 @@ class _HastaDoktorprofilGoruntulerState
         title,
         style: TextStyle(
           color: Colors.black,
-          fontSize: MediaQuery.of(context).size.width *
-              0.04 *
-              fontScaleFactor, 
+          fontSize: MediaQuery.of(context).size.width * 0.04 * fontScaleFactor,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -180,9 +185,7 @@ class _HastaDoktorprofilGoruntulerState
         value,
         style: TextStyle(
           color: Colors.black,
-          fontSize: MediaQuery.of(context).size.width *
-              0.035 *
-              fontScaleFactor,
+          fontSize: MediaQuery.of(context).size.width * 0.035 * fontScaleFactor,
         ),
       ),
     );
@@ -192,7 +195,10 @@ class _HastaDoktorprofilGoruntulerState
 class AboutSection extends StatelessWidget {
   final String aboutText;
 
-  const AboutSection({super.key, required this.aboutText, required Null Function(dynamic newValue) onEdit});
+  const AboutSection(
+      {super.key,
+      required this.aboutText,
+      required Null Function(dynamic newValue) onEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -209,8 +215,7 @@ class AboutSection extends StatelessWidget {
                 aboutText,
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: MediaQuery.of(context).size.width *
-                      0.04, 
+                  fontSize: MediaQuery.of(context).size.width * 0.04,
                 ),
               ),
             ),

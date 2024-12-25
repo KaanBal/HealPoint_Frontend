@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
-class Anaekranfonk extends StatefulWidget {
-  const Anaekranfonk({super.key});
-
-  @override
-  State<Anaekranfonk> createState() => _AnaekranfonkState();
-}
-
 class DoctorCard extends StatefulWidget {
   final String name;
   final String specialization;
   final String rating;
   final String reviews;
+  final VoidCallback onFavoriteTap;
   bool favourite;
 
   DoctorCard({
@@ -22,6 +16,7 @@ class DoctorCard extends StatefulWidget {
     required this.rating,
     required this.reviews,
     required this.favourite,
+    required this.onFavoriteTap,
   });
 
   @override
@@ -75,6 +70,7 @@ class _DoctorCardState extends State<DoctorCard> {
                           setState(() {
                             widget.favourite = !widget.favourite;
                           });
+                          widget.onFavoriteTap();
                         },
                         child: Icon(
                           Icons.favorite,
@@ -112,12 +108,5 @@ class _DoctorCardState extends State<DoctorCard> {
         ),
       ),
     );
-  }
-}
-
-class _AnaekranfonkState extends State<Anaekranfonk> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }

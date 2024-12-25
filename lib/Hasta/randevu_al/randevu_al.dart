@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al_doktor_liste.dart';
-import '../../renkler/renkler.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al_doktor_liste.dart';
+import 'package:yazilim_projesi/models/Doctors.dart';
+import 'package:yazilim_projesi/models/filterValues.dart';
+import 'package:yazilim_projesi/renkler/renkler.dart';
 
 class RandevuAl extends StatefulWidget {
   const RandevuAl({super.key});
@@ -11,48 +15,68 @@ class RandevuAl extends StatefulWidget {
 }
 
 class _RandevuAlState extends State<RandevuAl> {
-  String? selectedSehir;
-  String? selectedIlce;
-  String? selectedBranch;
-  DateTime? selectedDate;
-  String? selectedTime;
-
-  final List<String> sehirs = ["İstanbul", "Ankara", "İzmir", "Trabzon"];
-  final Map<String, List<String>> ilceler = {
-    "İstanbul": ["Kadıköy", "Beşiktaş", "Üsküdar"],
-    "Ankara": ["Çankaya", "Keçiören", "Sincan"],
-    "İzmir": ["Konak", "Bornova", "Karşıyaka"],
-    "Trabzon": ["Ortahisar", "Akçaabat", "Yomra"],
-  };
+  final FilterValues filterValues = FilterValues();
+  List<Doctors> doctors = [];
   final List<String> branches = ["Kardiyoloji", "Ortopedi", "Nöroloji"];
-  final List<String> times = ["08:00", "10:00", "12:00"];
+  final List<String> times = [
+    "09:00",
+    "10:00",
+    "11:00",
+    "12:00",
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
+    "18:00"
+  ];
+
+  Map<String, List<String>> cityDistrictMap = {};
+
+  Future<void> _loadCityDistrictData() async {
+    try {
+      final String jsonString =
+          await rootBundle.loadString('assets/sehir_ilce.json');
+      final Map<String, dynamic> jsonData = json.decode(jsonString);
+
+      setState(() {
+        cityDistrictMap = jsonData.map(
+            (key, value) => MapEntry(key, List<String>.from(value as List)));
+      });
+    } catch (e) {
+      debugPrint("Error loading JSON data: $e");
+    }
+  }
 
   void _selectDate() async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2023),
-      lastDate: DateTime(2025),
+      firstDate: DateTime(2024),
+      lastDate: DateTime(2026),
     );
     if (pickedDate != null) {
       setState(() {
-        selectedDate = pickedDate;
+        filterValues.date = pickedDate;
       });
     }
   }
 
   void _applyFilters() {
-    Navigator.pushNamed(
+    Navigator.push(
       context,
-      '/filteredDoctors',
-      arguments: {
-        'sehir': selectedSehir,
-        'ilce': selectedIlce,
-        'branch': selectedBranch,
-        'date': selectedDate,
-        'time': selectedTime,
-      },
+      MaterialPageRoute(
+        builder: (context) => FilteredDoctorsScreen(
+          filterValues: filterValues,
+        ),
+      ),
     );
+  }
+
+  @override
+  void initState() {
+    _loadCityDistrictData();
+    super.initState();
   }
 
   @override
@@ -83,22 +107,22 @@ class _RandevuAlState extends State<RandevuAl> {
             ),
             DropdownButton<String>(
               hint: const Text("Şehir Seçin"),
-              value: selectedSehir,
+              value: filterValues.city,
               isExpanded: true,
               onChanged: (value) {
                 setState(() {
-                  selectedSehir = value;
-                  selectedIlce = null; // Şehir değiştiğinde ilçe sıfırlanır
+                  filterValues.city = value;
+                  filterValues.district = null;
                 });
               },
-              items: sehirs.map((sehir) {
+              items: cityDistrictMap.keys.map((city) {
                 return DropdownMenuItem(
-                  value: sehir,
-                  child: Text(sehir),
+                  value: city,
+                  child: Text(city),
                 );
               }).toList(),
             ),
-            if (selectedSehir != null) ...[
+            if (filterValues.city != null) ...[
               const SizedBox(height: 20),
               const Text(
                 'İlçe',
@@ -106,17 +130,17 @@ class _RandevuAlState extends State<RandevuAl> {
               ),
               DropdownButton<String>(
                 hint: const Text("İlçe Seçin"),
-                value: selectedIlce,
+                value: filterValues.district,
                 isExpanded: true,
                 onChanged: (value) {
                   setState(() {
-                    selectedIlce = value;
+                    filterValues.district = value;
                   });
                 },
-                items: ilceler[selectedSehir]!.map((ilce) {
+                items: cityDistrictMap[filterValues.city]!.map((district) {
                   return DropdownMenuItem(
-                    value: ilce,
-                    child: Text(ilce),
+                    value: district,
+                    child: Text(district),
                   );
                 }).toList(),
               ),
@@ -128,11 +152,11 @@ class _RandevuAlState extends State<RandevuAl> {
             ),
             DropdownButton<String>(
               hint: const Text("Branş Seçin"),
-              value: selectedBranch,
+              value: filterValues.branch,
               isExpanded: true,
               onChanged: (value) {
                 setState(() {
-                  selectedBranch = value;
+                  filterValues.branch = value;
                 });
               },
               items: branches.map((branch) {
@@ -155,11 +179,11 @@ class _RandevuAlState extends State<RandevuAl> {
               ),
               child: const Text("Tarih Seç"),
             ),
-            if (selectedDate != null)
+            if (filterValues.date != null)
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Text(
-                  'Seçilen Tarih: ${DateFormat('dd MMMM yyyy').format(selectedDate!)}',
+                  'Seçilen Tarih: ${DateFormat('dd MMMM yyyy').format(filterValues.date!)}',
                   style: const TextStyle(fontSize: 16),
                 ),
               ),
@@ -170,11 +194,11 @@ class _RandevuAlState extends State<RandevuAl> {
             ),
             DropdownButton<String>(
               hint: const Text("Saat Seçin"),
-              value: selectedTime,
+              value: filterValues.time,
               isExpanded: true,
               onChanged: (value) {
                 setState(() {
-                  selectedTime = value;
+                  filterValues.time = value;
                 });
               },
               items: times.map((time) {
@@ -187,13 +211,7 @@ class _RandevuAlState extends State<RandevuAl> {
             const Spacer(),
             Center(
               child: ElevatedButton(
-                onPressed: () {
-                  _applyFilters();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => FilteredDoctorsScreen(filteredDoctors: "")), // YeniSayfa, geçmek istediğiniz sayfa.
-                  );
-                },
+                onPressed: _applyFilters,
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
                   backgroundColor: acikKirmizi,
@@ -202,7 +220,6 @@ class _RandevuAlState extends State<RandevuAl> {
                 child: const Text(
                   "Filtreleri Uygula",
                   style: TextStyle(fontSize: 16),
-
                 ),
               ),
             ),

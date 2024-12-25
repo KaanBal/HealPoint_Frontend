@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/models/Appointments.dart';
+import 'package:yazilim_projesi/services/appointments_service.dart';
 
 class DoktorBilgiFonks {
+  final AppointmentsService appointmentService = AppointmentsService();
 
   void doktorBilgisiGoster(BuildContext context, String doktorAdi) {
     showDialog(
@@ -53,6 +56,21 @@ class DoktorBilgiFonks {
     }
 
     return nameSurname;
+  }
+
+  Future<void> createAppointment(Appointments appointment) async {
+    try {
+      final response =
+          await appointmentService.createAppointment(appointment.toJson());
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("Kayıt başarılı: ${response.data}");
+      } else {
+        print("Kayıt başarısız: ${response.statusMessage}");
+      }
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
   }
 
   void doktorDegerlendir(BuildContext context, String doktorAdi) {

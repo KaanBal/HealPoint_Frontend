@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:yazilim_projesi/Doctor/DoktorProfil/doktorProfil_fonks.dart';
 import 'package:yazilim_projesi/Doctor/DoktorProfil/doktor_abonelik.dart';
+import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
 void showEditDialog(BuildContext context, String title, String initialValue,
@@ -50,24 +52,19 @@ class DoctorProfil extends StatefulWidget {
 }
 
 class _DoctorProfilState extends State<DoctorProfil> {
-  String city = "Adana";
-  String district = "Sarıçam";
-  String address = "156.sokak ahmetağa mah.";
-  String phone = "+62 812345678";
-  String email = "aseps.career@gmail.com";
-  String sifre = "1234";
-  String about =
-      "Dr. Anderson is a highly respected and experienced psychiatrist known for his compassionate care and comprehensive approach to mental health. With over 15 years of experience in the field, Dr. Anderson...";
+  final DoktorProfilFonks fonks = DoktorProfilFonks();
 
   String? _selectedCity;
   String? _selectedDistrict;
   Map<String, List<String>> cityDistrictMap = {};
   List<String> _districts = [];
+  Doctors? doctor;
 
   @override
   void initState() {
     super.initState();
     _loadCityDistrictData();
+    _fetchDoctorInfo();
   }
 
   Future<void> _loadCityDistrictData() async {
@@ -83,6 +80,36 @@ class _DoctorProfilState extends State<DoctorProfil> {
     } catch (e) {
       debugPrint("Error loading JSON data: $e");
     }
+  }
+
+  void _fetchDoctorInfo() async {
+    try {
+      final doctorInfo = await fonks.loadData();
+      setState(() {
+        doctor = doctorInfo;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata oluştu: $e")),
+      );
+    }
+  }
+
+    Future<void> _updateDoctorData() async {
+    if (doctor != null && doctor?.tc != null)  {
+      try {
+        await fonks.updateDoctor(doctor!.tc!, doctor!);
+        debugPrint("Doctor data updated successfully.");
+      } catch (e) {
+        debugPrint("Error updating doctor data: $e");
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _updateDoctorData();
+    super.dispose();
   }
 
   // Şehir düzenleme dialogu
@@ -128,7 +155,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
             onPressed: () {
               if (_selectedCity != null) {
                 setState(() {
-                  city = _selectedCity!;
+                  doctor?.city = _selectedCity!;
                 });
                 Navigator.of(context).pop();
               }
@@ -181,7 +208,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
             onPressed: () {
               if (_selectedDistrict != null) {
                 setState(() {
-                  district = _selectedDistrict!;
+                  doctor?.district = _selectedDistrict!;
                 });
                 Navigator.of(context).pop();
               }
@@ -243,10 +270,10 @@ class _DoctorProfilState extends State<DoctorProfil> {
           children: [
             SingleChildScrollView(
               child: AboutSection(
-                aboutText: about,
+                aboutText: doctor?.about ?? "",
                 onEdit: (newValue) {
                   setState(() {
-                    about = newValue;
+                    doctor?.about = newValue;
                   });
                 },
                 fontScaleFactor: fontScaleFactor,
@@ -270,7 +297,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
     return Padding(
       padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
       child: Text(
-        "Ürolog",
+        doctor?.branch ?? "Branş Bulunamadı",
         style: TextStyle(
           fontFamily: "ABeeZee",
           fontWeight: FontWeight.normal,
@@ -285,7 +312,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
       padding: const EdgeInsets.only(top: 8.0),
       child: Center(
         child: Text(
-          "Dr. William Anderson",
+          "${doctor?.name ?? ""} ${doctor?.surname ?? ""}",
           style: TextStyle(
             fontFamily: "ABeeZee",
             fontSize:
@@ -324,37 +351,37 @@ class _DoctorProfilState extends State<DoctorProfil> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            buildEditableTile("Şehir", city, Icons.location_city, (newValue) {
+            buildEditableTile("Şehir", doctor?.city ?? "", Icons.location_city, (newValue) {
               setState(() {
-                city = newValue;
+                doctor?.city = newValue;
               });
               showCityEditDialog(context);
             }, fontScaleFactor, isDropdown: true),
-            buildEditableTile("İlçe", district, Icons.my_location, (newValue) {
+            buildEditableTile("İlçe", doctor?.district ?? "", Icons.my_location, (newValue) {
               setState(() {
-                district = newValue;
+                doctor?.district = newValue;
               });
               showDistrictEditDialog(context);
             }, fontScaleFactor, isDropdown: true),
-            buildEditableTile("Adres", address, Icons.location_pin, (newValue) {
+            buildEditableTile("Adres", doctor?.address ?? "", Icons.location_pin, (newValue) {
               setState(() {
-                address = newValue;
+                doctor?.address = newValue;
               });
             }, fontScaleFactor, isDropdown: false),
-            buildEditableTile("Telefon No", phone, Icons.phone_android,
+            buildEditableTile("Telefon No", doctor?.phoneNumber ?? "", Icons.phone_android,
                 (newValue) {
               setState(() {
-                phone = newValue;
+                doctor?.phoneNumber = newValue;
               });
             }, fontScaleFactor, isDropdown: false),
-            buildEditableTile("Email", email, Icons.mail, (newValue) {
+            buildEditableTile("Email", doctor?.email ?? "", Icons.mail, (newValue) {
               setState(() {
-                email = newValue;
+                doctor?.email = newValue;
               });
             }, fontScaleFactor, isDropdown: false),
-            buildEditableTile("Şifre", sifre, Icons.security, (newValue) {
+            buildEditableTile("Şifre", doctor?.password ?? "", Icons.security, (newValue) {
               setState(() {
-                sifre = newValue;
+                doctor?.password = newValue;
               });
             }, fontScaleFactor, isDropdown: false),
           ],
