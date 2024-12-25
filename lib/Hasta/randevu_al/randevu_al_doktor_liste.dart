@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
 import '../../models/filterValues.dart';
+import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi.dart';
 
 class FilteredDoctorsScreen extends StatefulWidget {
   final FilterValues filterValues;
@@ -21,18 +22,37 @@ class _FilteredDoctorsScreenState extends State<FilteredDoctorsScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchFilteredDoctors();
+    _fetchFilteredDoctors(); // Fetch doctors based on filterCriteria
   }
 
   Future<void> _fetchFilteredDoctors() async {
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      filteredDoctors = [
-        Doctors(name: "Dr. Ahmet", branch: "Kardiyoloji"),
+    try {
+      await Future.delayed(const Duration(seconds: 1));
+
+      // Mock data - gerçek uygulamada API'den gelecek
+      final List<Doctors> allDoctors = [
+        Doctors(name: "Dr. Ahmet Kaya", branch: "Dermatoloji"),
         Doctors(name: "Dr. Mehmet", branch: "Ortopedi"),
       ];
-    });
+
+      final filtered = allDoctors.where((doctor) {
+        if (widget.filterValues.branch != null &&
+            doctor.branch != widget.filterValues.branch) {
+          return false;
+        }
+        return true;
+      }).toList();
+
+      setState(() {
+        filteredDoctors = filtered;
+      });
+    } catch (e) {
+      setState(() {
+        filteredDoctors = [];
+      });
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,22 +85,31 @@ class _FilteredDoctorsScreenState extends State<FilteredDoctorsScreen> {
             filteredDoctors.isEmpty
                 ? const Center(child: CircularProgressIndicator())
                 : Expanded(
-                    child: ListView.builder(
-                      itemCount: filteredDoctors.length,
-                      itemBuilder: (context, index) {
-                        final doctor = filteredDoctors[index];
-                        return Card(
-                          child: ListTile(
-                            title: Text(doctor.name ?? "Doktor İsmi Yok"),
-                            subtitle: Text(doctor.branch ?? "Branş Yok"),
+              child: ListView.builder(
+                itemCount: filteredDoctors.length,
+                itemBuilder: (context, index) {
+                  final doctor = filteredDoctors[index];
+                  return Card(
+                    child: ListTile(
+                      title: Text(doctor.name ?? "Doktor İsmi Yok"),
+                      subtitle: Text(doctor.branch ?? "Branş Yok"),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DoctorBilgiEkran(doctorId: "343"), //öylesine yazıldı id
                           ),
                         );
                       },
                     ),
-                  ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
+
