@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi.dart';
 import 'package:yazilim_projesi/Doctor/favori_doktor/favori_doktor.dart';
 import 'package:yazilim_projesi/Hasta/HastaProfil/hasta_profil.dart';
+import 'package:yazilim_projesi/Hasta/ana_ekran/anaEkranService_fonks.dart';
 import 'package:yazilim_projesi/Hasta/gecmisRandevu/gecmis_randevu.dart';
 import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al.dart';
 import 'package:yazilim_projesi/Hasta/yaklasan_randevular/yaklasan_randevular.dart';
@@ -32,9 +33,13 @@ class _AnaEkranState extends State<AnaEkran> {
   final DoctorService doctorService = DoctorService();
   final AppointmentsService appointmentsService = AppointmentsService();
   final PatientService patientService = PatientService();
+
+  final AnaEkranServiceFonks serviceFonks = AnaEkranServiceFonks();
+
   bool isLoggedOut = false;
 
   List<Doctors> doctors = [];
+  List<Doctors> favDoctors = [];
   List<Appointments> upcomingAppointments = [];
   String? patientName;
 
@@ -109,6 +114,10 @@ class _AnaEkranState extends State<AnaEkran> {
             .toList();
       });
 
+      if (upcomingAppointments.isNotEmpty &&
+          upcomingAppointments[0].status == "tamamlandı") {
+        _checkIfDoctorRated();
+      }
       /*Tüm randevuları kontrol et
       for (var appointment in upcomingAppointments) {
         if (appointment.status == "tamamlandı") {
@@ -122,10 +131,57 @@ class _AnaEkranState extends State<AnaEkran> {
     }
   }
 
+  Future<void> _getFavoritesDoctor() async {
+    try {
+      favDoctors = await serviceFonks.fetchFavDoctors();
+      setState(() {});
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata: $e")),
+      );
+    }
+  }
+
   Future<void> _saveFavoriteDoctor(Doctors doctor) async {
     try {
-      if (doctor != null && doctor.tc != null) {
-        await doctorService.addFavoriteDoctor(doctor!.tc!);
+      if (doctor.tc != null) {
+        await doctorService.addFavoriteDoctor(doctor.tc!);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata: $e")),
+      );
+    }
+  }
+
+  Future<void> _removeFavorite(Doctors doctor) async {
+    try {
+      print('Favori doktor silme işlemi başladı. Doktor: ${doctor.tc}');
+      await serviceFonks.removeFavorite(doctor);
+      setState(() {});
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Doktor favorilerden kaldırıldı.")),
+      );
+    } catch (e) {
+      print('Favori doktor silme işlemi başarısız oldu. Hata: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata: Doktor favorilerden kaldırılamadı. $e")),
+      );
+    }
+  }
+
+  Future<void> _toggleFavoriteDoctor(Doctors doctor) async {
+    try {
+      if (favDoctors.any((favDoctor) => favDoctor.tc == doctor.tc)) {
+        await _removeFavorite(doctor);
+        setState(() {
+          favDoctors.removeWhere((favDoctor) => favDoctor.tc == doctor.tc);
+        });
+      } else {
+        await _saveFavoriteDoctor(doctor);
+        setState(() {
+          favDoctors.add(doctor);
+        });
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -140,8 +196,15 @@ class _AnaEkranState extends State<AnaEkran> {
     _loadData();
     _loadPatientName();
     _loadUpcomingAppointments();
+    _getFavoritesDoctor();
     super.initState();
     _checkIfDoctorRated();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _getFavoritesDoctor();
   }
 
   _checkIfDoctorRated() async {
@@ -149,7 +212,6 @@ class _AnaEkranState extends State<AnaEkran> {
     bool hasRated = prefs.getBool('hasRatedDoctor') ?? false;
 
     if (!hasRated) {
-      // Dialog'u göster
       if (mounted) {
         _showRatingDialog();
       }
@@ -311,7 +373,9 @@ class _AnaEkranState extends State<AnaEkran> {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: acikKirmizi,
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+
                     ),
                     child: const Text(
                       "Evet",
@@ -325,7 +389,8 @@ class _AnaEkranState extends State<AnaEkran> {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey,
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                     ),
                     child: const Text(
                       "Hayır",
@@ -402,8 +467,14 @@ class _AnaEkranState extends State<AnaEkran> {
                 title: const Text(
                   'Favori Doktorlarım',),
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => FavoriteDoctorsPage()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FavoriteDoctorsPage(),
+                    ),
+                  ).then((_) {
+                    _getFavoritesDoctor(); 
+                  });
                 },
               ),
               const Divider(),
@@ -622,6 +693,10 @@ class _AnaEkranState extends State<AnaEkran> {
                       SizedBox(height: screenHeight * 0.015),
                   itemBuilder: (context, index) {
                     final doctor = doctors[index];
+                    // Favori durumu kontrolü
+                    final isFavorite = favDoctors
+                        .any((favDoctor) => favDoctor.tc == doctor.tc);
+
                     return InkWell(
                       onTap: () {
                         if (doctor.tc != null) {
@@ -637,11 +712,12 @@ class _AnaEkranState extends State<AnaEkran> {
                       child: DoctorCard(
                         name: doctor.name ?? "",
                         specialization: doctor.branch ?? "",
-                        rating: "",
+                        rating: doctor.avgPoint.toString(),
                         reviews: doctor.reviews?.length.toString() ?? "0",
-                        favourite: false,
+                        favourite: isFavorite, // Favori durumu
                         onFavoriteTap: () {
-                          _saveFavoriteDoctor(doctor);
+                          _toggleFavoriteDoctor(
+                              doctor); // Favori durumunu değiştir
                         },
                       ),
                     );
