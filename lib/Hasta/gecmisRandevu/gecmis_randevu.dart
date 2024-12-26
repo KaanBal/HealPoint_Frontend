@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:yazilim_projesi/Hasta/gecmisRandevu/gecmisRandevu_fonks.dart';
+import 'package:yazilim_projesi/Hasta/yorum/hasta_yorum.dart';
 import 'package:yazilim_projesi/models/Appointments.dart';
 
 class GecmisRandevular extends StatefulWidget {
@@ -50,6 +51,27 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
           dataJson.map((json) => Appointments.fromJson(json)).toList();
       isLoading = false;
     });
+  }
+
+  Widget _buildRatingButton(Appointments appointment, String statusText) {
+    // Sadece tamamlanmış randevular için değerlendirme butonu göster
+    if (statusText.toLowerCase() == "tamamlandı") {
+      return TextButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => DoctorRatingScreen()));
+        },
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.black,
+          textStyle: const TextStyle(
+            decorationColor: Colors.blue,
+            decorationThickness: 2,
+          ),
+        ),
+        child: const Text("Değerlendir"),
+      );
+    }
+    // Diğer durumlar için boş container döndür
+    return Container();
   }
 
   @override
@@ -127,14 +149,23 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          Text(
-                            pastAppointment.doctor?.city ??
-                                "Şehir Bilgisi Yok",
-                            style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.grey,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                pastAppointment.doctor?.city ??
+                                    "Şehir Bilgisi Yok",
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: _buildRatingButton(pastAppointment, statusText),
+                              )
+                            ],
                           ),
                         ],
                       ),

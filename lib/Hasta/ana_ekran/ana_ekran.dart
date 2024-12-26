@@ -218,35 +218,6 @@ class _AnaEkranState extends State<AnaEkran> {
     }
   }
 
-  /* _checkIfDoctorRated(Appointments appointment) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String ratingKey = _getRatingKey(appointment.id ?? '');
-    bool hasRated = prefs.getBool(ratingKey) ?? false;
-
-    if (!hasRated && mounted) {
-      _showRatingDialog(appointment);
-    }
-  } */
-
-   /* void _handleRatingResponse(bool ratingGiven, Appointments appointment) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String ratingKey = _getRatingKey(appointment.id ?? '');
-    await prefs.setBool(ratingKey, true);
-
-    if (ratingGiven && mounted) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => DoctorRatingScreen(
-            doctorId: appointment.doctor?.tc ?? '',
-            appointmentId: appointment.id ?? '',
-            doctorName: appointment.doctor?.name ?? '',
-          ),
-        ),
-      );
-    }
-  } */
-
   void _handleRatingResponse(bool ratingGiven) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('hasRatedDoctor', true);
@@ -259,7 +230,7 @@ class _AnaEkranState extends State<AnaEkran> {
     }
   }
 
-  /* void _showRatingDialog(Appointments appointment) {
+   /* void _showRatingDialog(Appointments appointment) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -335,7 +306,7 @@ class _AnaEkranState extends State<AnaEkran> {
         );
       },
     );
-  }  */
+  }   */
 
   void _showRatingDialog() {
     showDialog(
