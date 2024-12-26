@@ -1,63 +1,33 @@
 {
-    "Doctor_tc": "12345678901",
-    "Doctor_name": "Ahmet",
-    "Doctor_surname": "Yilmaz",
-    "branch": "Cardiology",
-    "Doctor_phonenumber": "+905551234567",
-    "Doctor_email": "ahmet.yilmaz@example.com",
-    "city": "Istanbul",
-    "district": "Kadikoy",
-    "address": "Example Street, No: 10, Apartment 5",
-    "Doctor_about":"Dr. Anderson is a highly respected and experienced psychiatrist known for his compassionate care and comprehensive approach to mental health. With over 15 years of experience in the field, Dr. Anderson...",
-    "patients": [
-      {
-        "patientTc": "98765432101",
-        "Patient_name": "Mehmet",
-        "Patient_surname": "Kara",
-        "patientPhoneNumber": "+905551111111"
-      },
-      {
-        "patientTc": "12312312312",
-        "Patient_name": "Ayşe",
-        "Patient_surname": "Demir",
-        "patientPhoneNumber": "+905552222222"
+  "name": "Dr. John Doe",
+  "email": "johndoe@example.com",
+  "phoneNumber": "555-123-4567",
+  "tc": "12345678901",
+  "branch": "Cardiology",
+  "about": "Experienced cardiologist specializing in heart diseases.",
+  "city": "Istanbul",
+  "district": "Kadikoy",
+  "address": "123 Main Street, Kadikoy, Istanbul",
+  "avgPoint": 4.8,
+  "isAccountActive": true,
+  "reviews": [
+    {
+      "comments": "Excellent doctor, highly recommend!",
+      "points": 5,
+      "createdAt": "2024-12-01T14:30:00",
+      "patient" : {
+        "name": "Ayberk",
+        "surname": "OZ"
       }
-    ],
-    "payments": [
-      {
-        "Payment_id": 1,
-        "amount": 500.0,
-        "status": "AYLIK"
-      },
-      {
-        "Payment_id": 2,
-        "amount": 750.0,
-        "status": "AYLIK"
+    },
+    {
+      "comments": "Very knowledgeable and caring.",
+      "points": 4,
+      "createdAt": "2024-12-15T09:00:00",
+      "patient" : {
+        "name": "Furkan",
+        "surname": "Mermer"
       }
-    ],
-    "reviews": [
-      {
-        "reviewId": 101,
-        "points": 4,
-        "comment": "Great doctor, very kind and professional.",
-        "createdAt": "2024-12-10T10:30:00Z",
-        "patient" : {
-          "patientTc": "12345678901212",
-          "Patient_name": "Furkan",
-          "Patient_surname": "Mermer"
-        }
-      },
-      {
-        "reviewId": 102,
-        "points": 5,
-        "comment": "Good experience, but appointment was delayed.",
-        "createdAt": "2024-12-09T14:45:00Z",
-        "patient" : {
-          "patientTc": "1234567890121",
-          "Patient_name": "Ayberk",
-          "Patient_surname": "OZ"
-        }
-      }
-    ]
-  }
-  
+    }
+  ]
+}
