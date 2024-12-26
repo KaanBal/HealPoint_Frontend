@@ -21,8 +21,8 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
   @override
   void initState() {
     super.initState();
-    _loadDataFromMockData();
-    //_loadData();
+    //_loadDataFromMockData();
+    _loadData();
   }
 
   Future<void> _loadData() async {
@@ -54,11 +54,10 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
   }
 
   Widget _buildRatingButton(Appointments appointment, String statusText) {
-    // Sadece tamamlanmış randevular için değerlendirme butonu göster
-    if (statusText.toLowerCase() == "tamamlandı") {
+    if (statusText.toLowerCase() == "tamamlandı" && appointment.doctorTc != null) {
       return TextButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DoctorRatingScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => DoctorRatingScreen(appointment: appointment,)));
         },
         style: TextButton.styleFrom(
           foregroundColor: Colors.black,
@@ -70,7 +69,6 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
         child: const Text("Değerlendir"),
       );
     }
-    // Diğer durumlar için boş container döndür
     return Container();
   }
 

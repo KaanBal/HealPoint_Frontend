@@ -95,7 +95,7 @@ class _FavoriteDoctorsPageState extends State<FavoriteDoctorsPage> {
                           name: doctor.name ?? "",
                           specialization: doctor.branch ?? "",
                           rating: "",
-                          reviews: doctor.reviews?.length.toString() ?? "0",
+                          reviews: "doctor.reviews?.length.toString() ?? 0",
                           favourite: true,
                           onFavoriteTap: () {
                             _removeFavorite(doctor);

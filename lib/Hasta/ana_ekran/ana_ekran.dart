@@ -102,7 +102,6 @@ class _AnaEkranState extends State<AnaEkran> {
     return 'hasRatedDoctor_$appointmentId';
   } */
 
-
   Future<void> _loadUpcomingAppointments() async {
     try {
       final response = await appointmentsService.fetchUpcomingAppointments();
@@ -225,12 +224,14 @@ class _AnaEkranState extends State<AnaEkran> {
     if (ratingGiven && mounted) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const DoctorRatingScreen()),
+        MaterialPageRoute(
+            builder: (context) =>
+                DoctorRatingScreen(appointment: Appointments())),
       );
     }
   }
 
-   /* void _showRatingDialog(Appointments appointment) {
+  /* void _showRatingDialog(Appointments appointment) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -346,7 +347,6 @@ class _AnaEkranState extends State<AnaEkran> {
                       backgroundColor: acikKirmizi,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 10),
-
                     ),
                     child: const Text(
                       "Evet",
@@ -376,7 +376,6 @@ class _AnaEkranState extends State<AnaEkran> {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -436,7 +435,8 @@ class _AnaEkranState extends State<AnaEkran> {
               ListTile(
                 leading: const Icon(Icons.favorite_border),
                 title: const Text(
-                  'Favori Doktorlarım',),
+                  'Favori Doktorlarım',
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -444,7 +444,7 @@ class _AnaEkranState extends State<AnaEkran> {
                       builder: (context) => const FavoriteDoctorsPage(),
                     ),
                   ).then((_) {
-                    _getFavoritesDoctor(); 
+                    _getFavoritesDoctor();
                   });
                 },
               ),
@@ -461,7 +461,8 @@ class _AnaEkranState extends State<AnaEkran> {
                   });
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const GirisEkrani()),
+                    MaterialPageRoute(
+                        builder: (context) => const GirisEkrani()),
                   );
                 },
               ),
@@ -547,9 +548,8 @@ class _AnaEkranState extends State<AnaEkran> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  YaklasanRandevular(
-                                      appointments: upcomingAppointments)));
+                              builder: (context) => YaklasanRandevular(
+                                  appointments: upcomingAppointments)));
                     },
                     child: Text(
                       " Görüntüle",
@@ -684,7 +684,7 @@ class _AnaEkranState extends State<AnaEkran> {
                         name: doctor.name ?? "",
                         specialization: doctor.branch ?? "",
                         rating: doctor.avgPoint.toString(),
-                        reviews: doctor.reviews?.length.toString() ?? "0",
+                        reviews: "0",
                         favourite: isFavorite, // Favori durumu
                         onFavoriteTap: () {
                           _toggleFavoriteDoctor(

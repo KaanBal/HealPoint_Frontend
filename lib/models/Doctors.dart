@@ -1,4 +1,3 @@
-import 'package:yazilim_projesi/models/Reviews.dart';
 
 class Doctors {
   String? tc;
@@ -15,7 +14,6 @@ class Doctors {
   String? address;
   double? avgPoint;
   bool? isAccountActive;
-  List<Reviews>? reviews;
 
   Doctors({
     this.tc,
@@ -32,7 +30,6 @@ class Doctors {
     this.address,
     this.avgPoint,
     this.isAccountActive,
-    this.reviews,
   });
 
   factory Doctors.fromJson(Map<String, dynamic> json) {
@@ -51,9 +48,6 @@ class Doctors {
       address: json['address'],
       avgPoint: (json['avgPoint'] as num?)?.toDouble(),
       isAccountActive: json['isAccountActive'] as bool?,
-      reviews: (json['reviews'] as List<dynamic>?)
-          ?.map((review) => Reviews.fromJson(review))
-          .toList(),
     );
   }
 
@@ -73,7 +67,6 @@ class Doctors {
       'address': address,
       'avgPoint': avgPoint,
       'isAccountActive': isAccountActive,
-      'reviews': reviews?.map((review) => review.toJson()).toList(),
     };
   }
 }

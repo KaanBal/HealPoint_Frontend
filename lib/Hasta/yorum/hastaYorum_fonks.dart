@@ -1,13 +1,16 @@
 import 'dart:convert';
 
 import 'package:yazilim_projesi/models/Appointments.dart';
+import 'package:yazilim_projesi/models/Patients.dart';
 import 'package:yazilim_projesi/models/Reviews.dart';
 import 'package:yazilim_projesi/services/appointments_service.dart';
+import 'package:yazilim_projesi/services/patient_service.dart';
 import 'package:yazilim_projesi/services/review_service.dart';
 
 class HastaYorumFonks {
   final AppointmentsService appointmentsService = AppointmentsService();
   final ReviewService reviewService = ReviewService();
+  final PatientService patientService = PatientService();
 
   Future<Appointments?> getAppointmentDetails() async {
     try {
@@ -47,5 +50,18 @@ class HastaYorumFonks {
       rethrow;
     }
   }
+
+  Future<Patients?> loadData() async {
+    try {
+      final response = await patientService.getPatientById();
+      final Map<String, dynamic> data = response.data;
+      final patient = Patients.fromJson(data);
+      return patient;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
 }
 

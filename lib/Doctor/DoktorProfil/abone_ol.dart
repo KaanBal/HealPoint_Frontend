@@ -22,8 +22,8 @@ class _SubscriptionScreenState extends State<AboneOl> {
   @override
   void initState() {
     super.initState();
-    //fetchSubscriptionPlans();
-    _loadDataFromMockData();
+    fetchSubscriptionPlans();
+    //_loadDataFromMockData();
   }
 
   Future<void> fetchSubscriptionPlans() async {
