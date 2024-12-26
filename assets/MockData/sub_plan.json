@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Monthly Plan",
+    "price": 9.99,
+    "durationInMonths": 1
+  },
+  {
+    "id": 2,
+    "name": "3-Month Plan",
+    "price": 27.99,
+    "durationInMonths": 3
+  },
+  {
+    "id": 3,
+    "name": "6-Month Plan",
+    "price": 49.99,
+    "durationInMonths": 6
+  },
+  {
+    "id": 4,
+    "name": "Yearly Plan",
+    "price": 89.99,
+    "durationInMonths": 12
+  }
+]

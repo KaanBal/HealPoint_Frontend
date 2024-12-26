@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:yazilim_projesi/Doctor/DoktorProfil/abonelik_onaylama.dart';
 import 'package:yazilim_projesi/models/SubscriptionPlan.dart';
 import 'package:yazilim_projesi/services/subscription_service.dart';
@@ -19,7 +22,8 @@ class _SubscriptionScreenState extends State<AboneOl> {
   @override
   void initState() {
     super.initState();
-    fetchSubscriptionPlans();
+    //fetchSubscriptionPlans();
+    _loadDataFromMockData();
   }
 
   Future<void> fetchSubscriptionPlans() async {
@@ -43,13 +47,23 @@ class _SubscriptionScreenState extends State<AboneOl> {
     }
   }
 
+  void _loadDataFromMockData() async {
+    const String jsonFile = 'assets/MockData/sub_plan.json';
+    final dataString = await rootBundle.loadString(jsonFile);
+    final List<dynamic> dataJson = jsonDecode(dataString);
+    setState(() {
+      subscriptionPlans =
+          dataJson.map((json) => SubscriptionPlan.fromJson(json)).toList();
+    });
+  }
+
   void navigateToConfirmation(BuildContext context) {
     if (selectedSubscription != null) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => AbonelikOnaylama(
-            subPlan: selectedSubscription, 
+            subPlan: selectedSubscription,
           ),
         ),
       );
@@ -88,7 +102,8 @@ class _SubscriptionScreenState extends State<AboneOl> {
                     children: [
                       SubscriptionCard(
                         title: plan.name ?? "",
-                        description: '${plan.durationInMonths} ay boyunca erişim.',
+                        description:
+                            '${plan.durationInMonths} ay boyunca erişim.',
                         price: '₺${plan.price?.toStringAsFixed(2)}',
                         color: index.isEven
                             ? Colors.blueAccent
