@@ -74,7 +74,7 @@ class Appointments {
       'appointmentTime': appointmentTime != null
           ? '${appointmentTime!.hour.toString().padLeft(2, '0')}:${appointmentTime!.minute.toString().padLeft(2, '0')}'
           : null,
-      'appointmentStatus': appointmentStatus?.toString().split('.').last,
+      'appointmentStatus': appointmentStatus.toString().split('.').last,
       'appointmentText': appointmentText,
       'doctor': doctor?.toJson(),
       'doctorTc': doctorTc,

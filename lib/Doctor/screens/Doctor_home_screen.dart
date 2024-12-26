@@ -162,7 +162,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                     });
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => GirisEkrani()),
+                      MaterialPageRoute(builder: (context) => const GirisEkrani()),
                     );
                   }),
             ],

@@ -1,0 +1,53 @@
+[
+  {
+    "appointmentDate": "2024-12-25T00:00:00.000",
+    "appointmentTime": "10:30",
+    "appointmentStatus": "TAMAMLANDI",
+    "appointmentText": "Rutin kontrol için randevu.",
+    "doctor": {
+      "name": "Dr. Ahmet Yılmaz",
+      "surname": "Yılmaz",
+      "branch": "Cardiology",
+      "city" : "Trabzon"
+    },
+    "patient": {
+      "name": "Ayşe Kara",
+      "surname": "Kara",
+      "gender": "Kadın"
+    }
+  },
+  {
+    "appointmentDate": "2024-11-20T00:00:00.000",
+    "appointmentTime": "15:00",
+    "appointmentStatus": "TAMAMLANDI",
+    "appointmentText": "Cilt sorunları için dermatoloji randevusu.",
+    "doctor": {
+      "name": "Dr. Ahmet Yılmaz",
+      "surname": "Yılmaz",
+      "branch": "Dermatology",
+      "city" : "Ankara"
+    },
+    "patient": {
+      "name": "Ayşe Kara",
+      "patientSurname": "Kara",
+      "gender": "Kadın"
+    }
+  },
+  {
+    "appointmentDate": "2024-10-12T00:00:00.000",
+    "appointmentTime": "09:00",
+    "appointmentStatus": "IPTAL",
+    "appointmentText": "Randevu hastanın isteği üzerine iptal edilmiştir.",
+    "doctor": {
+      "name": "Dr. Ahmet Yılmaz",
+      "surname": "Yılmaz",
+      "branch": "Cardiology",
+      "city" : "İstanbul"
+    },
+    "patient": {
+      "name": "Ayşe Kara",
+      "surname": "Kara",
+      "gender": "Kadın"
+    }
+  }
+]
