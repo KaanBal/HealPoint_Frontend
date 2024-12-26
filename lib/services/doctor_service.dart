@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
+import 'package:yazilim_projesi/models/filterValues.dart';
 import 'package:yazilim_projesi/services/api_client.dart';
 import 'package:yazilim_projesi/services/token_service.dart';
 
@@ -134,7 +136,7 @@ class DoctorService {
     }
   }
 
-    Future<Response> getDoctorByToken() async {
+  Future<Response> getDoctorByToken() async {
     try {
       final token = await tokenService.getToken();
 
@@ -205,8 +207,7 @@ class DoctorService {
     }
   }
 
-  Future<Response> updateDoctorById(
-      String id, Doctors doctorData) async {
+  Future<Response> updateDoctorById(String id, Doctors doctorData) async {
     try {
       final token = await tokenService.getToken();
 
@@ -276,7 +277,7 @@ class DoctorService {
     }
   }
 
-    Future<Response> removeFavoriteDoctor(String doctorTc) async {
+  Future<Response> removeFavoriteDoctor(String doctorTc) async {
     try {
       final token = await tokenService.getToken();
 
@@ -299,4 +300,49 @@ class DoctorService {
     }
   }
 
+  Future<Response> filterDoctors(FilterValues filterValues) async {
+    try {
+      final token = await tokenService.getToken();
+
+      if (token == null) {
+        throw Exception("Token not found. Please log in again.");
+      }
+
+      final formattedDate = filterValues.date != null
+          ? DateFormat('yyyy-MM-dd').format(filterValues.date!)
+          : null;
+
+      final timeOfDayClock = stringToTimeOfDay(filterValues.time!);
+
+      final formattedTime = filterValues.time != null
+          ? "${timeOfDayClock.hour.toString().padLeft(2, '0')}:${timeOfDayClock.minute.toString().padLeft(2, '0')}"
+          : null;
+      final response = await apiClient.dio.get(
+        "doctors/filter",
+        queryParameters: {
+          if (filterValues.city != null) "city": filterValues.city,
+          if (filterValues.district != null) "district": filterValues.district,
+          if (filterValues.branch != null) "branch": filterValues.branch,
+          if (formattedDate != null) "appointmentDate": formattedDate,
+          if (formattedTime != null) "appointmentTime": formattedTime,
+        },
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+
+      return response;
+    } catch (e) {
+      throw Exception("Error occurred while filtering doctors: $e");
+    }
+  }
+
+  TimeOfDay stringToTimeOfDay(String timeString) {
+    final format = timeString.split(":");
+    final hour = int.parse(format[0]);
+    final minute = int.parse(format[1]);
+    return TimeOfDay(hour: hour, minute: minute);
+  }
 }

@@ -33,11 +33,50 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
   List<String> _districts = [];
 
   final List<String> branches = [
-    "Diş",
-    "Kalp",
+    "Kardiyoloji",
     "Ortopedi",
-    "Göz",
-    "Dahiliye",
+    "Nöroloji",
+    "Aile Hekimliği",
+    "Anesteziyoloji ve Reanimasyon",
+    "Çocuk Sağlığı ve Hastalıkları",
+    "Çocuk Cerrahisi",
+    "Deri ve Zührevi Hastalıklar (Dermatoloji)",
+    "Endokrinoloji ve Metabolizma Hastalıkları",
+    "Fiziksel Tıp ve Rehabilitasyon",
+    "Gastroenteroloji",
+    "Genel Cerrahi",
+    "Göğüs Hastalıkları",
+    "Göğüs Cerrahisi",
+    "Göz Hastalıkları",
+    "Hematoloji",
+    "Kadın Hastalıkları ve Doğum",
+    "Kalp ve Damar Cerrahisi",
+    "Kulak Burun Boğaz Hastalıkları",
+    "Medikal Onkoloji",
+    "Nefroloji",
+    "Nöroşirürji (Beyin ve Sinir Cerrahisi)",
+    "Plastik, Rekonstrüktif ve Estetik Cerrahi",
+    "Psikiyatri",
+    "Radyasyon Onkolojisi",
+    "Radyoloji",
+    "Romatoloji",
+    "Spor Hekimliği",
+    "Tıbbi Genetik",
+    "Tıbbi Mikrobiyoloji",
+    "Tıbbi Patoloji",
+    "Üroloji",
+    "İç Hastalıkları (Dahiliye)",
+    "Enfeksiyon Hastalıkları ve Klinik Mikrobiyoloji",
+    "Göğüs Cerrahisi",
+    "İmmünoloji ve Alerji Hastalıkları",
+    "Ağız, Diş ve Çene Cerrahisi",
+    "Ağız, Diş ve Çene Radyolojisi",
+    "Endodonti",
+    "Ortodonti",
+    "Pedodonti (Çocuk Diş Hekimliği)",
+    "Periodontoloji",
+    "Protetik Diş Tedavisi",
+    "Restoratif Diş Tedavisi"
   ];
 
   final DoktorkayitolFonks _kayitolFonks = DoktorkayitolFonks();
@@ -54,7 +93,7 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
   Future<void> _loadCityDistrictData() async {
     try {
       final String jsonString =
-          await rootBundle.loadString('assets/sehir_ilce.json');
+          await rootBundle.loadString('assets/MockData/sehir_ilce.json');
       final Map<String, dynamic> jsonData = json.decode(jsonString);
 
       setState(() {

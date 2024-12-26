@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/Doctor/DoktorProfil/abone_ol.dart';
+import 'package:yazilim_projesi/models/Subscription.dart';
+import 'package:yazilim_projesi/services/subscription_service.dart';
 
 class AbonelikBilgiSayfasi extends StatefulWidget {
   const AbonelikBilgiSayfasi({super.key});
@@ -10,16 +12,32 @@ class AbonelikBilgiSayfasi extends StatefulWidget {
 }
 
 class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
-
-  DateTime startDate = DateTime(2023, 10, 1);
-  DateTime endDate = DateTime(2024, 10, 1);
-
-  String subscriptionType = 'Bireysel (3 Ay)';
-  String cancelDateMessage = '';
-  String cancelStatusMessage = '';
+  final SubscriptionService subService = SubscriptionService();
+  Subscription? doctorSub;
+  bool hasError = false;
 
   String formatDate(DateTime date) {
     return DateFormat('dd MMM yyyy').format(date);
+  }
+
+  Future<void> fetchDoctorSubPlan() async {
+    try {
+      final response = await subService.getDoctorSubscription();
+      setState(() {
+        doctorSub = Subscription.fromJson(response.data);
+        hasError = false;
+      });
+    } catch (e) {
+      setState(() {
+        hasError = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDoctorSubPlan();
   }
 
   @override
@@ -32,156 +50,149 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Aboneliğiniz',
+        child: hasError
+            ? _buildErrorState(context)
+            : doctorSub == null
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : _buildSubscriptionDetails(),
+      ),
+    );
+  }
+
+  Widget _buildErrorState(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          child: Center(
+            child: Text(
+              'Abonelik bulunamadı!',
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 24,
+                color: Colors.grey[600],
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
               ),
             ),
-            const SizedBox(height: 10),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AboneOl(),
+              ),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            minimumSize: const Size(double.infinity, 50),
+            textStyle: const TextStyle(fontSize: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: const Text('Aboneliği Düzenle'),
+        ),
+        const SizedBox(height: 20),
+      ],
+    );
+  }
 
-            Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Başlangıç Tarihi: ${formatDate(startDate)}',
-                        style: const TextStyle(fontSize: 16)),
-                    const SizedBox(height: 8),
-                    Text('Bitiş Tarihi: ${formatDate(endDate)}',
-                        style: const TextStyle(fontSize: 16)),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
+  Widget _buildSubscriptionDetails() {
+    final double buttonWidth = MediaQuery.of(context).size.width - 32;
 
-            // Seçenekler Kısmı
-            const Text(
-              'Seçenekler',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Abonelik Bilgileri',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          width: buttonWidth,
+          child: Card(
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
-            const SizedBox(height: 10),
-            Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Table(
+                columnWidths: const {
+                  0: IntrinsicColumnWidth(),
+                  1: FlexColumnWidth(),
+                },
                 children: [
-                  ListTile(
-                    title: const Text('Bireysel (3 Ay)'),
-                    subtitle: const Text(
-                      'Fiyat: 99.99 TL',
-                      style: TextStyle(color: Colors.green, fontSize: 14),
+                  TableRow(children: [
+                    const Text('Abonelik Türü:', style: TextStyle(fontSize: 16)),
+                    Text(doctorSub!.planName ?? '', style: const TextStyle(fontSize: 16)),
+                  ]),
+                  const TableRow(children: [SizedBox(height: 8), SizedBox(height: 8)]),
+                  TableRow(children: [
+                    const Text('Başlangıç Tarihi:', style: TextStyle(fontSize: 16)),
+                    Text(formatDate(doctorSub!.startDate!), style: const TextStyle(fontSize: 16)),
+                  ]),
+                  const TableRow(children: [SizedBox(height: 8), SizedBox(height: 8)]),
+                  TableRow(children: [
+                    const Text('Bitiş Tarihi:', style: TextStyle(fontSize: 16)),
+                    Text(formatDate(doctorSub!.endDate!), style: const TextStyle(fontSize: 16)),
+                  ]),
+                  const TableRow(children: [SizedBox(height: 8), SizedBox(height: 8)]),
+                  TableRow(children: [
+                    const Text('Durum:', style: TextStyle(fontSize: 16)),
+                    Text(
+                      doctorSub!.isActive! ? 'Aktif' : 'Pasif',
+                      style: const TextStyle(fontSize: 16),
                     ),
-                    leading: Radio<String>(
-                      value: 'Bireysel (3 Ay)',
-                      groupValue: subscriptionType,
-                      onChanged: (value) {
-                        setState(() {
-                          subscriptionType = value!;
-                        });
-                      },
-                    ),
-                  ),
-                  const Divider(),
-                  ListTile(
-                    title: const Text('1 Yıl'),
-                    subtitle: const Text(
-                      'Fiyat: 299.99 TL (İlk Ay Ücretsiz)',
-                      style: TextStyle(color: Colors.green, fontSize: 14),
-                    ),
-                    leading: Radio<String>(
-                      value: '1 Yıl',
-                      groupValue: subscriptionType,
-                      onChanged: (value) {
-                        setState(() {
-                          subscriptionType = value!;
-                        });
-                      },
-                    ),
-                  ),
+                  ]),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  cancelStatusMessage = 'Aboneliğiniz iptal edilmiştir.(Aboneliğinizin bitiş tarihine kadar uygulamamızı kullanabilirsiniz.)'; // İptal mesajı
-                  cancelDateMessage = '';
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red, // Buton rengi
-                padding: const EdgeInsets.symmetric(vertical: 17),
-                textStyle: const TextStyle(fontSize: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text('Aboneliği İptal Et'),
-            ),
-            const SizedBox(height: 20),
-
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const AboneOl()));
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue, // Buton rengi
-                padding: const EdgeInsets.symmetric(vertical: 17),
-                textStyle: const TextStyle(fontSize: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text('Aboneliği Düzenle'),
-            ),
-
-            const SizedBox(height: 20),
-            if (cancelDateMessage.isNotEmpty) ...[
-              Text(
-                cancelDateMessage,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black54,
-                ),
-              ),
-            ],
-            if (cancelStatusMessage.isNotEmpty) ...[
-              Text(
-                cancelStatusMessage,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
-              ),
-            ],
-            const SizedBox(height: 20),
-
-            const Divider(),
-            const SizedBox(height: 10),
-            const Text(
-              'Aboneliğinizi her zaman yönetebilirsiniz.',
-              style: TextStyle(fontSize: 14, color: Colors.black45),
-            ),
-          ],
+          ),
         ),
-      ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AboneOl(),
+              ),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            padding: const EdgeInsets.symmetric(vertical: 17),
+            minimumSize: Size(buttonWidth, 50),
+            textStyle: const TextStyle(fontSize: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: const Text('Aboneliği Düzenle'),
+        ),
+        const Spacer(),
+        Divider(color: Colors.grey[400], thickness: 1),
+        const SizedBox(height: 8),
+        const Center(
+          child: Text(
+            'Aboneliğinizi her zaman yönetebilirsiniz.',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey,
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+      ],
     );
   }
 }

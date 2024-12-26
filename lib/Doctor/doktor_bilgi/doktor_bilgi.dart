@@ -97,10 +97,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
           selectedDate = pickedDate;
         });
 
-        // Wait for the availability data to be fetched
         await _fetchAvailableCloksByDate(pickedDate);
 
-        // Update the available times after data is fetched
         bottomSheetSetState(() {
           availableTimes = doctorAvailability?.availableTimes ?? [];
           selectedTime = availableTimes.isNotEmpty ? availableTimes[0] : null;
