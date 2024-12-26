@@ -50,8 +50,8 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
   @override
   void initState() {
     super.initState();
-    _loadDataFromMockData();
-    //fetchDoctorSubPlan();
+    //_loadDataFromMockData();
+    fetchDoctorSubPlan();
   }
 
   @override

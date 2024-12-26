@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi_fonks.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/hasta_doktorprofil_goruntuler.dart';
 import 'package:yazilim_projesi/models/Appointments.dart';
 import 'package:yazilim_projesi/models/DoctorAvailability.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
+import 'package:yazilim_projesi/models/Reviews.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 import 'package:yazilim_projesi/services/doctor_service.dart';
 
@@ -22,6 +24,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
   final DoctorService doctorService = DoctorService();
   final DoktorBilgiFonks fonks = DoktorBilgiFonks();
   Doctors? selectedDoctor;
+  List<Reviews>? reviews = [];
   DoctorAvailability? doctorAvailability;
 
   void _loadDataFromMockData() async {
@@ -44,6 +47,19 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Hata: $e")),
       );
+    }
+  }
+
+  Future<void> _fetchComments() async {
+    if (mounted) {
+      try {
+        final fetchedReviews = await fonks.fetchComments(widget.doctorId);
+        setState(() {
+          reviews = fetchedReviews;
+        });
+      } catch (e) {
+        print("Error loading data: $e");
+      }
     }
   }
 
@@ -75,8 +91,9 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
 
   @override
   void initState() {
-    _loadDataFromMockData();
-    //_loadData();
+    //_loadDataFromMockData();
+    _fetchComments();
+    _loadData();
     super.initState();
   }
 
@@ -305,10 +322,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                                   color: Colors.yellow, size: 18),
                               const SizedBox(width: 5),
                               Text(
-                                selectedDoctor?.reviews != null &&
-                                        selectedDoctor!.reviews!.isNotEmpty
-                                    ? selectedDoctor!.reviews!.first.points
-                                        .toString()
+                                (reviews != null && reviews!.isNotEmpty)
+                                    ? reviews!.first.points.toString()
                                     : "0",
                                 style: const TextStyle(fontSize: 15),
                               ),
@@ -395,12 +410,11 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
             ),
             SizedBox(height: ekranYuksekligi * 0.02),
             SizedBox(
-              child: (selectedDoctor?.reviews == null ||
-                      selectedDoctor!.reviews!.isEmpty)
+              height: ekranYuksekligi * 0.3, // Adjust this height as needed
+              child: reviews!.isEmpty
                   ? Center(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10), // Daha küçük alan
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
                           "No reviews available",
                           style: TextStyle(
@@ -412,9 +426,9 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                       ),
                     )
                   : ListView.builder(
-                      itemCount: selectedDoctor?.reviews?.length,
+                      itemCount: reviews?.length,
                       itemBuilder: (context, index) {
-                        final review = selectedDoctor!.reviews![index];
+                        final review = reviews![index];
                         return Card(
                           margin: EdgeInsets.symmetric(vertical: padding / 2),
                           child: Padding(
@@ -424,28 +438,34 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                               children: [
                                 Text(
                                   doktorBilgiFonks.getNameAndSurname(
-                                      review.patient?.name ?? "",
-                                      review.patient?.surname ?? ""),
+                                    review.patient?.name ?? "",
+                                    review.patient?.surname ?? "",
+                                  ),
                                   style: TextStyle(
-                                      fontSize: fontSize,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: "ABeeZee"),
+                                    fontSize: fontSize,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "ABeeZee",
+                                  ),
                                 ),
                                 SizedBox(height: ekranYuksekligi * 0.01),
                                 Text(
                                   review.comments ?? "",
                                   style: TextStyle(
-                                      fontSize: fontSize * 0.9,
-                                      fontFamily: "PtSans",
-                                      color: Colors.black87),
+                                    fontSize: fontSize * 0.9,
+                                    fontFamily: "PtSans",
+                                    color: Colors.black87,
+                                  ),
                                 ),
                                 SizedBox(height: ekranYuksekligi * 0.01),
                                 Text(
-                                  review.createdAt?.toIso8601String() ?? "",
+                                  review.createdAt != null
+                                      ? DateFormat.y().format(review.createdAt!)
+                                      : "",
                                   style: TextStyle(
-                                      fontSize: fontSize * 0.8,
-                                      fontFamily: "PtSans",
-                                      color: Colors.grey),
+                                    fontSize: fontSize * 0.8,
+                                    fontFamily: "PtSans",
+                                    color: Colors.grey,
+                                  ),
                                 ),
                               ],
                             ),

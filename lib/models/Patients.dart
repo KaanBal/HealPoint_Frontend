@@ -35,12 +35,12 @@ class Patients {
       email: json['email'],
       password: json['password'],
       birthDate: json['birthDate'] != null
-          ? DateTime.parse(json['birthDate']) // Parse DateTime
+          ? DateTime.parse(json['birthDate']) 
           : null,
-      age: json['age'] != null ? json['age'] as int : null, // Ensure int type
+      age: json['age'] != null ? json['age'] as int : null, 
       appointments: json['appointments'] != null
           ? List<Appointments>.from(
-              json['appointments'].map((app) => Appointments.fromJson(app))) // Map list of Appointments
+              json['appointments'].map((app) => Appointments.fromJson(app))) 
           : null,
     );
   }

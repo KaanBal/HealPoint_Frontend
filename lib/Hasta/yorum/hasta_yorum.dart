@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/models/Patients.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 import 'package:yazilim_projesi/Hasta/yorum/hastaYorum_fonks.dart';
 import 'package:yazilim_projesi/models/Appointments.dart';
 import 'package:yazilim_projesi/models/Reviews.dart';
 
 class DoctorRatingScreen extends StatefulWidget {
-  const DoctorRatingScreen({super.key});
+  final Appointments appointment;
+
+  const DoctorRatingScreen({super.key, required this.appointment});
 
   @override
   State<DoctorRatingScreen> createState() => _DoctorRatingScreenState();
@@ -19,29 +22,32 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
   String branch = 'Yükleniyor...';
   String appointmentDate = 'Yükleniyor...';
   Appointments? appointment;
+  Patients? patient;
 
-  Future<void> _fetchAppointmentData() async {
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+    _initializeAppointmentData();
+  }
+
+  void _loadData() async {
     try {
-      appointment = await hastaYorumFonks.getAppointmentDetails();
-      if (appointment != null) {
-        setState(() {
-          doctorName = appointment?.doctor?.name ?? "";
-          branch = appointment?.doctor?.branch ?? "";
-          appointmentDate = appointment?.appointmentDate?.toString() ?? "";
-        });
-      } else {
-        setState(() {
-          doctorName = 'Randevu bulunamadı';
-          branch = '---';
-          appointmentDate = '---';
-        });
-      }
+      patient = await hastaYorumFonks.loadData();
+      setState(() {});
     } catch (e) {
-      print("Error fetching appointment details: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Randevu bilgileri alınamadı.')),
-      );
+      print("Error loading data: $e");
     }
+  }
+
+  void _initializeAppointmentData() {
+    appointment = widget.appointment;
+    setState(() {
+      doctorName = appointment?.doctor?.name ?? "Doktor adı mevcut değil";
+      branch = appointment?.doctor?.branch ?? "Bölüm mevcut değil";
+      appointmentDate =
+          appointment?.appointmentDate?.toString() ?? "Tarih mevcut değil";
+    });
   }
 
   void _submitRating() async {
@@ -55,7 +61,10 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
     try {
       if (appointment != null) {
         final review = Reviews(
-            comments: _comment, points: _rating.toInt(), appointment: appointment);
+            comments: _comment,
+            points: _rating.toInt(),
+            patient: patient,
+            appointment: appointment);
         await hastaYorumFonks.createReview(review);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Değerlendirmeniz alındı!')),
@@ -72,20 +81,13 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _fetchAppointmentData();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 6,
         backgroundColor: acikKirmizi,
         title: const Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: 16.0), // Kenarlara boşluk eklenmiş
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
             'Doktor Değerlendirme',
             style: TextStyle(
@@ -174,8 +176,8 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
                 decoration: InputDecoration(
                   hintText: 'Yorumunuzu yazınız...',
                   hintStyle: TextStyle(
-                      color: Colors.grey.shade500,
-                      fontFamily: "ABeeZee",
+                    color: Colors.grey.shade500,
+                    fontFamily: "ABeeZee",
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),

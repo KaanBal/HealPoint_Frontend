@@ -5,10 +5,10 @@ import 'package:yazilim_projesi/models/Patients.dart';
 enum AppointmentStatus { AKTIF, IPTAL, TAMAMLANDI }
 
 class Appointments {
-
+  final int? appointmentId; 
   final DateTime? appointmentDate;
   final TimeOfDay? appointmentTime;
-  final AppointmentStatus appointmentStatus; 
+  final AppointmentStatus appointmentStatus;
   final String? appointmentText;
   final Doctors? doctor;
   final String? doctorTc;
@@ -17,6 +17,7 @@ class Appointments {
   final String? status;
 
   Appointments({
+    this.appointmentId,
     this.appointmentDate,
     this.appointmentTime,
     this.appointmentText,
@@ -25,7 +26,7 @@ class Appointments {
     this.patient,
     this.patientTc,
     this.status,
-    this.appointmentStatus = AppointmentStatus.AKTIF, 
+    this.appointmentStatus = AppointmentStatus.AKTIF,
   });
 
   Color getStatusColor() {
@@ -50,6 +51,7 @@ class Appointments {
         : null;
 
     return Appointments(
+      appointmentId: json['appointmentId'], // JSON'dan `int` olarak alınır
       appointmentDate: json['appointmentDate'] != null
           ? DateTime.parse(json['appointmentDate'])
           : null,
@@ -70,6 +72,7 @@ class Appointments {
 
   Map<String, dynamic> toJson() {
     return {
+      'appointmentId': appointmentId, // JSON'a `int` olarak eklenir
       'appointmentDate': appointmentDate?.toIso8601String().split('T').first,
       'appointmentTime': appointmentTime != null
           ? '${appointmentTime!.hour.toString().padLeft(2, '0')}:${appointmentTime!.minute.toString().padLeft(2, '0')}'

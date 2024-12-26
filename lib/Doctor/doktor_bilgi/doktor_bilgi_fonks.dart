@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:yazilim_projesi/models/Appointments.dart';
+import 'package:yazilim_projesi/models/Reviews.dart';
 import 'package:yazilim_projesi/services/appointments_service.dart';
+import 'package:yazilim_projesi/services/review_service.dart';
 
 class DoktorBilgiFonks {
   final AppointmentsService appointmentService = AppointmentsService();
+  final ReviewService reviewService = ReviewService();
 
   void doktorBilgisiGoster(BuildContext context, String doktorAdi) {
     showDialog(
@@ -70,6 +73,20 @@ class DoktorBilgiFonks {
     } catch (e) {
       print(e);
       rethrow;
+    }
+  }
+
+    Future<List<Reviews>> fetchComments(String doctorTC) async {
+    try {
+      final response = await reviewService.getDoctorReviews(doctorTC);
+      final List<dynamic> data = response.data;
+
+      return data
+          .map((json) => Reviews.fromJson(json))
+          .toList();
+    } catch (e) {
+      print("Hata oluştu: $e");
+      return [];
     }
   }
 

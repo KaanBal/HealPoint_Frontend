@@ -20,7 +20,7 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
 
   Future<void> _fetchComments() async {
     try {
-      comments = await fonks.fetchComments();
+      comments = await fonks.fetchComments(widget.doctorId);
       setState(() {});
     } catch (e) {
       print("Error loading data: $e");

@@ -30,7 +30,7 @@ class ReviewService {
     }
   }
 
-  Future<Response> getDoctorReviews() async {
+  Future<Response> getDoctorReviews(String doctorTc) async {
     try {
       final token = await tokenService.getToken();
 
@@ -39,7 +39,7 @@ class ReviewService {
       }
 
       final response = await apiClient.dio.get(
-        "review/list-doctor",
+        "review/list-doctor/$doctorTc",
         options: Options(
           headers: {
             "Authorization": "Bearer $token",
