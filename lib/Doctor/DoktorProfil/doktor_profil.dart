@@ -64,7 +64,8 @@ class _DoctorProfilState extends State<DoctorProfil> {
   void initState() {
     super.initState();
     _loadCityDistrictData();
-    _fetchDoctorInfo();
+    //_fetchDoctorInfo();
+    _loadDataFromMockData();
   }
 
   Future<void> _loadCityDistrictData() async {
@@ -95,8 +96,8 @@ class _DoctorProfilState extends State<DoctorProfil> {
     }
   }
 
-    Future<void> _updateDoctorData() async {
-    if (doctor != null && doctor?.tc != null)  {
+  Future<void> _updateDoctorData() async {
+    if (doctor != null && doctor?.tc != null) {
       try {
         await fonks.updateDoctor(doctor!.tc!, doctor!);
         debugPrint("Doctor data updated successfully.");
@@ -104,6 +105,15 @@ class _DoctorProfilState extends State<DoctorProfil> {
         debugPrint("Error updating doctor data: $e");
       }
     }
+  }
+
+  void _loadDataFromMockData() async {
+    const String jsonFile = 'assets/MockData/doctorInfo.json';
+    final dataString = await rootBundle.loadString(jsonFile);
+    final Map<String, dynamic> dataJson = jsonDecode(dataString);
+    setState(() {
+      doctor = Doctors.fromJson(dataJson);
+    });
   }
 
   @override
@@ -351,35 +361,41 @@ class _DoctorProfilState extends State<DoctorProfil> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            buildEditableTile("Şehir", doctor?.city ?? "", Icons.location_city, (newValue) {
+            buildEditableTile("Şehir", doctor?.city ?? "", Icons.location_city,
+                (newValue) {
               setState(() {
                 doctor?.city = newValue;
               });
               showCityEditDialog(context);
             }, fontScaleFactor, isDropdown: true),
-            buildEditableTile("İlçe", doctor?.district ?? "", Icons.my_location, (newValue) {
+            buildEditableTile("İlçe", doctor?.district ?? "", Icons.my_location,
+                (newValue) {
               setState(() {
                 doctor?.district = newValue;
               });
               showDistrictEditDialog(context);
             }, fontScaleFactor, isDropdown: true),
-            buildEditableTile("Adres", doctor?.address ?? "", Icons.location_pin, (newValue) {
+            buildEditableTile(
+                "Adres", doctor?.address ?? "", Icons.location_pin, (newValue) {
               setState(() {
                 doctor?.address = newValue;
               });
             }, fontScaleFactor, isDropdown: false),
-            buildEditableTile("Telefon No", doctor?.phoneNumber ?? "", Icons.phone_android,
+            buildEditableTile(
+                "Telefon No", doctor?.phoneNumber ?? "", Icons.phone_android,
                 (newValue) {
               setState(() {
                 doctor?.phoneNumber = newValue;
               });
             }, fontScaleFactor, isDropdown: false),
-            buildEditableTile("Email", doctor?.email ?? "", Icons.mail, (newValue) {
+            buildEditableTile("Email", doctor?.email ?? "", Icons.mail,
+                (newValue) {
               setState(() {
                 doctor?.email = newValue;
               });
             }, fontScaleFactor, isDropdown: false),
-            buildEditableTile("Şifre", doctor?.password ?? "", Icons.security, (newValue) {
+            buildEditableTile("Şifre", doctor?.password ?? "", Icons.security,
+                (newValue) {
               setState(() {
                 doctor?.password = newValue;
               });

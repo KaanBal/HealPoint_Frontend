@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/Doctor/DoktorProfil/abone_ol.dart';
 import 'package:yazilim_projesi/models/Subscription.dart';
@@ -34,10 +37,21 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
     }
   }
 
+  void _loadDataFromMockData() async {
+    const String jsonFile = 'assets/MockData/subscription.json';
+    final dataString = await rootBundle.loadString(jsonFile);
+    final Map<String, dynamic> dataJson = jsonDecode(dataString);
+    setState(() {
+      doctorSub = Subscription.fromJson(dataJson);
+      hasError = false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    fetchDoctorSubPlan();
+    _loadDataFromMockData();
+    //fetchDoctorSubPlan();
   }
 
   @override
@@ -132,20 +146,28 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
                 },
                 children: [
                   TableRow(children: [
-                    const Text('Abonelik Türü:', style: TextStyle(fontSize: 16)),
-                    Text(doctorSub!.planName ?? '', style: const TextStyle(fontSize: 16)),
+                    const Text('Abonelik Türü:',
+                        style: TextStyle(fontSize: 16)),
+                    Text(doctorSub!.planName ?? '',
+                        style: const TextStyle(fontSize: 16)),
                   ]),
-                  const TableRow(children: [SizedBox(height: 8), SizedBox(height: 8)]),
+                  const TableRow(
+                      children: [SizedBox(height: 8), SizedBox(height: 8)]),
                   TableRow(children: [
-                    const Text('Başlangıç Tarihi:', style: TextStyle(fontSize: 16)),
-                    Text(formatDate(doctorSub!.startDate!), style: const TextStyle(fontSize: 16)),
+                    const Text('Başlangıç Tarihi:',
+                        style: TextStyle(fontSize: 16)),
+                    Text(formatDate(doctorSub!.startDate!),
+                        style: const TextStyle(fontSize: 16)),
                   ]),
-                  const TableRow(children: [SizedBox(height: 8), SizedBox(height: 8)]),
+                  const TableRow(
+                      children: [SizedBox(height: 8), SizedBox(height: 8)]),
                   TableRow(children: [
                     const Text('Bitiş Tarihi:', style: TextStyle(fontSize: 16)),
-                    Text(formatDate(doctorSub!.endDate!), style: const TextStyle(fontSize: 16)),
+                    Text(formatDate(doctorSub!.endDate!),
+                        style: const TextStyle(fontSize: 16)),
                   ]),
-                  const TableRow(children: [SizedBox(height: 8), SizedBox(height: 8)]),
+                  const TableRow(
+                      children: [SizedBox(height: 8), SizedBox(height: 8)]),
                   TableRow(children: [
                     const Text('Durum:', style: TextStyle(fontSize: 16)),
                     Text(

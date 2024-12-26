@@ -9,7 +9,7 @@ class Patients {
   String? email;
   String? password;
   DateTime? birthDate;
-  int? age; // Updated to int
+  int? age;
   List<Appointments>? appointments;
 
   Patients({

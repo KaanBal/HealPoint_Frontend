@@ -75,7 +75,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
 
   @override
   void initState() {
-    _loadData();
+    _loadDataFromMockData();
+    //_loadData();
     super.initState();
   }
 
