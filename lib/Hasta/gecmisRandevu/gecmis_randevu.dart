@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:yazilim_projesi/Hasta/gecmisRandevu/gecmisRandevu_fonks.dart';
 import 'package:yazilim_projesi/models/Appointments.dart';
 
@@ -17,7 +20,8 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
   @override
   void initState() {
     super.initState();
-    _loadData();
+    _loadDataFromMockData();
+    //_loadData();
   }
 
   Future<void> _loadData() async {
@@ -35,6 +39,17 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
         SnackBar(content: Text("Hata oluştu: $e")),
       );
     }
+  }
+
+  void _loadDataFromMockData() async {
+    const String jsonFile = 'assets/MockData/past_appointment.json';
+    final dataString = await rootBundle.loadString(jsonFile);
+    final List<dynamic> dataJson = jsonDecode(dataString);
+    setState(() {
+      pastAppointments =
+          dataJson.map((json) => Appointments.fromJson(json)).toList();
+      isLoading = false;
+    });
   }
 
   @override
@@ -114,7 +129,7 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
                           const SizedBox(height: 4),
                           Text(
                             pastAppointment.doctor?.city ??
-                                "Hastane Bilgisi Yok",
+                                "Şehir Bilgisi Yok",
                             style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w400,

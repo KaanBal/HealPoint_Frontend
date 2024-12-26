@@ -5,10 +5,7 @@ import 'package:yazilim_projesi/models/Doctors.dart';
 import '../../renkler/renkler.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al_doktor_liste.dart';
-import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/models/filterValues.dart';
-import 'package:yazilim_projesi/renkler/renkler.dart';
 
 class RandevuAl extends StatefulWidget {
   const RandevuAl({super.key});

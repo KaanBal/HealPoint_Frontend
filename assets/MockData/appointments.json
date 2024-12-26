@@ -18,7 +18,7 @@
   {
     "appointmentDate": "2024-11-20T00:00:00.000",
     "appointmentTime": "15:00",
-    "appointmentStatus": "TAMAMLANDI",
+    "appointmentStatus": "AKTIF",
     "appointmentText": "Cilt sorunları için dermatoloji randevusu.",
     "doctor": {
       "doctorName": "Dr. Ahmet Yılmaz",
@@ -34,7 +34,7 @@
   {
     "appointmentDate": "2024-10-12T00:00:00.000",
     "appointmentTime": "09:00",
-    "appointmentStatus": "IPTAL",
+    "appointmentStatus": "AKTIF",
     "appointmentText": "Randevu hastanın isteği üzerine iptal edilmiştir.",
     "doctor": {
       "doctorName": "Dr. Ahmet Yılmaz",

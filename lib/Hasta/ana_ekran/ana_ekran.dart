@@ -490,7 +490,7 @@ class _AnaEkranState extends State<AnaEkran> {
                   });
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => GirisEkrani()),
+                    MaterialPageRoute(builder: (context) => const GirisEkrani()),
                   );
                 },
               ),
