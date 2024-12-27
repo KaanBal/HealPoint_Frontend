@@ -50,17 +50,23 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
   @override
   void initState() {
     super.initState();
-    //_loadDataFromMockData();
-    fetchDoctorSubPlan();
+    _loadDataFromMockData();
+    //fetchDoctorSubPlan();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Abonelik Bilgileri'),
+        title: const Text(
+            'Abonelik Bilgileri',
+        style: TextStyle(
+          color: Colors.white,
+          fontFamily: "ABeeZee"
+        ),),
         backgroundColor: Colors.red,
         elevation: 0,
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -87,10 +93,12 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
                 fontSize: 24,
                 color: Colors.grey[600],
                 fontWeight: FontWeight.bold,
+                fontFamily: "ABeeZee"
               ),
             ),
           ),
         ),
+
         ElevatedButton(
           onPressed: () {
             Navigator.push(
@@ -101,14 +109,19 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
             );
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.red,
             minimumSize: const Size(double.infinity, 50),
             textStyle: const TextStyle(fontSize: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          child: const Text('Aboneliği Düzenle'),
+          child: const Text('Aboneliği Düzenle',
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: "ABeeZee"
+          ),
+          ),
         ),
         const SizedBox(height: 20),
       ],
@@ -121,15 +134,6 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Abonelik Bilgileri',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-        const SizedBox(height: 10),
         SizedBox(
           width: buttonWidth,
           child: Card(
@@ -147,7 +151,10 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
                 children: [
                   TableRow(children: [
                     const Text('Abonelik Türü:',
-                        style: TextStyle(fontSize: 16)),
+                        style: TextStyle(fontSize: 16,
+                          fontFamily: "ABeeZee"
+                        ),
+                    ),
                     Text(doctorSub!.planName ?? '',
                         style: const TextStyle(fontSize: 16)),
                   ]),
@@ -155,24 +162,36 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
                       children: [SizedBox(height: 8), SizedBox(height: 8)]),
                   TableRow(children: [
                     const Text('Başlangıç Tarihi:',
-                        style: TextStyle(fontSize: 16)),
+                        style: TextStyle(fontSize: 16,
+                        fontFamily: "ABeeZee"
+                        )),
                     Text(formatDate(doctorSub!.startDate!),
-                        style: const TextStyle(fontSize: 16)),
+                        style: const TextStyle(fontSize: 16,
+                        fontFamily: "ABeeZee"
+                        )),
                   ]),
                   const TableRow(
                       children: [SizedBox(height: 8), SizedBox(height: 8)]),
                   TableRow(children: [
-                    const Text('Bitiş Tarihi:', style: TextStyle(fontSize: 16)),
+                    const Text('Bitiş Tarihi:', style: TextStyle(fontSize: 16,
+                    fontFamily: "ABeeZee"
+                    )),
                     Text(formatDate(doctorSub!.endDate!),
-                        style: const TextStyle(fontSize: 16)),
+                        style: const TextStyle(fontSize: 16,
+                        fontFamily: "ABeeZee"
+                        )),
                   ]),
                   const TableRow(
                       children: [SizedBox(height: 8), SizedBox(height: 8)]),
                   TableRow(children: [
-                    const Text('Durum:', style: TextStyle(fontSize: 16)),
+                    const Text('Durum:', style: TextStyle(fontSize: 16,
+                    fontFamily: "ABeeZee"
+                    )),
                     Text(
                       doctorSub!.isActive! ? 'Aktif' : 'Pasif',
-                      style: const TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16,
+                      fontFamily: "ABeeZee"
+                      ),
                     ),
                   ]),
                 ],
@@ -191,7 +210,7 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
             );
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.red,
             padding: const EdgeInsets.symmetric(vertical: 17),
             minimumSize: Size(buttonWidth, 50),
             textStyle: const TextStyle(fontSize: 16),
@@ -199,7 +218,12 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          child: const Text('Aboneliği Düzenle'),
+          child: const Text('Aboneliği Düzenle',
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily:"ABeeZee"
+          ),
+          ),
         ),
         const Spacer(),
         Divider(color: Colors.grey[400], thickness: 1),
@@ -209,7 +233,7 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
             'Aboneliğinizi her zaman yönetebilirsiniz.',
             style: TextStyle(
               fontSize: 14,
-              color: Colors.grey,
+              color: Colors.white,
             ),
           ),
         ),

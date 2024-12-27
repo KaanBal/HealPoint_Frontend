@@ -113,16 +113,6 @@ class _AnaEkranState extends State<AnaEkran> {
             .toList();
       });
 
-      if (upcomingAppointments.isNotEmpty &&
-          upcomingAppointments[0].status == "tamamlandı") {
-        _checkIfDoctorRated();
-      }
-      /*Tüm randevuları kontrol et
-      for (var appointment in upcomingAppointments) {
-        if (appointment.status == "tamamlandı") {
-          _checkIfDoctorRated(appointment);
-        }
-      } */
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Hata: $e")),
@@ -191,13 +181,12 @@ class _AnaEkranState extends State<AnaEkran> {
 
   @override
   void initState() {
-    //_loadDataFromMockData();
-    _loadData();
-    _loadPatientName();
-    _loadUpcomingAppointments();
-    _getFavoritesDoctor();
+    _loadDataFromMockData();
+    //_loadData();
+    //_loadPatientName();
+   // _loadUpcomingAppointments();
+   // _getFavoritesDoctor();
     super.initState();
-    _checkIfDoctorRated();
   }
 
   @override
@@ -206,176 +195,8 @@ class _AnaEkranState extends State<AnaEkran> {
     _getFavoritesDoctor();
   }
 
-  _checkIfDoctorRated() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool hasRated = prefs.getBool('hasRatedDoctor') ?? false;
 
-    if (!hasRated) {
-      if (mounted) {
-        _showRatingDialog();
-      }
-    }
-  }
 
-  void _handleRatingResponse(bool ratingGiven) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('hasRatedDoctor', true);
-
-    if (ratingGiven && mounted) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                DoctorRatingScreen(appointment: Appointments())),
-      );
-    }
-  }
-
-  /* void _showRatingDialog(Appointments appointment) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          title: const Text(
-            "Doktor Değerlendirmesi",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                "${appointment.doctor?.name ?? 'Doktor'} ile ${DateFormat('dd MMMM yyyy').format(appointment.appointmentDate!)} tarihindeki randevunuz tamamlandı.",
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                "Doktorunuzu değerlendirmek ister misiniz?",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _handleRatingResponse(true, appointment);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: acikKirmizi,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 10,
-                      ),
-                    ),
-                    child: const Text(
-                      "Evet",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _handleRatingResponse(false, appointment);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 10,
-                      ),
-                    ),
-                    child: const Text(
-                      "Hayır",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }   */
-
-  void _showRatingDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          title: const Text(
-            "Doktor Değerlendirmesi",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                "Son randevunuz tamamlandı. Doktorunuzu değerlendirmek ister misiniz?",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _handleRatingResponse(true);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: acikKirmizi,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                    ),
-                    child: const Text(
-                      "Evet",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context); // Dialog'u kapat
-                      _handleRatingResponse(false);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                    ),
-                    child: const Text(
-                      "Hayır",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -21,8 +21,8 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
   @override
   void initState() {
     super.initState();
-    //_loadDataFromMockData();
-    _loadData();
+    _loadDataFromMockData();
+    //_loadData();
   }
 
   Future<void> _loadData() async {
@@ -76,7 +76,11 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Geçmiş Randevular"),
+        title: const Text("Geçmiş Randevular",
+        style: TextStyle(
+          fontFamily: "ABeeZee",
+          color: Colors.black
+        ),),
         centerTitle: true,
       ),
       body: isLoading
