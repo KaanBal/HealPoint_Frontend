@@ -456,17 +456,6 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                                     color: Colors.black87,
                                   ),
                                 ),
-                                SizedBox(height: ekranYuksekligi * 0.01),
-                                Text(
-                                  review.createdAt != null
-                                      ? DateFormat.y().format(review.createdAt!)
-                                      : "",
-                                  style: TextStyle(
-                                    fontSize: fontSize * 0.8,
-                                    fontFamily: "PtSans",
-                                    color: Colors.grey,
-                                  ),
-                                ),
                               ],
                             ),
                           ),

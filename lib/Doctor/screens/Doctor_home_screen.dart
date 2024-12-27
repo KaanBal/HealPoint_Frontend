@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/Doctor/DoktorProfil/doktor_profil.dart';
 import 'package:yazilim_projesi/Doctor/gecmis_randevu/doctor_gecmis_randevu.dart';
 import 'package:yazilim_projesi/Doctor/screens/DoctorHomeScreen_fonks.dart';
 import 'package:yazilim_projesi/Hasta/yorum/doktor_yorum_ekran%C4%B1.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import 'package:yazilim_projesi/models/Appointments.dart';
+import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 
 class DoctorHomeScreen extends StatefulWidget {
@@ -22,6 +24,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
   bool isLoggedOut = false;
 
   List<Appointments> appointments = [];
+  Doctors? doctor;
 
   void _loadDataFromMockData() async {
     const String jsonFile = 'assets/MockData/appointments.json';
@@ -42,10 +45,24 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
     }
   }
 
+  void _fetchDoctorInfo() async {
+    try {
+      final doctorInfo = await fonks.loadData();
+      setState(() {
+        doctor = doctorInfo;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata oluştu: $e")),
+      );
+    }
+  }
+
   @override
   void initState() {
     //_loadDataFromMockData();
     _loadData();
+    _fetchDoctorInfo();
     super.initState();
   }
 
@@ -137,11 +154,21 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                   ),
                 ),
                 onTap: () {
-                  Navigator.push(
+                  if (doctor != null && doctor?.tc != null) {
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              const DoctorCommentsScreen(doctorId: '4344')));
+                        builder: (context) => DoctorCommentsScreen(
+                            doctorId: doctor!.tc!), 
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Doktor bilgisi henüz yüklenmedi."),
+                      ),
+                    );
+                  }
                 },
               ),
               ListTile(
@@ -162,7 +189,8 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                     });
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const GirisEkrani()),
+                      MaterialPageRoute(
+                          builder: (context) => const GirisEkrani()),
                     );
                   }),
             ],
@@ -182,6 +210,29 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                   children: [
                     Row(
                       children: [
+                        // Tarih Kutusu
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.03,
+                              vertical: screenWidth * 0.02),
+                          decoration: BoxDecoration(
+                            color: Colors.green.shade100,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            appointment.appointmentDate != null
+                                ? DateFormat('dd/MM/yyyy')
+                                    .format(appointment.appointmentDate!)
+                                : "Tarih Bilgisi Yok",
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                              fontSize: screenWidth * 0.04 * fontScaleFactor,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: screenWidth * 0.02),
+                        // Saat Kutusu
                         Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: screenWidth * 0.03,
@@ -202,6 +253,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                           ),
                         ),
                         SizedBox(width: screenWidth * 0.02),
+                        // Durum Kutusu
                         Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: screenWidth * 0.03,
@@ -217,8 +269,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                                 .split('.')
                                 .last,
                             style: TextStyle(
-                              color:
-                                  appointment.getStatusColor().withOpacity(0.2),
+                              color: appointment.getStatusColor(),
                               fontWeight: FontWeight.bold,
                               fontSize: screenWidth * 0.04 * fontScaleFactor,
                             ),
@@ -236,14 +287,16 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.01),
-                    Text(
-                      "${appointment.appointmentText}",
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.035 * fontScaleFactor,
-                        fontFamily: "PTSans",
-                        color: Colors.grey,
-                      ),
-                    ),
+                    appointment.appointmentText != null
+                        ? Text(
+                            "${appointment.appointmentText}",
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.035 * fontScaleFactor,
+                              fontFamily: "PTSans",
+                              color: Colors.grey,
+                            ),
+                          )
+                        : SizedBox(),
                   ],
                 ),
               ),

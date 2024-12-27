@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:yazilim_projesi/Doctor/DoktorProfil/doktorProfil_fonks.dart';
@@ -461,7 +462,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
                   MediaQuery.of(context).size.width * 0.04 * fontScaleFactor),
         ),
         subtitle: Text(
-          "Aktif",
+          doctor?.isAccountActive ?? false ? "AKTIF" : "Aktif Değil",
           style: TextStyle(
               color: Colors.black,
               fontFamily: "ABeeZee",
