@@ -27,25 +27,21 @@ class MyApp extends StatelessWidget {
       Doctors(
         name: "Dr. Ahmet Yılmaz",
         branch: "Kardiyoloji",
-        reviews: [],
         surname: 'adigu',
       ),
       Doctors(
         name: "Dr. Elif Kaya",
         branch: "Dermatoloji",
-        reviews: [],
         surname: 'kagabu',
       ),
       Doctors(
         name: "Dr. Mehmet Kaya",
         branch: "Dermatoloji",
-        reviews: [],
         surname: 'kagabu',
       ),
       Doctors(
         name: "Dr. Şahmet Kaya",
         branch: "Dermatoloji",
-        reviews: [],
         surname: 'kagabu',
       ),
     ];
@@ -56,7 +52,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const DoctorBilgiEkran(doctorId: '',),
+      home: const AnaEkran(),
     );
   }
 }
