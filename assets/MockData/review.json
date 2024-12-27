@@ -1,0 +1,50 @@
+[
+  {
+    "comments": "The consultation was very helpful.",
+    "points": 4,
+    "createdAt": "2024-12-28T10:30:00Z",
+    "patient": {
+      "Tc": "12345678901",
+      "name": "John",
+      "surname": "Doe",
+      "gender": "Male",
+      "phoneNumber": "555-1234",
+      "email": "john.doe@example.com",
+      "password": "password123",
+      "birthDate": "1990-01-15",
+      "age": 34,
+      "appointments": [
+        {
+          "id": 3,
+          "doctorName": "Dr. Mehmet Öztürk",
+          "date": "2024-10-12T09:00:00.000",
+          "status": "Cancelled"
+        }
+      ]
+    }
+  },
+  {
+    "comments": "The doctor was very attentive and provided detailed explanations.",
+    "points": 5,
+    "createdAt": "2024-12-28T12:00:00Z",
+    "patient": {
+      "Tc": "98765432100",
+      "name": "Jane",
+      "surname": "Smith",
+      "gender": "Female",
+      "phoneNumber": "555-9876",
+      "email": "jane.smith@example.com",
+      "password": "securePassword123",
+      "birthDate": "1985-05-20",
+      "age": 39,
+      "appointments": [
+        {
+          "id": 3,
+          "doctorName": "Dr. Mehmet Öztürk",
+          "date": "2024-10-12T09:00:00.000",
+          "status": "Cancelled"
+        }
+      ]
+    }
+  }
+]

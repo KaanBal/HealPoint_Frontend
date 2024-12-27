@@ -21,8 +21,8 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
   @override
   void initState() {
     super.initState();
-    _loadDataFromMockData();
-    //_loadData();
+    //_loadDataFromMockData();
+    _loadData();
   }
 
   Future<void> _loadData() async {

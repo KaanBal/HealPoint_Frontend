@@ -51,7 +51,7 @@ class Appointments {
         : null;
 
     return Appointments(
-      appointmentId: json['appointmentId'], // JSON'dan `int` olarak alınır
+      appointmentId: json['appointmentId'],
       appointmentDate: json['appointmentDate'] != null
           ? DateTime.parse(json['appointmentDate'])
           : null,

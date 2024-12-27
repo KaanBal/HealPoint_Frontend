@@ -97,11 +97,6 @@ class _AnaEkranState extends State<AnaEkran> {
     }
   }
 
-  /* SharedPreferences'da randevu değerlendirmelerini takip etmek için key oluşturma fonksiyonu
-  String _getRatingKey(String appointmentId) {
-    return 'hasRatedDoctor_$appointmentId';
-  } */
-
   Future<void> _loadUpcomingAppointments() async {
     try {
       final response = await appointmentsService.fetchUpcomingAppointments();
@@ -112,7 +107,6 @@ class _AnaEkranState extends State<AnaEkran> {
             .map((appointmentJson) => Appointments.fromJson(appointmentJson))
             .toList();
       });
-
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Hata: $e")),
@@ -181,22 +175,13 @@ class _AnaEkranState extends State<AnaEkran> {
 
   @override
   void initState() {
-    _loadDataFromMockData();
-    //_loadData();
-    //_loadPatientName();
-   // _loadUpcomingAppointments();
-   // _getFavoritesDoctor();
+    //_loadDataFromMockData();
+    _loadData();
+    _loadPatientName();
+    _loadUpcomingAppointments();
+    _getFavoritesDoctor();
     super.initState();
   }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _getFavoritesDoctor();
-  }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -333,7 +318,10 @@ class _AnaEkranState extends State<AnaEkran> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const RandevuAl()));
+                          builder: (context) => const RandevuAl())).then((_) {
+                    _loadUpcomingAppointments();
+                    _getFavoritesDoctor();
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: acikKirmizi,
@@ -498,7 +486,10 @@ class _AnaEkranState extends State<AnaEkran> {
                               builder: (context) =>
                                   DoctorBilgiEkran(doctorId: doctor.tc!),
                             ),
-                          );
+                          ).then((_) {
+                            _loadUpcomingAppointments();
+                            _getFavoritesDoctor();
+                          });
                         }
                       },
                       child: DoctorCard(
@@ -506,10 +497,9 @@ class _AnaEkranState extends State<AnaEkran> {
                         specialization: doctor.branch ?? "",
                         rating: doctor.avgPoint.toString(),
                         reviews: "0",
-                        favourite: isFavorite, // Favori durumu
+                        favourite: isFavorite,
                         onFavoriteTap: () {
-                          _toggleFavoriteDoctor(
-                              doctor); // Favori durumunu değiştir
+                          _toggleFavoriteDoctor(doctor);
                         },
                       ),
                     );
