@@ -10,7 +10,6 @@ import 'package:yazilim_projesi/Hasta/ana_ekran/anaEkranService_fonks.dart';
 import 'package:yazilim_projesi/Hasta/gecmisRandevu/gecmis_randevu.dart';
 import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al.dart';
 import 'package:yazilim_projesi/Hasta/yaklasan_randevular/yaklasan_randevular.dart';
-import 'package:yazilim_projesi/Hasta/yorum/hasta_yorum.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import 'package:yazilim_projesi/models/Appointments.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
@@ -19,7 +18,6 @@ import 'package:yazilim_projesi/services/appointments_service.dart';
 import 'package:yazilim_projesi/services/doctor_service.dart';
 import 'package:yazilim_projesi/services/patient_service.dart';
 import 'anaekranfonk.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AnaEkran extends StatefulWidget {
   const AnaEkran({super.key});
@@ -91,8 +89,9 @@ class _AnaEkranState extends State<AnaEkran> {
             data.map((doctorJson) => Doctors.fromJson(doctorJson)).toList();
       });
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: $e")),
+        const SnackBar(content: Text("Doktorlar Görüntülenemedi")),
       );
     }
   }
@@ -108,8 +107,9 @@ class _AnaEkranState extends State<AnaEkran> {
             .toList();
       });
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: $e")),
+        const SnackBar(content: Text("Yaklaşan Randevular Görüntülenemedi")),
       );
     }
   }
@@ -119,8 +119,9 @@ class _AnaEkranState extends State<AnaEkran> {
       favDoctors = await serviceFonks.fetchFavDoctors();
       setState(() {});
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: $e")),
+        const SnackBar(content: Text("Favori Doktorlar Görüntülenemedi")),
       );
     }
   }
@@ -131,8 +132,9 @@ class _AnaEkranState extends State<AnaEkran> {
         await doctorService.addFavoriteDoctor(doctor.tc!);
       }
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: $e")),
+        const SnackBar(content: Text("Doktor Favorileri Eklenemedi")),
       );
     }
   }
@@ -148,7 +150,7 @@ class _AnaEkranState extends State<AnaEkran> {
     } catch (e) {
       print('Favori doktor silme işlemi başarısız oldu. Hata: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: Doktor favorilerden kaldırılamadı. $e")),
+        const SnackBar(content: Text("Hata: Doktor favorilerden kaldırılamadı.")),
       );
     }
   }
@@ -167,9 +169,7 @@ class _AnaEkranState extends State<AnaEkran> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: $e")),
-      );
+      print(e);
     }
   }
 

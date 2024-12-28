@@ -24,10 +24,31 @@ class HastaProfilState extends State<HastaProfil> {
     }
   }
 
+  Future<void> _updatePatientData() async {
+    if (patient != null) {
+      try {
+        await fonks.updatePatient(patient!);
+        debugPrint("Hasta Bilgileri Güncellendi");
+      } catch (e) {
+        print(e);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Hasta Bilgileri Güncellenemedi")),
+        );
+        debugPrint("Error updating doctor data $e");
+      }
+    }
+  }
+
   @override
   void initState() {
     _loadData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _updatePatientData();
+    super.dispose();
   }
 
   @override
@@ -147,7 +168,7 @@ class HastaProfilState extends State<HastaProfil> {
                               patient?.birthDate != null
                                   ? DateFormat('dd/MM/yyyy')
                                       .format(patient!.birthDate!)
-                                  : "", 
+                                  : "",
                               Icons.calendar_month,
                               (newValue) async {
                                 DateTime? pickedDate = await showDatePicker(
@@ -160,8 +181,7 @@ class HastaProfilState extends State<HastaProfil> {
 
                                 if (pickedDate != null) {
                                   setState(() {
-                                    patient?.birthDate =
-                                        pickedDate;
+                                    patient?.birthDate = pickedDate;
                                   });
                                 }
                               },

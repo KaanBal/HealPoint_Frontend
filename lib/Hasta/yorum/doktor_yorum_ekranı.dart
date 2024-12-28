@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/Hasta/yorum/doktorYorum_fonks.dart';
+import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/models/Reviews.dart';
 
 class DoctorCommentsScreen extends StatefulWidget {
   final String doctorId;
+  Doctors doctor;
 
-  const DoctorCommentsScreen({super.key, required this.doctorId});
+  DoctorCommentsScreen(
+      {super.key, required this.doctorId, required this.doctor});
 
   @override
   State<DoctorCommentsScreen> createState() => _DoctorCommentsScreenState();
@@ -30,6 +33,9 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
       });
     } catch (e) {
       print("Error loading data: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Yorumlar Görüntülenemedi")),
+      );
     }
   }
 
@@ -84,7 +90,7 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      _buildStars(averageRating.roundToDouble()), // Yıldızlar
+                      _buildStars(widget.doctor.avgPoint ?? 0.0), // Yıldızlar
                       const SizedBox(height: 8),
                       Text(
                         averageRating.toStringAsFixed(2),

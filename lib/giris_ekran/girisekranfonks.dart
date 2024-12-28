@@ -59,8 +59,9 @@ class GirisEkranFonks {
           );
         }
       } catch (e) {
+        print("$e");
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Bir hata oluştu: $e")),
+          const SnackBar(content: Text("Girdiğiniz bilgiler yanlış!")),
         );
       }
     } else {
@@ -79,11 +80,8 @@ class GirisEkranFonks {
     String sifre,
     TextEditingController tcController,
     TextEditingController sifreController,
-  )
-  {
+  ) {
     tcController.clear();
     sifreController.clear();
   }
-  }
-
-
+}

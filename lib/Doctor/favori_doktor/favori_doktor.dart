@@ -29,6 +29,9 @@ class _FavoriteDoctorsPageState extends State<FavoriteDoctorsPage> {
         doctors = fetchedDoctors;
       });
     } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Favori Doktorlar Görüntülenemedi")),
+      );
       print("Error loading data: $e");
     }
   }
@@ -46,7 +49,7 @@ class _FavoriteDoctorsPageState extends State<FavoriteDoctorsPage> {
     } catch (e) {
       print('Favori doktor silme işlemi başarısız oldu. Hata: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: Doktor favorilerden kaldırılamadı. $e")),
+        const SnackBar(content: Text("Hata: Doktor favorilerden kaldırılamadı.")),
       );
     }
   }

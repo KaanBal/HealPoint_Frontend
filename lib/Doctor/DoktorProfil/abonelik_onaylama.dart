@@ -86,7 +86,7 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Abonelik başarıyla kaydedildi.')),
           );
-          Navigator.pop(context); 
+          Navigator.pop(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -102,8 +102,9 @@ class _ConfirmationScreenState extends State<AbonelikOnaylama> {
         );
       }
     } catch (e) {
+      print("Bir hata oluştu: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Bir hata oluştu: $e')),
+        const SnackBar(content: Text('Bir hata oluştu')),
       );
     } finally {
       setState(() {
