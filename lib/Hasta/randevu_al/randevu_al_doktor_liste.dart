@@ -27,28 +27,30 @@ class _FilteredDoctorsScreenState extends State<FilteredDoctorsScreen> {
     _fetchFilteredDoctors();
   }
 
-Future<void> _fetchFilteredDoctors() async {
+  Future<void> _fetchFilteredDoctors() async {
+    try {
+      final response = await doctorService.filterDoctors(widget.filterValues);
 
-  try {
-    final response = await doctorService.filterDoctors(widget.filterValues);
-
-    if (response.statusCode == 200) {
-      final List<dynamic> data = response.data;
-      setState(() {
-        filteredDoctors = data.map((doctorJson) => Doctors.fromJson(doctorJson)).toList();
-      });
-    } else {
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data;
+        setState(() {
+          filteredDoctors =
+              data.map((doctorJson) => Doctors.fromJson(doctorJson)).toList();
+        });
+      } else {
+        print("Error: ${response.statusCode}");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text("Aradığınız Uygunlukta Doktor Bulunamadı")),
+        );
+      }
+    } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: ${response.statusCode}")),
+        const SnackBar(content: Text("Doktorlar Görüntülenemdi")),
       );
     }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("An error occurred: $e")),
-    );
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -81,31 +83,31 @@ Future<void> _fetchFilteredDoctors() async {
             filteredDoctors.isEmpty
                 ? const Center(child: CircularProgressIndicator())
                 : Expanded(
-              child: ListView.builder(
-                itemCount: filteredDoctors.length,
-                itemBuilder: (context, index) {
-                  final doctor = filteredDoctors[index];
-                  return Card(
-                    child: ListTile(
-                      title: Text(doctor.name ?? "Doktor İsmi Yok"),
-                      subtitle: Text(doctor.branch ?? "Branş Yok"),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DoctorBilgiEkran(doctorId: doctor.tc!), 
+                    child: ListView.builder(
+                      itemCount: filteredDoctors.length,
+                      itemBuilder: (context, index) {
+                        final doctor = filteredDoctors[index];
+                        return Card(
+                          child: ListTile(
+                            title: Text(doctor.name ?? "Doktor İsmi Yok"),
+                            subtitle: Text(doctor.branch ?? "Branş Yok"),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      DoctorBilgiEkran(doctorId: doctor.tc!),
+                                ),
+                              );
+                            },
                           ),
                         );
                       },
                     ),
-                  );
-                },
-              ),
-            ),
+                  ),
           ],
         ),
       ),
     );
   }
 }
-

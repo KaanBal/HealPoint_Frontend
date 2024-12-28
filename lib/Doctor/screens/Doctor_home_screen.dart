@@ -159,7 +159,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => DoctorCommentsScreen(
-                            doctorId: doctor!.tc!), 
+                            doctorId: doctor!.tc!, doctor: doctor!),
                       ),
                     );
                   } else {

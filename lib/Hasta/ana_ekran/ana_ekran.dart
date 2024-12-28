@@ -89,8 +89,9 @@ class _AnaEkranState extends State<AnaEkran> {
             data.map((doctorJson) => Doctors.fromJson(doctorJson)).toList();
       });
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: $e")),
+        const SnackBar(content: Text("Doktorlar Görüntülenemedi")),
       );
     }
   }
@@ -106,8 +107,9 @@ class _AnaEkranState extends State<AnaEkran> {
             .toList();
       });
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: $e")),
+        const SnackBar(content: Text("Yaklaşan Randevular Görüntülenemedi")),
       );
     }
   }
@@ -117,8 +119,9 @@ class _AnaEkranState extends State<AnaEkran> {
       favDoctors = await serviceFonks.fetchFavDoctors();
       setState(() {});
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: $e")),
+        const SnackBar(content: Text("Favori Doktorlar Görüntülenemedi")),
       );
     }
   }
@@ -129,8 +132,9 @@ class _AnaEkranState extends State<AnaEkran> {
         await doctorService.addFavoriteDoctor(doctor.tc!);
       }
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: $e")),
+        const SnackBar(content: Text("Doktor Favorileri Eklenemedi")),
       );
     }
   }
@@ -146,7 +150,7 @@ class _AnaEkranState extends State<AnaEkran> {
     } catch (e) {
       print('Favori doktor silme işlemi başarısız oldu. Hata: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: Doktor favorilerden kaldırılamadı. $e")),
+        SnackBar(content: Text("Hata: Doktor favorilerden kaldırılamadı.")),
       );
     }
   }
@@ -165,9 +169,7 @@ class _AnaEkranState extends State<AnaEkran> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: $e")),
-      );
+      print(e);
     }
   }
 

@@ -30,7 +30,8 @@ class HastaProfilState extends State<HastaProfil> {
         await fonks.updatePatient(patient!);
         debugPrint("Doctor data updated successfully.");
       } catch (e) {
-        debugPrint("Error updating doctor data: $e");
+        print(e);
+        debugPrint("Error updating doctor data");
       }
     }
   }

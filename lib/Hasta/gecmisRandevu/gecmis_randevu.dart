@@ -33,11 +33,12 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
         isLoading = false;
       });
     } catch (e) {
+      print(e);
       setState(() {
         isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata oluştu: $e")),
+        const SnackBar(content: Text("Geçmiş Randevular Görüntülenemedi")),
       );
     }
   }
@@ -54,10 +55,16 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
   }
 
   Widget _buildRatingButton(Appointments appointment, String statusText) {
-    if (statusText.toLowerCase() == "tamamlandı" && appointment.doctorTc != null) {
+    if (statusText.toLowerCase() == "tamamlandı" &&
+        appointment.doctorTc != null) {
       return TextButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DoctorRatingScreen(appointment: appointment,)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DoctorRatingScreen(
+                        appointment: appointment,
+                      )));
         },
         style: TextButton.styleFrom(
           foregroundColor: Colors.black,
@@ -76,11 +83,10 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Geçmiş Randevular",
-        style: TextStyle(
-          fontFamily: "ABeeZee",
-          color: Colors.black
-        ),),
+        title: const Text(
+          "Geçmiş Randevular",
+          style: TextStyle(fontFamily: "ABeeZee", color: Colors.black),
+        ),
         centerTitle: true,
       ),
       body: isLoading
@@ -165,7 +171,8 @@ class _GecmisRandevularState extends State<GecmisRandevular> {
                               ),
                               Align(
                                 alignment: Alignment.centerRight,
-                                child: _buildRatingButton(pastAppointment, statusText),
+                                child: _buildRatingButton(
+                                    pastAppointment, statusText),
                               )
                             ],
                           ),
