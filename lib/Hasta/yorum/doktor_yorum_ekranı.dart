@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/Hasta/yorum/doktorYorum_fonks.dart';
 import 'package:yazilim_projesi/models/Reviews.dart';
 
@@ -20,10 +24,26 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
 
   Future<void> _fetchComments() async {
     try {
-      comments = await fonks.fetchComments(widget.doctorId);
-      setState(() {});
+      setState(() async {
+        comments = await fonks.fetchComments(widget.doctorId);
+        isLoading = false;
+      });
     } catch (e) {
       print("Error loading data: $e");
+    }
+  }
+
+  void _loadDataFromMockData() async {
+    const String jsonfile = 'assets/MockData/review.json';
+
+    try {
+      final dataString = await rootBundle.loadString(jsonfile);
+      final List<dynamic> reviewData = json.decode(dataString);
+      comments = reviewData.map((data) => Reviews.fromJson(data)).toList();
+      isLoading = false;
+      setState(() {});
+    } catch (e) {
+      print('Error loading mock data: $e');
     }
   }
 
@@ -31,6 +51,7 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
   void initState() {
     super.initState();
     _fetchComments();
+    //_loadDataFromMockData();
   }
 
   Widget _buildStars(double rating) {
@@ -88,11 +109,19 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
                               margin: const EdgeInsets.symmetric(
                                   vertical: 8, horizontal: 16),
                               child: ListTile(
-                                title: Text('${comment.points} Yıldız',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold)),
-                                subtitle: Text(comment.comments ?? "Yorum bulunamadı"),
-                                trailing: Text(comment.createdAt.toString()),
+                                title: Text(
+                                  '${comment.points} Yıldız',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text(
+                                    comment.comments ?? "Yorum bulunamadı"),
+                                trailing: Text(
+                                  comment.createdAt != null
+                                      ? DateFormat('yyyy-MM-dd')
+                                          .format(comment.createdAt!)
+                                      : "Tarih yok",
+                                ),
                               ),
                             );
                           },

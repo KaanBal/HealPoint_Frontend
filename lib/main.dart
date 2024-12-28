@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:yazilim_projesi/Doctor/DoktorProfil/abone_ol.dart';
 import 'package:yazilim_projesi/Doctor/DoktorProfil/doktor_abonelik.dart';
 import 'package:yazilim_projesi/Doctor/DoktorProfil/doktor_profil.dart';
-import 'package:yazilim_projesi/Doctor/Doktor_kayit/doktor_kayit_ol.dart';
 import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi.dart';
-import 'package:yazilim_projesi/Doctor/doktor_bilgi/hasta_doktorprofil_goruntuler.dart';
 import 'package:yazilim_projesi/Doctor/favori_doktor/favori_doktor.dart';
 import 'package:yazilim_projesi/Doctor/screens/Doctor_home_screen.dart';
 import 'package:yazilim_projesi/Hasta/ana_ekran/ana_ekran.dart';
@@ -55,7 +52,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const DoctorProfil(),
+      home: const AnaEkran(),
     );
   }
 }

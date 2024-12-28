@@ -91,9 +91,9 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
 
   @override
   void initState() {
-    _loadDataFromMockData();
-    //_fetchComments();
-    //_loadData();
+    //_loadDataFromMockData();
+    _fetchComments();
+    _loadData();
     super.initState();
   }
 
@@ -165,10 +165,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                                 backgroundColor: acikKirmizi,
                                 foregroundColor: beyaz,
                               ),
-                              child: const Text("Tarih Seç",
-                              style: TextStyle(
-                                fontFamily: "ABeeZee"
-                              ),),
+                              child: const Text("Tarih Seç"),
                             ),
                             if (selectedDate != null && selectedTime != null)
                               Padding(
@@ -177,7 +174,6 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                                   'Seçilen Tarih ve Saat: ${selectedDate!.toLocal().toString().split(' ')[0]} / $selectedTime',
                                   style: const TextStyle(
                                     fontSize: 15,
-                                    fontFamily: "ABeeZee",
                                     color: Colors.grey,
                                   ),
                                 ),
@@ -198,9 +194,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                               ),
                               const SizedBox(height: 10),
                               DropdownButton<String>(
-                                hint: const Text("Saat Seçin",
-                                style: TextStyle(
-                                    fontFamily: "ABeeZee"),),
+                                hint: const Text("Saat Seçin"),
                                 value: selectedTime,
                                 onChanged: (String? newValue) {
                                   bottomSheetSetState(() {
@@ -248,7 +242,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                       ),
                       child: const Text(
                         'Onayla',
-                        style: TextStyle(fontSize: 16, color: Colors.white,fontFamily: "ABeeZee"),
+                        style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ),
                   ),
@@ -358,10 +352,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text("Doktor bilgisi mevcut değil.",
-                            style: TextStyle(
-                                fontFamily: "ABeeZee"
-                            ),),
+                            content: Text("Doktor bilgisi mevcut değil."),
                           ),
                         );
                       }
@@ -418,68 +409,70 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                   fontWeight: FontWeight.bold),
             ),
             SizedBox(height: ekranYuksekligi * 0.02),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: reviews?.length ?? 0,
-              itemBuilder: (context, index) {
-                if (reviews == null || reviews!.isEmpty) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      "No reviews available",
-                      style: TextStyle(
-                        fontSize: fontSize * 0.8,
-                        fontFamily: "PtSans",
-                        color: Colors.grey,
-                      ),
-                    ),
-                  );
-                }
-                final review = reviews![index];
-                return Card(
-                  margin: EdgeInsets.symmetric(vertical: padding / 2),
-                  child: Padding(
-                    padding: EdgeInsets.all(padding / 2),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          doktorBilgiFonks.getNameAndSurname(
-                            review.patient?.name ?? "",
-                            review.patient?.surname ?? "",
-                          ),
-                          style: TextStyle(
-                            fontSize: fontSize,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "ABeeZee",
-                          ),
-                        ),
-                        SizedBox(height: ekranYuksekligi * 0.01),
-                        Text(
-                          review.comments ?? "",
-                          style: TextStyle(
-                            fontSize: fontSize * 0.9,
-                            fontFamily: "PtSans",
-                            color: Colors.black87,
-                          ),
-                        ),
-                        SizedBox(height: ekranYuksekligi * 0.01),
-                        Text(
-                          review.createdAt != null
-                              ? DateFormat.y().format(review.createdAt!)
-                              : "",
+            SizedBox(
+              height: ekranYuksekligi * 0.3, // Adjust this height as needed
+              child: reviews!.isEmpty
+                  ? Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Text(
+                          "No reviews available",
                           style: TextStyle(
                             fontSize: fontSize * 0.8,
                             fontFamily: "PtSans",
                             color: Colors.grey,
                           ),
                         ),
-                      ],
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: reviews?.length,
+                      itemBuilder: (context, index) {
+                        final review = reviews![index];
+                        return Card(
+                          margin: EdgeInsets.symmetric(vertical: padding / 2),
+                          child: Padding(
+                            padding: EdgeInsets.all(padding / 2),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  doktorBilgiFonks.getNameAndSurname(
+                                    review.patient?.name ?? "",
+                                    review.patient?.surname ?? "",
+                                  ),
+                                  style: TextStyle(
+                                    fontSize: fontSize,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "ABeeZee",
+                                  ),
+                                ),
+                                SizedBox(height: ekranYuksekligi * 0.01),
+                                Text(
+                                  review.comments ?? "",
+                                  style: TextStyle(
+                                    fontSize: fontSize * 0.9,
+                                    fontFamily: "PtSans",
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                SizedBox(height: ekranYuksekligi * 0.01),
+                                Text(
+                                  review.createdAt != null
+                                      ? DateFormat.y().format(review.createdAt!)
+                                      : "",
+                                  style: TextStyle(
+                                    fontSize: fontSize * 0.8,
+                                    fontFamily: "PtSans",
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  ),
-                );
-              },
             ),
             SizedBox(height: ekranYuksekligi * 0.07),
             Center(
