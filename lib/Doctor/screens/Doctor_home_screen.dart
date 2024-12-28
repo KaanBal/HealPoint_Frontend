@@ -42,6 +42,9 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
       setState(() {});
     } catch (e) {
       print("Error loading data: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Randevular Görüntülenemedi")),
+      );
     }
   }
 
@@ -52,9 +55,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
         doctor = doctorInfo;
       });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata oluştu: $e")),
-      );
+      print("$e");
     }
   }
 

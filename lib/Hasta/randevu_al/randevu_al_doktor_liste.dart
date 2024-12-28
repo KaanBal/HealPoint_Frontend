@@ -47,7 +47,7 @@ class _FilteredDoctorsScreenState extends State<FilteredDoctorsScreen> {
     } catch (e) {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Doktorlar Görüntülenemdi")),
+        const SnackBar(content: Text("Doktorlar Görüntülenemedi")),
       );
     }
   }

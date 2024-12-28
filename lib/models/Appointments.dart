@@ -42,7 +42,6 @@ class Appointments {
   }
 
   factory Appointments.fromJson(Map<String, dynamic> json) {
-    print("Doctor Review JSON: ${json['doctorReview']}");
 
     final timeParts = json['appointmentTime']?.split(':');
     final timeOfDay = timeParts != null && timeParts.length >= 2

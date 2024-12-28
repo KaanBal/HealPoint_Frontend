@@ -11,7 +11,8 @@ class DoctorCommentsScreen extends StatefulWidget {
   final String doctorId;
   Doctors doctor;
 
-  DoctorCommentsScreen({super.key, required this.doctorId, required this.doctor});
+  DoctorCommentsScreen(
+      {super.key, required this.doctorId, required this.doctor});
 
   @override
   State<DoctorCommentsScreen> createState() => _DoctorCommentsScreenState();
@@ -32,6 +33,9 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
       });
     } catch (e) {
       print("Error loading data: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Yorumlar Görüntülenemedi")),
+      );
     }
   }
 

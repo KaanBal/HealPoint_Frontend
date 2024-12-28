@@ -34,7 +34,7 @@ class _HastaDoktorprofilGoruntulerState
 
   @override
   void initState() {
-    //doctor = widget.doctor;
+    doctor = widget.doctor;
     super.initState();
   }
 

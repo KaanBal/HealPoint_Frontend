@@ -37,6 +37,9 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
       setState(() {});
     } catch (e) {
       print("Error loading data: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Yorumlar Görüntülenemedi")),
+      );
     }
   }
 

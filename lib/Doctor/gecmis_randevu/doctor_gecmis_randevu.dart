@@ -23,11 +23,12 @@ class _DoctorPastAppointmentsState extends State<DoctorPastAppointments> {
         isLoading = false;
       });
     } catch (e) {
+      print("$e");
       setState(() {
         isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata oluştu: $e")),
+        const SnackBar(content: Text("Hata oluştu")),
       );
     }
   }

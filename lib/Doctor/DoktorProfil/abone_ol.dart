@@ -22,8 +22,8 @@ class _SubscriptionScreenState extends State<AboneOl> {
   @override
   void initState() {
     super.initState();
-    //fetchSubscriptionPlans();
-    _loadDataFromMockData();
+    fetchSubscriptionPlans();
+    //_loadDataFromMockData();
   }
 
   Future<void> fetchSubscriptionPlans() async {
@@ -44,6 +44,9 @@ class _SubscriptionScreenState extends State<AboneOl> {
       }
     } catch (e) {
       print("Error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Abonelik Paketlerini Çekerken Hata Oluştu")),
+      );
     }
   }
 

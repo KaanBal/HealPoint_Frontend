@@ -129,8 +129,9 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
           const SnackBar(content: Text("Kayıt Başarılı!")),
         );
       } catch (e) {
+        print(e);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Kayıt sırasında hata oluştu: $e")),
+          const SnackBar(content: Text("Kayıt sırasında hata oluştu")),
         );
       }
     }
@@ -422,27 +423,27 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                   menuMaxHeight: 300,
                   value: _selectedBranch,
                   decoration: const InputDecoration(
-                  labelText: "Branş",
-                  border: OutlineInputBorder(),
+                    labelText: "Branş",
+                    border: OutlineInputBorder(),
+                  ),
+                  items: branches
+                      .map((branch) => DropdownMenuItem(
+                            value: branch,
+                            child: Text(branch),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedBranch = value;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Lütfen branş seçin.";
+                    }
+                    return null;
+                  },
                 ),
-                items: branches
-                    .map((branch) => DropdownMenuItem(
-                          value: branch,
-                          child: Text(branch),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedBranch = value;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Lütfen branş seçin.";
-                  }
-                  return null;
-                },
-              ),
               ),
               const SizedBox(height: 20),
               Wrap(
@@ -456,7 +457,8 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                       onPressed: kayitOl,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
-                        padding: const EdgeInsets.symmetric(vertical: 15), // Dikey padding
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15), // Dikey padding
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
@@ -473,7 +475,8 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                       onPressed: iptal,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
-                        padding: const EdgeInsets.symmetric(vertical: 15), // Dikey padding
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15), // Dikey padding
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),

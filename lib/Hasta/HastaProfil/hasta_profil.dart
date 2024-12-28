@@ -28,10 +28,13 @@ class HastaProfilState extends State<HastaProfil> {
     if (patient != null) {
       try {
         await fonks.updatePatient(patient!);
-        debugPrint("Doctor data updated successfully.");
+        debugPrint("Hasta Bilgileri Güncellendi");
       } catch (e) {
         print(e);
-        debugPrint("Error updating doctor data");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Hasta Bilgileri Güncellenemedi")),
+        );
+        debugPrint("Error updating doctor data $e");
       }
     }
   }

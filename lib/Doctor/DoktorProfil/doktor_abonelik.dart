@@ -31,6 +31,10 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
         hasError = false;
       });
     } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Abonelik Paketi Görünütülenemedi")),
+      );
       setState(() {
         hasError = true;
       });
@@ -50,8 +54,8 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
   @override
   void initState() {
     super.initState();
-    _loadDataFromMockData();
-    //fetchDoctorSubPlan();
+    //_loadDataFromMockData();
+    fetchDoctorSubPlan();
   }
 
   @override
@@ -59,11 +63,9 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-            'Abonelik Bilgileri',
-        style: TextStyle(
-          color: Colors.white,
-          fontFamily: "ABeeZee"
-        ),),
+          'Abonelik Bilgileri',
+          style: TextStyle(color: Colors.white, fontFamily: "ABeeZee"),
+        ),
         backgroundColor: Colors.red,
         elevation: 0,
         centerTitle: true,
@@ -90,15 +92,13 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
             child: Text(
               'Abonelik bulunamadı!',
               style: TextStyle(
-                fontSize: 24,
-                color: Colors.grey[600],
-                fontWeight: FontWeight.bold,
-                fontFamily: "ABeeZee"
-              ),
+                  fontSize: 24,
+                  color: Colors.grey[600],
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "ABeeZee"),
             ),
           ),
         ),
-
         ElevatedButton(
           onPressed: () {
             Navigator.push(
@@ -116,11 +116,9 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          child: const Text('Aboneliği Düzenle',
-          style: TextStyle(
-            color: Colors.black,
-            fontFamily: "ABeeZee"
-          ),
+          child: const Text(
+            'Aboneliği Düzenle',
+            style: TextStyle(color: Colors.black, fontFamily: "ABeeZee"),
           ),
         ),
         const SizedBox(height: 20),
@@ -150,10 +148,9 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
                 },
                 children: [
                   TableRow(children: [
-                    const Text('Abonelik Türü:',
-                        style: TextStyle(fontSize: 16,
-                          fontFamily: "ABeeZee"
-                        ),
+                    const Text(
+                      'Abonelik Türü:',
+                      style: TextStyle(fontSize: 16, fontFamily: "ABeeZee"),
                     ),
                     Text(doctorSub!.planName ?? '',
                         style: const TextStyle(fontSize: 16)),
@@ -162,36 +159,29 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
                       children: [SizedBox(height: 8), SizedBox(height: 8)]),
                   TableRow(children: [
                     const Text('Başlangıç Tarihi:',
-                        style: TextStyle(fontSize: 16,
-                        fontFamily: "ABeeZee"
-                        )),
+                        style: TextStyle(fontSize: 16, fontFamily: "ABeeZee")),
                     Text(formatDate(doctorSub!.startDate!),
-                        style: const TextStyle(fontSize: 16,
-                        fontFamily: "ABeeZee"
-                        )),
+                        style: const TextStyle(
+                            fontSize: 16, fontFamily: "ABeeZee")),
                   ]),
                   const TableRow(
                       children: [SizedBox(height: 8), SizedBox(height: 8)]),
                   TableRow(children: [
-                    const Text('Bitiş Tarihi:', style: TextStyle(fontSize: 16,
-                    fontFamily: "ABeeZee"
-                    )),
+                    const Text('Bitiş Tarihi:',
+                        style: TextStyle(fontSize: 16, fontFamily: "ABeeZee")),
                     Text(formatDate(doctorSub!.endDate!),
-                        style: const TextStyle(fontSize: 16,
-                        fontFamily: "ABeeZee"
-                        )),
+                        style: const TextStyle(
+                            fontSize: 16, fontFamily: "ABeeZee")),
                   ]),
                   const TableRow(
                       children: [SizedBox(height: 8), SizedBox(height: 8)]),
                   TableRow(children: [
-                    const Text('Durum:', style: TextStyle(fontSize: 16,
-                    fontFamily: "ABeeZee"
-                    )),
+                    const Text('Durum:',
+                        style: TextStyle(fontSize: 16, fontFamily: "ABeeZee")),
                     Text(
                       doctorSub!.isActive! ? 'Aktif' : 'Pasif',
-                      style: const TextStyle(fontSize: 16,
-                      fontFamily: "ABeeZee"
-                      ),
+                      style:
+                          const TextStyle(fontSize: 16, fontFamily: "ABeeZee"),
                     ),
                   ]),
                 ],
@@ -207,7 +197,9 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
               MaterialPageRoute(
                 builder: (context) => const AboneOl(),
               ),
-            );
+            ).then((_) {
+              fetchDoctorSubPlan();
+            });
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
@@ -218,11 +210,9 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          child: const Text('Aboneliği Düzenle',
-          style: TextStyle(
-            color: Colors.white,
-            fontFamily:"ABeeZee"
-          ),
+          child: const Text(
+            'Aboneliği Düzenle',
+            style: TextStyle(color: Colors.white, fontFamily: "ABeeZee"),
           ),
         ),
         const Spacer(),
@@ -231,8 +221,8 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
         const Center(
           child: Text(
             'Aboneliğinizi her zaman yönetebilirsiniz.',
-              style: TextStyle(
-                fontFamily: "PtSans" ,
+            style: TextStyle(
+              fontFamily: "PtSans",
               fontSize: 14,
               color: Colors.black,
             ),

@@ -150,7 +150,7 @@ class _AnaEkranState extends State<AnaEkran> {
     } catch (e) {
       print('Favori doktor silme işlemi başarısız oldu. Hata: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: Doktor favorilerden kaldırılamadı.")),
+        const SnackBar(content: Text("Hata: Doktor favorilerden kaldırılamadı.")),
       );
     }
   }

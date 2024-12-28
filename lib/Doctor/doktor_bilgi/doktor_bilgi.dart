@@ -44,8 +44,9 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
         selectedDoctor = Doctors.fromJson(data);
       });
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: $e")),
+        const SnackBar(content: Text("Doktor Görüntülemedi")),
       );
     }
   }
@@ -59,6 +60,9 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
         });
       } catch (e) {
         print("Error loading data: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Yorumlar Görüntülünemedi")),
+        );
       }
     }
   }
@@ -73,6 +77,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
         doctorAvailability = DoctorAvailability.fromJson(data);
       });
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Uygun saat bilgisi alınamadı.")),
       );
@@ -83,8 +88,9 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
     try {
       await fonks.createAppointment(appointment);
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Kayıt sırasında hata oluştu: $e")),
+        const SnackBar(content: Text("Kayıt sırasında hata oluştu")),
       );
     }
   }
@@ -165,10 +171,10 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                                 backgroundColor: acikKirmizi,
                                 foregroundColor: beyaz,
                               ),
-                              child: const Text("Tarih Seç",
-                              style: TextStyle(
-                                fontFamily: "ABeeZee"
-                              ),),
+                              child: const Text(
+                                "Tarih Seç",
+                                style: TextStyle(fontFamily: "ABeeZee"),
+                              ),
                             ),
                             if (selectedDate != null && selectedTime != null)
                               Padding(
@@ -198,10 +204,10 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                               ),
                               const SizedBox(height: 10),
                               DropdownButton<String>(
-                                hint: const Text("Saat Seçin",
-                                style: TextStyle(
-                                  fontFamily: "PtSans"
-                                ),),
+                                hint: const Text(
+                                  "Saat Seçin",
+                                  style: TextStyle(fontFamily: "PtSans"),
+                                ),
                                 value: selectedTime,
                                 onChanged: (String? newValue) {
                                   bottomSheetSetState(() {
@@ -249,7 +255,10 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                       ),
                       child: const Text(
                         'Onayla',
-                        style: TextStyle(fontSize: 16, color: Colors.white,fontFamily: "ABeeZee"),
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontFamily: "ABeeZee"),
                       ),
                     ),
                   ),

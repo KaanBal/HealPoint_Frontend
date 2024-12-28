@@ -90,8 +90,9 @@ class _DoctorProfilState extends State<DoctorProfil> {
         doctor = doctorInfo;
       });
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata oluştu: $e")),
+        const SnackBar(content: Text("Doktor Bilgileri Görüntülünemedi")),
       );
     }
   }
@@ -101,8 +102,14 @@ class _DoctorProfilState extends State<DoctorProfil> {
       try {
         await fonks.updateDoctor(doctor!);
         debugPrint("Doctor data updated successfully.");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Doktor Bilgileri Güncellendi!")),
+        );
       } catch (e) {
         debugPrint("Error updating doctor data: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Doktor Bilgileri Güncellenemedi")),
+        );
       }
     }
   }
@@ -116,11 +123,14 @@ class _DoctorProfilState extends State<DoctorProfil> {
     });
   }
 
-  @override
-  void dispose() {
+@override
+void dispose() {
+  if (mounted) {
     _updateDoctorData();
-    super.dispose();
   }
+  super.dispose();
+}
+
 
   // Şehir düzenleme dialogu
   void showCityEditDialog(BuildContext context) {
