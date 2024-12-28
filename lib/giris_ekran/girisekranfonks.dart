@@ -81,7 +81,6 @@ class GirisEkranFonks {
     TextEditingController sifreController,
   )
   {
-    // Sadece text alanlarını temizle, kontrol yapma
     tcController.clear();
     sifreController.clear();
   }

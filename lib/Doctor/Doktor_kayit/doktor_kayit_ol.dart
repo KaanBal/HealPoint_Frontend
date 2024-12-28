@@ -443,14 +443,8 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                   return null;
                 },
               ),
-
               ),
-
-
-
               const SizedBox(height: 20),
-
-            // Row yerine Wrap kullanarak daha esnek bir yerleşim sağlayalım
               Wrap(
                 alignment: WrapAlignment.spaceEvenly,
                 spacing: 10, // yatay boşluk
@@ -493,7 +487,6 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                 ],
               ),
 
-              // Son SizedBox ile form'un en altına biraz boşluk ekleyelim
               const SizedBox(height: 20),
             ],
           ),
