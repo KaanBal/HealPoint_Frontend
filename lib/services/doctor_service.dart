@@ -207,7 +207,7 @@ class DoctorService {
     }
   }
 
-  Future<Response> updateDoctorById(String id, Doctors doctorData) async {
+  Future<Response> updateDoctorById(Doctors doctorData) async {
     try {
       final token = await tokenService.getToken();
 
@@ -216,7 +216,7 @@ class DoctorService {
       }
 
       final response = await apiClient.dio.put(
-        "doctors/$id",
+        "doctors/update",
         data: doctorData,
         options: Options(
           headers: {

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:yazilim_projesi/models/Patients.dart';
 import 'package:yazilim_projesi/services/api_client.dart';
 import 'package:yazilim_projesi/services/token_service.dart';
 
@@ -42,7 +43,7 @@ class PatientService {
     }
   }
 
-  Future<Response> updatePatient(Map<String, dynamic> patientData) async {
+  Future<Response> updatePatient(Patients patientData) async {
     try {
       final token = await tokenService.getToken();
 
@@ -52,7 +53,7 @@ class PatientService {
 
       final response = await apiClient.dio.put(
         "patients/update",
-        data: patientData,
+        data: patientData.toJson(),
         options: Options(
           headers: {
             "Authorization": "Bearer $token",

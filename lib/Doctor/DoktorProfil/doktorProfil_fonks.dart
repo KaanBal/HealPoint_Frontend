@@ -15,9 +15,9 @@ class DoktorProfilFonks {
     }
   }
 
-  Future<void> updateDoctor(String id, Doctors doctorData) async {
+  Future<void> updateDoctor(Doctors doctorData) async {
     try {
-      final response = await doctorService.updateDoctorById(id, doctorData);
+      final response = await doctorService.updateDoctorById(doctorData);
       print(response);
     } catch (e) {
       print("Hata oluştu: $e");

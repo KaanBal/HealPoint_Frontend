@@ -15,4 +15,13 @@ class HastaProfilFonks {
       return null;
     }
   }
+
+    Future<void> updatePatient(Patients patientData) async {
+    try {
+      final response = await patientService.updatePatient(patientData);
+      print(response);
+    } catch (e) {
+      print("Hata oluştu: $e");
+    }
+  }
 }

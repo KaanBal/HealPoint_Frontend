@@ -296,7 +296,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                               color: Colors.grey,
                             ),
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
                   ],
                 ),
               ),

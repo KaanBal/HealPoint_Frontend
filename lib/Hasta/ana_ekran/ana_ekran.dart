@@ -10,7 +10,6 @@ import 'package:yazilim_projesi/Hasta/ana_ekran/anaEkranService_fonks.dart';
 import 'package:yazilim_projesi/Hasta/gecmisRandevu/gecmis_randevu.dart';
 import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al.dart';
 import 'package:yazilim_projesi/Hasta/yaklasan_randevular/yaklasan_randevular.dart';
-import 'package:yazilim_projesi/Hasta/yorum/hasta_yorum.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 import 'package:yazilim_projesi/models/Appointments.dart';
 import 'package:yazilim_projesi/models/Doctors.dart';
@@ -19,7 +18,6 @@ import 'package:yazilim_projesi/services/appointments_service.dart';
 import 'package:yazilim_projesi/services/doctor_service.dart';
 import 'package:yazilim_projesi/services/patient_service.dart';
 import 'anaekranfonk.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AnaEkran extends StatefulWidget {
   const AnaEkran({super.key});

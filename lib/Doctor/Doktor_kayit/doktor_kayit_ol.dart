@@ -415,7 +415,7 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
 
               const SizedBox(height: 10),
 
-              Container(
+              SizedBox(
                 height: 60,
                 child: DropdownButtonFormField<String>(
                   isExpanded: true,
