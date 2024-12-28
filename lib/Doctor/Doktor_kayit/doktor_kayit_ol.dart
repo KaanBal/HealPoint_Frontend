@@ -67,7 +67,6 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
     "Üroloji",
     "İç Hastalıkları (Dahiliye)",
     "Enfeksiyon Hastalıkları ve Klinik Mikrobiyoloji",
-    "Göğüs Cerrahisi",
     "İmmünoloji ve Alerji Hastalıkları",
     "Ağız, Diş ve Çene Cerrahisi",
     "Ağız, Diş ve Çene Radyolojisi",
@@ -416,10 +415,13 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
 
               const SizedBox(height: 10),
 
-              // Branş Dropdown
-              DropdownButtonFormField<String>(
-                value: _selectedBranch,
-                decoration: const InputDecoration(
+              Container(
+                height: 60,
+                child: DropdownButtonFormField<String>(
+                  isExpanded: true,
+                  menuMaxHeight: 300,
+                  value: _selectedBranch,
+                  decoration: const InputDecoration(
                   labelText: "Branş",
                   border: OutlineInputBorder(),
                 ),
@@ -442,39 +444,57 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
                 },
               ),
 
+              ),
+
+
+
               const SizedBox(height: 20),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            // Row yerine Wrap kullanarak daha esnek bir yerleşim sağlayalım
+              Wrap(
+                alignment: WrapAlignment.spaceEvenly,
+                spacing: 10, // yatay boşluk
+                runSpacing: 10, // dikey boşluk
                 children: [
-                  ElevatedButton(
-                    onPressed: kayitOl,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                  SizedBox(
+                    width: 150, // Sabit genişlik
+                    child: ElevatedButton(
+                      onPressed: kayitOl,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        padding: const EdgeInsets.symmetric(vertical: 15), // Dikey padding
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
                       ),
-                    ),
-                    child: const Text(
-                      "Kayıt Ol",
-                      style: TextStyle(color: Colors.white),
+                      child: const Text(
+                        "Kayıt Ol",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: iptal,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                  SizedBox(
+                    width: 150, // Sabit genişlik
+                    child: ElevatedButton(
+                      onPressed: iptal,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        padding: const EdgeInsets.symmetric(vertical: 15), // Dikey padding
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
                       ),
-                    ),
-                    child: const Text(
-                      "İptal",
-                      style: TextStyle(color: Colors.white),
+                      child: const Text(
+                        "İptal",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ],
               ),
+
+              // Son SizedBox ile form'un en altına biraz boşluk ekleyelim
+              const SizedBox(height: 20),
             ],
           ),
         ),

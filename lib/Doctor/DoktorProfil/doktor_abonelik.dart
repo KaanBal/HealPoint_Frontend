@@ -231,9 +231,10 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
         const Center(
           child: Text(
             'Aboneliğinizi her zaman yönetebilirsiniz.',
-            style: TextStyle(
+              style: TextStyle(
+                fontFamily: "PtSans" ,
               fontSize: 14,
-              color: Colors.white,
+              color: Colors.black,
             ),
           ),
         ),

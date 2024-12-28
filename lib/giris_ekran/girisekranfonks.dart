@@ -75,17 +75,16 @@ class GirisEkranFonks {
 
   void kaydol(
     BuildContext context,
-    String telefon,
+    String tc,
     String sifre,
-    TextEditingController telefonController,
+    TextEditingController tcController,
     TextEditingController sifreController,
-  ) {
-    if (telefon.isEmpty || sifre.isEmpty) {
-      showAlertDialog(context, "Hata", "Telefon numarası ve şifre boş olamaz.");
-    } else {
-      showAlertDialog(context, "Başarılı", "Kayıt yapıldı: $telefon");
-      telefonController.clear();
-      sifreController.clear();
-    }
+  )
+  {
+    // Sadece text alanlarını temizle, kontrol yapma
+    tcController.clear();
+    sifreController.clear();
   }
-}
+  }
+
+

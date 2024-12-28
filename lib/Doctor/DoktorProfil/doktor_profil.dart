@@ -9,7 +9,7 @@ import 'package:yazilim_projesi/renkler/renkler.dart';
 void showEditDialog(BuildContext context, String title, String initialValue,
     ValueChanged<String> onEdit) {
   final TextEditingController controller =
-      TextEditingController(text: initialValue);
+  TextEditingController(text: initialValue);
 
   showDialog(
     context: context,
@@ -63,20 +63,20 @@ class _DoctorProfilState extends State<DoctorProfil> {
   @override
   void initState() {
     super.initState();
-    _loadCityDistrictData();
-    _fetchDoctorInfo();
-    //_loadDataFromMockData();
+    //_loadCityDistrictData();
+    // _fetchDoctorInfo();
+    _loadDataFromMockData();
   }
 
   Future<void> _loadCityDistrictData() async {
     try {
       final String jsonString =
-          await rootBundle.loadString('assets/sehir_ilce.json');
+      await rootBundle.loadString('assets/sehir_ilce.json');
       final Map<String, dynamic> jsonData = json.decode(jsonString);
 
       setState(() {
         cityDistrictMap = jsonData.map(
-            (key, value) => MapEntry(key, List<String>.from(value as List)));
+                (key, value) => MapEntry(key, List<String>.from(value as List)));
       });
     } catch (e) {
       debugPrint("Error loading JSON data: $e");
@@ -326,7 +326,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
           style: TextStyle(
             fontFamily: "ABeeZee",
             fontSize:
-                MediaQuery.of(context).size.width * 0.045 * fontScaleFactor,
+            MediaQuery.of(context).size.width * 0.045 * fontScaleFactor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -362,19 +362,19 @@ class _DoctorProfilState extends State<DoctorProfil> {
         child: Column(
           children: [
             buildEditableTile("Şehir", doctor?.city ?? "", Icons.location_city,
-                (newValue) {
-              setState(() {
-                doctor?.city = newValue;
-              });
-              showCityEditDialog(context);
-            }, fontScaleFactor, isDropdown: true),
+                    (newValue) {
+                  setState(() {
+                    doctor?.city = newValue;
+                  });
+                  showCityEditDialog(context);
+                }, fontScaleFactor, isDropdown: true),
             buildEditableTile("İlçe", doctor?.district ?? "", Icons.my_location,
-                (newValue) {
-              setState(() {
-                doctor?.district = newValue;
-              });
-              showDistrictEditDialog(context);
-            }, fontScaleFactor, isDropdown: true),
+                    (newValue) {
+                  setState(() {
+                    doctor?.district = newValue;
+                  });
+                  showDistrictEditDialog(context);
+                }, fontScaleFactor, isDropdown: true),
             buildEditableTile(
                 "Adres", doctor?.address ?? "", Icons.location_pin, (newValue) {
               setState(() {
@@ -383,23 +383,23 @@ class _DoctorProfilState extends State<DoctorProfil> {
             }, fontScaleFactor, isDropdown: false),
             buildEditableTile(
                 "Telefon No", doctor?.phoneNumber ?? "", Icons.phone_android,
-                (newValue) {
-              setState(() {
-                doctor?.phoneNumber = newValue;
-              });
-            }, fontScaleFactor, isDropdown: false),
+                    (newValue) {
+                  setState(() {
+                    doctor?.phoneNumber = newValue;
+                  });
+                }, fontScaleFactor, isDropdown: false),
             buildEditableTile("Email", doctor?.email ?? "", Icons.mail,
-                (newValue) {
-              setState(() {
-                doctor?.email = newValue;
-              });
-            }, fontScaleFactor, isDropdown: false),
+                    (newValue) {
+                  setState(() {
+                    doctor?.email = newValue;
+                  });
+                }, fontScaleFactor, isDropdown: false),
             buildEditableTile("Şifre", doctor?.password ?? "", Icons.security,
-                (newValue) {
-              setState(() {
-                doctor?.password = newValue;
-              });
-            }, fontScaleFactor, isDropdown: false),
+                    (newValue) {
+                  setState(() {
+                    doctor?.password = newValue;
+                  });
+                }, fontScaleFactor, isDropdown: false),
           ],
         ),
       ),
@@ -419,7 +419,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
             fontWeight: FontWeight.bold,
             fontFamily: "ABeeZee",
             fontSize:
-                MediaQuery.of(context).size.width * 0.04 * fontScaleFactor),
+            MediaQuery.of(context).size.width * 0.04 * fontScaleFactor),
       ),
       subtitle: Text(
         value,
@@ -427,20 +427,20 @@ class _DoctorProfilState extends State<DoctorProfil> {
             color: Colors.black,
             fontFamily: "ABeeZee",
             fontSize:
-                MediaQuery.of(context).size.width * 0.035 * fontScaleFactor),
+            MediaQuery.of(context).size.width * 0.035 * fontScaleFactor),
       ),
       dense: true,
       trailing: isDropdown
           ? IconButton(
-              icon: const Icon(Icons.arrow_drop_down, color: Colors.blue),
-              onPressed: () => onEdit(value),
-            )
+        icon: const Icon(Icons.arrow_drop_down, color: Colors.blue),
+        onPressed: () => onEdit(value),
+      )
           : IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () {
-                showEditDialog(context, title, value, onEdit);
-              },
-            ),
+        icon: const Icon(Icons.edit),
+        onPressed: () {
+          showEditDialog(context, title, value, onEdit);
+        },
+      ),
     );
   }
 
@@ -458,7 +458,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
               fontWeight: FontWeight.bold,
               fontFamily: "ABeeZee",
               fontSize:
-                  MediaQuery.of(context).size.width * 0.04 * fontScaleFactor),
+              MediaQuery.of(context).size.width * 0.04 * fontScaleFactor),
         ),
         subtitle: Text(
           "Aktif",
@@ -466,7 +466,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
               color: Colors.black,
               fontFamily: "ABeeZee",
               fontSize:
-                  MediaQuery.of(context).size.width * 0.035 * fontScaleFactor),
+              MediaQuery.of(context).size.width * 0.035 * fontScaleFactor),
         ),
         trailing: TextButton(
           onPressed: () {
@@ -482,7 +482,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
               fontWeight: FontWeight.bold,
               fontFamily: "ABeeZee",
               fontSize:
-                  MediaQuery.of(context).size.width * 0.035 * fontScaleFactor,
+              MediaQuery.of(context).size.width * 0.035 * fontScaleFactor,
             ),
           ),
         ),
@@ -499,9 +499,9 @@ class AboutSection extends StatelessWidget {
 
   const AboutSection(
       {super.key,
-      required this.aboutText,
-      required this.onEdit,
-      required this.fontScaleFactor});
+        required this.aboutText,
+        required this.onEdit,
+        required this.fontScaleFactor});
 
   @override
   Widget build(BuildContext context) {
@@ -515,7 +515,9 @@ class AboutSection extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(30),
               child: Text(
-                aboutText,
+                aboutText.isEmpty
+                    ? "Bu doktor hakkında hiçbir açıklama yok."
+                    : aboutText,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: MediaQuery.of(context).size.width *
