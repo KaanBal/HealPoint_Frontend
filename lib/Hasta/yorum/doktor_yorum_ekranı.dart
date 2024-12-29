@@ -21,17 +21,20 @@ class DoctorCommentsScreen extends StatefulWidget {
 class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
   final DoktorYorumFonks fonks = DoktorYorumFonks();
 
-  List<Reviews> comments = [];
+  List<Reviews>? comments;
   double averageRating = 0.0;
   bool isLoading = true;
 
   Future<void> _fetchComments() async {
     try {
-      setState(() async {
-        comments = await fonks.fetchComments(widget.doctorId);
+      comments = await fonks.fetchComments(widget.doctorId);
+      setState(() {
         isLoading = false;
       });
     } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       print("Error loading data: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Yorumlar Görüntülenemedi")),
@@ -46,8 +49,9 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
       final dataString = await rootBundle.loadString(jsonfile);
       final List<dynamic> reviewData = json.decode(dataString);
       comments = reviewData.map((data) => Reviews.fromJson(data)).toList();
-      isLoading = false;
-      setState(() {});
+      setState(() {
+        isLoading = false;
+      });
     } catch (e) {
       print('Error loading mock data: $e');
     }
@@ -81,60 +85,74 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Ortalama Puan
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
+          : comments == null || comments!.isEmpty
+              ? Center(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      _buildStars(widget.doctor.avgPoint ?? 0.0), // Yıldızlar
-                      const SizedBox(height: 8),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.error, size: 50, color: Colors.red),
+                      SizedBox(height: 16),
                       Text(
-                        averageRating.toStringAsFixed(2),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        "Yorumlar Görüntülenemedi",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
-                ),
-                const Divider(),
-                // Yorumlar Listesi
-                Expanded(
-                  child: comments.isEmpty
-                      ? const Center(child: Text('Henüz yorum yok.'))
-                      : ListView.builder(
-                          itemCount: comments.length,
-                          itemBuilder: (context, index) {
-                            final comment = comments[index];
-                            return Card(
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 16),
-                              child: ListTile(
-                                title: Text(
-                                  '${comment.points} Yıldız',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Text(
-                                    comment.comments ?? "Yorum bulunamadı"),
-                                trailing: Text(
-                                  comment.createdAt != null
-                                      ? DateFormat('yyyy-MM-dd')
-                                          .format(comment.createdAt!)
-                                      : "Tarih yok",
-                                ),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Ortalama Puan
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          _buildStars(
+                              widget.doctor.avgPoint ?? 0.0), // Yıldızlar
+                          const SizedBox(height: 8),
+                          Text(
+                            averageRating.toStringAsFixed(2),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                    // Yorumlar Listesi
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: comments!.length,
+                        itemBuilder: (context, index) {
+                          final comment = comments![index];
+                          return Card(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 16),
+                            child: ListTile(
+                              title: Text(
+                                '${comment.points} Yıldız',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
-                            );
-                          },
-                        ),
+                              subtitle:
+                                  Text(comment.comments ?? "Yorum bulunamadı"),
+                              trailing: Text(
+                                comment.createdAt != null
+                                    ? DateFormat('yyyy-MM-dd')
+                                        .format(comment.createdAt!)
+                                    : "Tarih yok",
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
     );
   }
 }

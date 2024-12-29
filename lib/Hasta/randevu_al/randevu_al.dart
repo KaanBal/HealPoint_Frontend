@@ -18,52 +18,52 @@ class _RandevuAlState extends State<RandevuAl> {
   final FilterValues filterValues = FilterValues();
   List<Doctors> doctors = [];
 
-final List<String> branches = [
-  "Kardiyoloji",
-  "Ortopedi",
-  "Nöroloji",
-  "Aile Hekimliği",
-  "Anesteziyoloji ve Reanimasyon",
-  "Çocuk Sağlığı ve Hastalıkları",
-  "Çocuk Cerrahisi",
-  "Deri ve Zührevi Hastalıklar (Dermatoloji)",
-  "Endokrinoloji ve Metabolizma Hastalıkları",
-  "Fiziksel Tıp ve Rehabilitasyon",
-  "Gastroenteroloji",
-  "Genel Cerrahi",
-  "Göğüs Hastalıkları",
-  "Göğüs Cerrahisi",
-  "Göz Hastalıkları",
-  "Hematoloji",
-  "Kadın Hastalıkları ve Doğum",
-  "Kalp ve Damar Cerrahisi",
-  "Kulak Burun Boğaz Hastalıkları",
-  "Medikal Onkoloji",
-  "Nefroloji",
-  "Nöroşirürji (Beyin ve Sinir Cerrahisi)",
-  "Plastik, Rekonstrüktif ve Estetik Cerrahi",
-  "Psikiyatri",
-  "Radyasyon Onkolojisi",
-  "Radyoloji",
-  "Romatoloji",
-  "Spor Hekimliği",
-  "Tıbbi Genetik",
-  "Tıbbi Mikrobiyoloji",
-  "Tıbbi Patoloji",
-  "Üroloji",
-  "İç Hastalıkları (Dahiliye)",
-  "Enfeksiyon Hastalıkları ve Klinik Mikrobiyoloji",
-  "Göğüs Cerrahisi",
-  "İmmünoloji ve Alerji Hastalıkları",
-  "Ağız, Diş ve Çene Cerrahisi",
-  "Ağız, Diş ve Çene Radyolojisi",
-  "Endodonti",
-  "Ortodonti",
-  "Pedodonti (Çocuk Diş Hekimliği)",
-  "Periodontoloji",
-  "Protetik Diş Tedavisi",
-  "Restoratif Diş Tedavisi"
-];
+  final List<String> branches = [
+    "Kardiyoloji",
+    "Ortopedi",
+    "Nöroloji",
+    "Aile Hekimliği",
+    "Anesteziyoloji ve Reanimasyon",
+    "Çocuk Sağlığı ve Hastalıkları",
+    "Çocuk Cerrahisi",
+    "Deri ve Zührevi Hastalıklar (Dermatoloji)",
+    "Endokrinoloji ve Metabolizma Hastalıkları",
+    "Fiziksel Tıp ve Rehabilitasyon",
+    "Gastroenteroloji",
+    "Genel Cerrahi",
+    "Göğüs Hastalıkları",
+    "Göğüs Cerrahisi",
+    "Göz Hastalıkları",
+    "Hematoloji",
+    "Kadın Hastalıkları ve Doğum",
+    "Kalp ve Damar Cerrahisi",
+    "Kulak Burun Boğaz Hastalıkları",
+    "Medikal Onkoloji",
+    "Nefroloji",
+    "Nöroşirürji (Beyin ve Sinir Cerrahisi)",
+    "Plastik, Rekonstrüktif ve Estetik Cerrahi",
+    "Psikiyatri",
+    "Radyasyon Onkolojisi",
+    "Radyoloji",
+    "Romatoloji",
+    "Spor Hekimliği",
+    "Tıbbi Genetik",
+    "Tıbbi Mikrobiyoloji",
+    "Tıbbi Patoloji",
+    "Üroloji",
+    "İç Hastalıkları (Dahiliye)",
+    "Enfeksiyon Hastalıkları ve Klinik Mikrobiyoloji",
+    "Göğüs Cerrahisi",
+    "İmmünoloji ve Alerji Hastalıkları",
+    "Ağız, Diş ve Çene Cerrahisi",
+    "Ağız, Diş ve Çene Radyolojisi",
+    "Endodonti",
+    "Ortodonti",
+    "Pedodonti (Çocuk Diş Hekimliği)",
+    "Periodontoloji",
+    "Protetik Diş Tedavisi",
+    "Restoratif Diş Tedavisi"
+  ];
 
   final List<String> times = [
     "09:00",
@@ -114,6 +114,20 @@ final List<String> branches = [
   }
 
   void _applyFilters() {
+    if (filterValues.date == null || filterValues.time == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Lütfen hem tarih hem de saat seçiniz!",
+            style: TextStyle(fontSize: 16),
+          ),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return; // Prevent navigation
+    }
+
     Navigator.push(
       context,
       MaterialPageRoute(
