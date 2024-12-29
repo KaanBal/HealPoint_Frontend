@@ -22,19 +22,43 @@ class YaklasanRandevular extends StatelessWidget {
           children: [
             if (enYakinRandevu != null)
               Card(
-                color: Colors.blue.withOpacity(0.2),
+                color: Colors.blue, // Arka plan rengi mavi
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "En Yakın Randevu",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "En Yakın Randevu",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white, // Yazı rengi beyaz
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Text(
+                              "Yaklaşan Randevu",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -42,15 +66,22 @@ class YaklasanRandevular extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                       Text(
-                        "Doktor: ${enYakinRandevu.doctor?.name} ${enYakinRandevu.doctor?.surname}",
-                        style: const TextStyle(fontSize: 14),
+                        "Doktor İsmi: ${enYakinRandevu.doctor?.name} ${enYakinRandevu.doctor?.surname}",
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
                       ),
                       Text(
                         "Branş: ${enYakinRandevu.doctor?.branch}",
-                        style: const TextStyle(fontSize: 14),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
                       ),
                     ],
                   ),
