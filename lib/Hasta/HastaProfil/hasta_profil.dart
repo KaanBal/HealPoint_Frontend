@@ -47,7 +47,9 @@ class HastaProfilState extends State<HastaProfil> {
 
   @override
   void dispose() {
-    _updatePatientData();
+    if (mounted) {
+      _updatePatientData();
+    }
     super.dispose();
   }
 

@@ -157,7 +157,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
                   _selectedCity = value;
                   _districts = cityDistrictMap[value] ?? [];
                   _selectedDistrict = null;
-                  doctor?.district = null; 
+                  doctor?.district = null;
                 });
                 setState(() {}); // Ana state'i güncelle
               },
@@ -481,9 +481,12 @@ class _DoctorProfilState extends State<DoctorProfil> {
         trailing: TextButton(
           onPressed: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const AbonelikBilgiSayfasi()));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AbonelikBilgiSayfasi()))
+                .then((_) {
+              _fetchDoctorInfo();
+            });
           },
           child: Text(
             "Görüntüle",

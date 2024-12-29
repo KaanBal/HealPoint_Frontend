@@ -86,10 +86,10 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : comments == null || comments!.isEmpty
-              ? Center(
+              ? const Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(Icons.error, size: 50, color: Colors.red),
                       SizedBox(height: 16),
                       Text(
