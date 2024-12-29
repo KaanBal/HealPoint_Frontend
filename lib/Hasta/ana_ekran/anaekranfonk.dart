@@ -5,7 +5,6 @@ class DoctorCard extends StatefulWidget {
   final String name;
   final String specialization;
   final String rating;
-  final String reviews;
   final VoidCallback onFavoriteTap;
   bool favourite;
 
@@ -14,7 +13,6 @@ class DoctorCard extends StatefulWidget {
     required this.name,
     required this.specialization,
     required this.rating,
-    required this.reviews,
     required this.favourite,
     required this.onFavoriteTap,
   });
@@ -87,19 +85,14 @@ class _DoctorCardState extends State<DoctorCard> {
                       color: Colors.grey,
                     ),
                   ),
-                  Row(
-                    children: [
-                      const Icon(Icons.star, color: Colors.yellow, size: 16),
-                      const SizedBox(width: 5),
-                      Text(
-                        style: const TextStyle(
-                          fontFamily: "PtSans",
-                          fontSize: 15,
-                        ),
-                        '${widget.rating} (${widget.reviews} Değerlendirme)',
-                      ),
-                      const SizedBox(width: 20),
-                    ],
+                  const SizedBox(height: 8), // Boşluk ekleyerek düzenli görünüm
+                  Text(
+                    "Rating: ${widget.rating}",
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontFamily: "PtSans",
+                      color: Colors.grey,
+                    ),
                   ),
                 ],
               ),

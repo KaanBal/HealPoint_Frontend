@@ -496,7 +496,6 @@ class _AnaEkranState extends State<AnaEkran> {
                         name: doctor.name ?? "",
                         specialization: doctor.branch ?? "",
                         rating: doctor.avgPoint.toString(),
-                        reviews: "0",
                         favourite: isFavorite,
                         onFavoriteTap: () {
                           _toggleFavoriteDoctor(doctor);

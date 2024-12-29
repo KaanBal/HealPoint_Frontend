@@ -123,14 +123,13 @@ class _DoctorProfilState extends State<DoctorProfil> {
     });
   }
 
-@override
-void dispose() {
-  if (mounted) {
-    _updateDoctorData();
+  @override
+  void dispose() {
+    if (mounted) {
+      _updateDoctorData();
+    }
+    super.dispose();
   }
-  super.dispose();
-}
-
 
   // Şehir düzenleme dialogu
   void showCityEditDialog(BuildContext context) {
@@ -138,30 +137,31 @@ void dispose() {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text("Şehir Seçin"),
-        content: DropdownButtonFormField<String>(
-          value: _selectedCity,
-          decoration: const InputDecoration(
-            labelText: "Şehir",
-            border: OutlineInputBorder(),
-          ),
-          items: cityDistrictMap.keys.map((city) {
-            return DropdownMenuItem(
-              value: city,
-              child: Text(city),
+        content: StatefulBuilder(
+          builder: (context, setStateDialog) {
+            return DropdownButtonFormField<String>(
+              key: UniqueKey(),
+              value: _selectedCity,
+              decoration: const InputDecoration(
+                labelText: "Şehir",
+                border: OutlineInputBorder(),
+              ),
+              items: cityDistrictMap.keys.map((city) {
+                return DropdownMenuItem(
+                  value: city,
+                  child: Text(city),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setStateDialog(() {
+                  _selectedCity = value;
+                  _districts = cityDistrictMap[value] ?? [];
+                  _selectedDistrict = null;
+                  doctor?.district = null; 
+                });
+                setState(() {}); // Ana state'i güncelle
+              },
             );
-          }).toList(),
-          onChanged: (value) {
-            setState(() {
-              _selectedCity = value;
-              _districts = cityDistrictMap[value] ?? [];
-              _selectedDistrict = null;
-            });
-          },
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "Lütfen bir şehir seçin.";
-            }
-            return null;
           },
         ),
         actions: [
