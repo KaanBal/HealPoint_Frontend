@@ -82,14 +82,15 @@ class _RandevuAlState extends State<RandevuAl> {
   Future<void> _loadCityDistrictData() async {
     try {
       final String jsonString =
-          await rootBundle.loadString('assets/MockData/sehir_ilce.json');
+      await rootBundle.loadString('assets/MockData/sehir_ilce.json');
       debugPrint(
           "JSON Loaded Successfully: $jsonString"); // Debug print for raw JSON
       final Map<String, dynamic> jsonData = json.decode(jsonString);
 
       setState(() {
         cityDistrictMap = jsonData.map(
-            (key, value) => MapEntry(key, List<String>.from(value as List)));
+                (key, value) =>
+                MapEntry(key, List<String>.from(value as List)));
       });
 
       debugPrint(
@@ -131,9 +132,10 @@ class _RandevuAlState extends State<RandevuAl> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FilteredDoctorsScreen(
-          filterValues: filterValues,
-        ),
+        builder: (context) =>
+            FilteredDoctorsScreen(
+              filterValues: filterValues,
+            ),
       ),
     );
   }
@@ -143,6 +145,7 @@ class _RandevuAlState extends State<RandevuAl> {
     _loadCityDistrictData();
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -161,121 +164,146 @@ class _RandevuAlState extends State<RandevuAl> {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Şehir',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            DropdownButton<String>(
-              hint: const Text("Şehir Seçin"),
-              value: filterValues.city,
-              isExpanded: true,
-              onChanged: (value) {
-                setState(() {
-                  filterValues.city = value;
-                  filterValues.district = null;
-                });
-              },
-              items: cityDistrictMap.keys.map((city) {
-                return DropdownMenuItem(
-                  value: city,
-                  child: Text(city),
-                );
-              }).toList(),
-            ),
-            if (filterValues.city != null) ...[
-              const SizedBox(height: 20),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               const Text(
-                'İlçe',
+                'Şehir',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               DropdownButton<String>(
-                hint: const Text("İlçe Seçin"),
-                value: filterValues.district,
+                hint: const Text("Şehir Seçin"),
+                value: filterValues.city,
                 isExpanded: true,
                 onChanged: (value) {
                   setState(() {
-                    filterValues.district = value;
+                    filterValues.city = value;
+                    filterValues.district = null;
                   });
                 },
-                items: cityDistrictMap[filterValues.city]!.map((district) {
+                items: cityDistrictMap.keys.map((city) {
                   return DropdownMenuItem(
-                    value: district,
-                    child: Text(district),
+                    value: city,
+                    child: Text(city),
                   );
                 }).toList(),
               ),
-            ],
-            const SizedBox(height: 20),
-            const Text(
-              'Branş',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            DropdownButton<String>(
-              hint: const Text("Branş Seçin"),
-              value: filterValues.branch,
-              isExpanded: true,
-              onChanged: (value) {
-                setState(() {
-                  filterValues.branch = value;
-                });
-              },
-              items: branches.map((branch) {
-                return DropdownMenuItem(
-                  value: branch,
-                  child: Text(branch),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Tarih',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            ElevatedButton(
-              onPressed: _selectDate,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: acikKirmizi,
-                foregroundColor: beyaz,
-              ),
-              child: const Text("Tarih Seç"),
-            ),
-            if (filterValues.date != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Text(
-                  'Seçilen Tarih: ${DateFormat('dd MMMM yyyy').format(filterValues.date!)}',
-                  style: const TextStyle(fontSize: 16),
+              if (filterValues.city != null) ...[
+                const SizedBox(height: 20),
+                const Text(
+                  'İlçe',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
+                DropdownButton<String>(
+                  hint: const Text("İlçe Seçin"),
+                  value: filterValues.district,
+                  isExpanded: true,
+                  onChanged: (value) {
+                    setState(() {
+                      filterValues.district = value;
+                    });
+                  },
+                  items: cityDistrictMap[filterValues.city]!.map((district) {
+                    return DropdownMenuItem(
+                      value: district,
+                      child: Text(district),
+                    );
+                  }).toList(),
+                ),
+              ],
+              const SizedBox(height: 20),
+              const Text(
+                'Branş',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            const SizedBox(height: 20),
-            const Text(
-              'Saat',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            DropdownButton<String>(
-              hint: const Text("Saat Seçin"),
-              value: filterValues.time,
-              isExpanded: true,
-              onChanged: (value) {
-                setState(() {
-                  filterValues.time = value;
-                });
-              },
-              items: times.map((time) {
-                return DropdownMenuItem(
-                  value: time,
-                  child: Text(time),
-                );
-              }).toList(),
-            ),
-            const Spacer(),
-            Center(
-              child: ElevatedButton(
+              DropdownButton<String>(
+                hint: const Text("Branş Seçin"),
+                value: filterValues.branch,
+                isExpanded: true,
+                onChanged: (value) {
+                  setState(() {
+                    filterValues.branch = value;
+                  });
+                },
+                items: branches.map((branch) {
+                  return DropdownMenuItem(
+                    value: branch,
+                    child: Text(branch),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Tarih',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              ElevatedButton(
+                onPressed: _selectDate,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: acikKirmizi,
+                  foregroundColor: beyaz,
+                ),
+                child: const Text("Tarih Seç"),
+              ),
+              if (filterValues.date != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(
+                    'Seçilen Tarih: ${DateFormat('dd MMMM yyyy').format(
+                        filterValues.date!)}',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+              const SizedBox(height: 20),
+              const Text(
+                'Saat',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              DropdownButton<String>(
+                hint: const Text("Saat Seçin"),
+                value: filterValues.time,
+                isExpanded: true,
+                onChanged: (value) {
+                  setState(() {
+                    filterValues.time = value;
+                  });
+                },
+                items: times.map((time) {
+                  return DropdownMenuItem(
+                    value: time,
+                    child: Text(time),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Randevu Notları',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                maxLines: 4,
+                decoration: InputDecoration(
+                  hintText: 'Rahatsızlığınız hakkında bilgi verebilirsiniz...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: Colors.grey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: acikKirmizi),
+                  ),
+                ),
+                onChanged: (value) {
+                  // Burada girilen notu saklayabilirsiniz
+                  filterValues.notes = value;
+                },
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
                 onPressed: _applyFilters,
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
@@ -287,10 +315,13 @@ class _RandevuAlState extends State<RandevuAl> {
                   style: TextStyle(fontSize: 16),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
   }
+
 }
+

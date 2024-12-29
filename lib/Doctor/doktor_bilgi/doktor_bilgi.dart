@@ -97,9 +97,9 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
 
   @override
   void initState() {
-    //_loadDataFromMockData();
-    _fetchComments();
-    _loadData();
+    _loadDataFromMockData();
+    //_fetchComments();
+    //_loadData();
     super.initState();
   }
 
@@ -297,7 +297,10 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(padding),
+        padding: EdgeInsets.symmetric(
+          horizontal: ekranGenisligi * 0.03, // Yanlardaki boşluğu azalttım
+          vertical: ekranYuksekligi * 0.02,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
