@@ -55,7 +55,6 @@ class _DoctorPastAppointmentsState extends State<DoctorPastAppointments> {
                 itemBuilder: (context, index) {
                   final pastAppointment = pastAppointments[index];
 
-                  // Randevu tarihi ve saatini string'e dönüştürme
                   final appointmentDate = pastAppointment.appointmentDate;
                   final appointmentTime = pastAppointment.appointmentTime;
                   final dateString =

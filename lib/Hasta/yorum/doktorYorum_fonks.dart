@@ -15,6 +15,7 @@ class DoktorYorumFonks {
     } catch (e) {
       print("Hata oluştu: $e");
     }
+    return null;
   }
   
 }
