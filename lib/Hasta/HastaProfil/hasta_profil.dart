@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/Hasta/HastaProfil/hastaProfil_fonks.dart';
 import 'package:yazilim_projesi/models/Patients.dart';
+import 'package:flutter/services.dart';
 
 class HastaProfil extends StatefulWidget {
   const HastaProfil({super.key});
@@ -55,8 +56,14 @@ class HastaProfilState extends State<HastaProfil> {
 
   @override
   Widget build(BuildContext context) {
-    final double ekranYuksekligi = MediaQuery.of(context).size.height;
-    final double ekranGenisligi = MediaQuery.of(context).size.width;
+    final double ekranYuksekligi = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final double ekranGenisligi = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     return Scaffold(
       appBar: AppBar(
@@ -136,7 +143,7 @@ class HastaProfilState extends State<HastaProfil> {
                               patient?.phoneNumber ??
                                   "Telefon Numarası Bulunamadı",
                               Icons.phone,
-                              (newValue) {
+                                  (newValue) {
                                 setState(() {
                                   patient?.phoneNumber = newValue;
                                 });
@@ -147,7 +154,7 @@ class HastaProfilState extends State<HastaProfil> {
                               "E Mail",
                               patient?.email ?? "Email bulunamadı",
                               Icons.mail,
-                              (newValue) {
+                                  (newValue) {
                                 setState(() {
                                   patient?.email = newValue;
                                 });
@@ -158,7 +165,7 @@ class HastaProfilState extends State<HastaProfil> {
                               "Şifre",
                               patient?.password ?? "",
                               Icons.lock_outline,
-                              (newValue) {
+                                  (newValue) {
                                 setState(() {
                                   patient?.password = newValue;
                                 });
@@ -168,24 +175,11 @@ class HastaProfilState extends State<HastaProfil> {
                             buildEditableTile(
                               "Doğum Tarihi",
                               patient?.birthDate != null
-                                  ? DateFormat('dd/MM/yyyy')
-                                      .format(patient!.birthDate!)
+                                  ? DateFormat('dd/MM/yyyy').format(patient!.birthDate!)
                                   : "",
                               Icons.calendar_month,
-                              (newValue) async {
-                                DateTime? pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate:
-                                      patient?.birthDate ?? DateTime.now(),
-                                  firstDate: DateTime(1900),
-                                  lastDate: DateTime.now(),
-                                );
-
-                                if (pickedDate != null) {
-                                  setState(() {
-                                    patient?.birthDate = pickedDate;
-                                  });
-                                }
+                                  (newValue) {
+                                // Bu fonksiyon boş kalacak çünkü tarih seçimi direkt olarak _showDatePicker'da yapılacak
                               },
                             ),
                           ],
@@ -269,6 +263,7 @@ class HastaProfilState extends State<HastaProfil> {
     );
   }
 
+  // buildEditableTile fonksiyonunu güncelleyin
   Widget buildEditableTile(
       String title, String value, IconData icon, ValueChanged<String> onEdit) {
     return Row(
@@ -299,18 +294,89 @@ class HastaProfilState extends State<HastaProfil> {
         ),
         IconButton(
           icon: const Icon(Icons.edit),
-          onPressed: () {
-            showEditDialog(context, title, value, onEdit);
+          onPressed: () async {
+            if (title == "Doğum Tarihi") {
+              DateTime initialDate;
+              try {
+                initialDate = value.isNotEmpty
+                    ? DateFormat('dd/MM/yyyy').parse(value)
+                    : DateTime.now();
+              } catch (e) {
+                initialDate = DateTime.now();
+              }
+
+              final DateTime? picked = await showDatePicker(
+                context: context,
+                initialDate: initialDate,
+                firstDate: DateTime(1900),
+                lastDate: DateTime.now(),
+                builder: (context, child) {
+                  return Theme(
+                    data: Theme.of(context).copyWith(
+                      colorScheme: const ColorScheme.light(
+                        primary: Colors.red,
+                        onPrimary: Colors.white,
+                      ),
+                    ),
+                    child: child!,
+                  );
+                },
+              );
+
+              if (picked != null) {
+                setState(() {
+                  patient?.birthDate = picked;
+                });
+              }
+            } else {
+              showEditDialog(context, title, value, onEdit);
+            }
           },
         ),
       ],
     );
   }
 
+// Yeni eklenen date picker fonksiyonu
+  void _showDatePicker(BuildContext context, String currentValue,
+      ValueChanged<String> onEdit) async {
+    DateTime initialDate;
+    try {
+      initialDate = DateFormat('dd/MM/yyyy').parse(currentValue);
+    } catch (e) {
+      initialDate = DateTime.now();
+    }
+
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(1900),
+      // En eski tarih 1900 yılı
+      lastDate: DateTime.now(),
+      // En son tarih bugün
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Colors.red, // Takvimde seçili tarihin rengi
+              onPrimary: Colors.white, // Seçili tarih üzerindeki yazı rengi
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null) {
+      String formattedDate = DateFormat('dd/MM/yyyy').format(picked);
+      onEdit(formattedDate);
+    }
+  }
+
   void showEditDialog(BuildContext context, String title, String initialValue,
       ValueChanged<String> onEdit) {
     final TextEditingController controller =
-        TextEditingController(text: initialValue);
+    TextEditingController(text: initialValue);
 
     showDialog(
       context: context,
@@ -318,7 +384,19 @@ class HastaProfilState extends State<HastaProfil> {
         title: Text("Düzenle: $title"),
         content: TextField(
           controller: controller,
-          decoration: InputDecoration(hintText: "Yeni $title girin"),
+          // Telefon numarası için özel ayarlar
+          keyboardType: title == "Telefon No" ? TextInputType.phone : TextInputType.text,
+          inputFormatters: title == "Telefon No"
+              ? [
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(11),
+          ]
+              : null,
+          decoration: InputDecoration(
+            hintText: title == "Telefon No"
+                ? "Telefon numarasını giriniz (11 haneli)"
+                : "Yeni $title girin",
+          ),
         ),
         actions: [
           TextButton(
@@ -329,8 +407,18 @@ class HastaProfilState extends State<HastaProfil> {
           ),
           TextButton(
             onPressed: () {
-              onEdit(controller.text);
-              Navigator.of(context).pop();
+              if (title == "Telefon No" && controller.text.length != 11) {
+                // Telefon numarası 11 haneli değilse uyarı göster
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Telefon numarası 11 haneli olmalıdır"),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              } else {
+                onEdit(controller.text);
+                Navigator.of(context).pop();
+              }
             },
             child: const Text("Kaydet"),
           ),
@@ -339,3 +427,4 @@ class HastaProfilState extends State<HastaProfil> {
     );
   }
 }
+
