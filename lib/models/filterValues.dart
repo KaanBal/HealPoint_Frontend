@@ -5,6 +5,7 @@ class FilterValues {
   String? branch;
   DateTime? date;
   String? time;
+  String? notes;
 
   FilterValues({
     this.city,
@@ -12,6 +13,7 @@ class FilterValues {
     this.branch,
     this.date,
     this.time,
+    this.notes,
   });
 
 }

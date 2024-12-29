@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Doctor/DoktorProfil/doktor_profil.dart';
+import 'package:yazilim_projesi/Doctor/doktor_bilgi/doktor_bilgi.dart';
 import 'package:yazilim_projesi/Hasta/HastaProfil/hasta_profil.dart';
+import 'package:yazilim_projesi/Hasta/randevu_al/randevu_al.dart';
+import 'package:yazilim_projesi/Hasta/yaklasan_randevular/yaklasan_randevular.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 
 import 'models/Doctors.dart';
@@ -42,7 +46,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HastaProfil(),
+      home: const DoctorProfil(),
     );
   }
 }
