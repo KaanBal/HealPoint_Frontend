@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Tarih formatlamak için
+import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/models/Appointments.dart';
 
 class YaklasanRandevular extends StatelessWidget {
@@ -22,7 +22,7 @@ class YaklasanRandevular extends StatelessWidget {
           children: [
             if (enYakinRandevu != null)
               Card(
-                color: Colors.blue, // Arka plan rengi mavi
+                color: Colors.blue,
                 margin: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -37,7 +37,7 @@ class YaklasanRandevular extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white, // Yazı rengi beyaz
+                              color: Colors.white,
                             ),
                           ),
                           Container(
@@ -81,6 +81,47 @@ class YaklasanRandevular extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 14,
                           color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: TextButton.icon(
+                          onPressed: () {
+                            // İptal işlemi için onay dialog'u göster
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text("Randevu İptali"),
+                                  content: const Text("Randevuyu iptal etmek istediğinize emin misiniz?"),
+                                  actions: [
+                                    TextButton(
+                                      child: const Text("Hayır"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: const Text("Evet"),
+                                      onPressed: () {
+                                        // İptal işlemi burada gerçekleştirilecek
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(Icons.cancel, color: Colors.white70, size: 20),
+                          label: const Text(
+                            "İptal Et",
+                            style: TextStyle(color: Colors.white70, fontSize: 14),
+                          ),
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                          ),
                         ),
                       ),
                     ],
@@ -152,6 +193,46 @@ class YaklasanRandevular extends StatelessWidget {
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                                 color: Colors.grey,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: TextButton.icon(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text("Randevu İptali"),
+                                        content: const Text("Randevuyu iptal etmek istediğinize emin misiniz?"),
+                                        actions: [
+                                          TextButton(
+                                            child: const Text("Hayır"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: const Text("Evet"),
+                                            onPressed: () {
+                                              // İptal işlemi burada gerçekleştirilecek
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                icon: const Icon(Icons.cancel, color: Colors.blue, size: 20),
+                                label: const Text(
+                                  "İptal Et",
+                                  style: TextStyle(color: Colors.blue, fontSize: 14),
+                                ),
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                                ),
                               ),
                             ),
                           ],
