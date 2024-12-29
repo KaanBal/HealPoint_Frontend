@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yazilim_projesi/Hasta/HastaProfil/hasta_profil.dart';
 import 'package:yazilim_projesi/giris_ekran/giris_ekrani.dart';
 
 import 'models/Doctors.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const GirisEkrani(),
+      home: const HastaProfil(),
     );
   }
 }
