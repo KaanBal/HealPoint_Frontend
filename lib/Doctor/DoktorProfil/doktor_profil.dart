@@ -59,6 +59,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
   Map<String, List<String>> cityDistrictMap = {};
   List<String> _districts = [];
   Doctors? doctor;
+  bool isFemale = true;
 
   @override
   void initState() {
@@ -260,7 +261,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
             padding: EdgeInsets.only(top: screenHeight * 0.05),
             child: Column(
               children: [
-                profilePhotos(fontScaleFactor),
+                profilePhotos(fontScaleFactor,isFemale),
                 profileName(fontScaleFactor),
                 hobbies(fontScaleFactor),
                 const Padding(
@@ -344,7 +345,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
     );
   }
 
-  Container profilePhotos(double fontScaleFactor) {
+  Container profilePhotos(double fontScaleFactor, bool isFemale) {
     return Container(
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
@@ -353,11 +354,12 @@ class _DoctorProfilState extends State<DoctorProfil> {
       width: MediaQuery.of(context).size.width * 0.3,
       height: MediaQuery.of(context).size.width * 0.3,
       alignment: Alignment.center,
-      child: const CircleAvatar(
+      child: CircleAvatar(
         radius: 50,
         backgroundColor: Colors.transparent,
         backgroundImage: AssetImage(
-          "resimler/doktor.png",
+          // Cinsiyet kontrolü yaparak farklı resim gösterme
+          isFemale ? "resimler/img.png" : "resimler/doktor.png",
         ),
       ),
     );

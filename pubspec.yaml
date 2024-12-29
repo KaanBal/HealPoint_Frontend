@@ -82,6 +82,7 @@ flutter:
     - resimler/menu.png
     - resimler/calendar.png
     - resimler/doktor.png
+    - resimler/img.png
     - resimler/click.png
     - assets/MockData/
 

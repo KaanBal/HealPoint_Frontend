@@ -19,6 +19,7 @@ import 'package:yazilim_projesi/services/doctor_service.dart';
 import 'package:yazilim_projesi/services/patient_service.dart';
 import 'anaekranfonk.dart';
 
+
 class AnaEkran extends StatefulWidget {
   const AnaEkran({super.key});
 
@@ -31,6 +32,7 @@ class _AnaEkranState extends State<AnaEkran> {
   final DoctorService doctorService = DoctorService();
   final AppointmentsService appointmentsService = AppointmentsService();
   final PatientService patientService = PatientService();
+  bool isFemale = true;
 
   final AnaEkranServiceFonks serviceFonks = AnaEkranServiceFonks();
 
@@ -175,11 +177,11 @@ class _AnaEkranState extends State<AnaEkran> {
 
   @override
   void initState() {
-    //_loadDataFromMockData();
-    _loadData();
-    _loadPatientName();
-    _loadUpcomingAppointments();
-    _getFavoritesDoctor();
+    _loadDataFromMockData();
+    //_loadData();
+   // _loadPatientName();
+    //_loadUpcomingAppointments();
+    //_getFavoritesDoctor();
     super.initState();
   }
 
@@ -392,8 +394,8 @@ class _AnaEkranState extends State<AnaEkran> {
                     children: [
                       CircleAvatar(
                         radius: avatarRadius,
-                        backgroundImage: const NetworkImage(
-                          'https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg=',
+                        backgroundImage: AssetImage(
+                          isFemale ? 'resimler/img.png' : 'resimler/doktor.png',
                         ),
                       ),
                       SizedBox(width: screenWidth * 0.04),
