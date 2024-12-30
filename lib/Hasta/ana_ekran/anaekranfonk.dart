@@ -24,6 +24,9 @@ class DoctorCard extends StatefulWidget {
 class _DoctorCardState extends State<DoctorCard> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double avatarRadius = screenWidth * 0.1;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.only(left: 5.0, right: 5.0),
       child: Container(
@@ -42,10 +45,16 @@ class _DoctorCardState extends State<DoctorCard> {
         ),
         child: Row(
           children: [
-            const CircleAvatar(
-              radius: 30,
-              backgroundImage: NetworkImage(
-                  'https://media.istockphoto.com/id/1190555653/tr/vekt%C3%B6r/t%C4%B1p-doktoru-profil-simgesi-erkek-doktor-avatar-vekt%C3%B6r-ill%C3%BCstrasyon.jpg?s=170667a&w=0&k=20&c=Jq7BljB3HJND48e8t_JHgRilKtZBr39UZqXeh_SeCYg='),
+            CircleAvatar(
+              radius: avatarRadius,
+              backgroundImage: AssetImage('resimler/doktor.png'),
+              backgroundColor: Colors.transparent,
+              child: ClipOval(
+                child: Image.asset(
+                  'resimler/doktor.png',
+                  fit: BoxFit.cover, // Resmin sığması için
+                ),
+              ),
             ),
             const SizedBox(width: 10),
             Expanded(
