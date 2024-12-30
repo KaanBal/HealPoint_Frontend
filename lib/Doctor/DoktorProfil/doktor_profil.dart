@@ -63,9 +63,9 @@ class _DoctorProfilState extends State<DoctorProfil> {
   @override
   void initState() {
     super.initState();
-    //_loadCityDistrictData();
-    //_fetchDoctorInfo();
-    _loadDataFromMockData();
+    _loadCityDistrictData();
+    _fetchDoctorInfo();
+    //_loadDataFromMockData();
   }
 
   Future<void> _loadCityDistrictData() async {

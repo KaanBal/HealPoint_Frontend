@@ -19,7 +19,6 @@ import 'package:yazilim_projesi/services/doctor_service.dart';
 import 'package:yazilim_projesi/services/patient_service.dart';
 import 'anaekranfonk.dart';
 
-
 class AnaEkran extends StatefulWidget {
   const AnaEkran({super.key});
 
@@ -33,7 +32,6 @@ class _AnaEkranState extends State<AnaEkran> {
   final AppointmentsService appointmentsService = AppointmentsService();
   final PatientService patientService = PatientService();
   bool isFemale = true;
-
 
   final AnaEkranServiceFonks serviceFonks = AnaEkranServiceFonks();
 
@@ -153,7 +151,8 @@ class _AnaEkranState extends State<AnaEkran> {
     } catch (e) {
       print('Favori doktor silme işlemi başarısız oldu. Hata: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Hata: Doktor favorilerden kaldırılamadı.")),
+        const SnackBar(
+            content: Text("Hata: Doktor favorilerden kaldırılamadı.")),
       );
     }
   }
@@ -178,11 +177,11 @@ class _AnaEkranState extends State<AnaEkran> {
 
   @override
   void initState() {
-    _loadDataFromMockData();
-    //_loadData();
-   // _loadPatientName();
-    //_loadUpcomingAppointments();
-    //_getFavoritesDoctor();
+    //_loadDataFromMockData();
+    _loadData();
+    _loadPatientName();
+    _loadUpcomingAppointments();
+    _getFavoritesDoctor();
     super.initState();
   }
 
@@ -358,10 +357,13 @@ class _AnaEkranState extends State<AnaEkran> {
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => YaklasanRandevular(
-                                  appointments: upcomingAppointments)));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => YaklasanRandevular(
+                                      appointments: upcomingAppointments)))
+                          .then((_) {
+                        _loadUpcomingAppointments();
+                      });
                     },
                     child: Text(
                       " Görüntüle",
