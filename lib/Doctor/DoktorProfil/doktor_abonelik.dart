@@ -108,7 +108,9 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
               MaterialPageRoute(
                 builder: (context) => const AboneOl(),
               ),
-            );
+            ).then((_) {
+              fetchDoctorSubPlan();
+            });
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,

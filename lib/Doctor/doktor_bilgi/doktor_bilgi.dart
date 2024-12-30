@@ -231,7 +231,6 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (selectedDate != null && selectedTime != null) {
-                          // Parse selected time into TimeOfDay
                           final timeParts = selectedTime!.split(':');
                           final selectedTimeOfDay = TimeOfDay(
                             hour: int.parse(timeParts[0]),
