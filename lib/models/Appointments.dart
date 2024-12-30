@@ -16,6 +16,8 @@ class Appointments {
   final String? patientTc;
   final String? status;
 
+
+
   Appointments({
     this.appointmentId,
     this.appointmentDate,
