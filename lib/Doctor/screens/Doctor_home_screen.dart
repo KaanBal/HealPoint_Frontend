@@ -79,9 +79,9 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
 
   @override
   void initState() {
-    _loadDataFromMockData();
-    //_loadData();
-    //_fetchDoctorInfo();
+    //_loadDataFromMockData();
+    _loadData();
+    _fetchDoctorInfo();
     super.initState();
   }
 

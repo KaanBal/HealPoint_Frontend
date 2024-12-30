@@ -109,8 +109,7 @@ class _DoctorPastAppointmentsState extends State<DoctorPastAppointments> {
                                   .withOpacity(0.2),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Text(
-                              pastAppointment.status ?? 'Durum Bilgisi Yok',
+                            child: Text(pastAppointment.appointmentStatus.toString().split('.').last,
                               style: TextStyle(
                                 color: pastAppointment.getStatusColor(),
                                 fontWeight: FontWeight.bold,
