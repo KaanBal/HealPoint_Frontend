@@ -1,11 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:yazilim_projesi/Hasta/yaklasan_randevular/yaklasanrandevular_fonks.dart';
 import 'package:yazilim_projesi/models/Appointments.dart';
 
-class YaklasanRandevular extends StatelessWidget {
+class YaklasanRandevular extends StatefulWidget {
   final List<Appointments> appointments;
 
   const YaklasanRandevular({super.key, required this.appointments});
+
+  @override
+  State<YaklasanRandevular> createState() => _YaklasanRandevularState();
+}
+
+class _YaklasanRandevularState extends State<YaklasanRandevular> {
+  late List<Appointments> appointments;
+  late YaklasanRandevularFonks fonks;
+
+  @override
+  void initState() {
+    super.initState();
+    appointments = widget.appointments;
+    fonks = YaklasanRandevularFonks();
+  }
+
+  Future<void> _cancelAppointment(int id) async {
+    try {
+      await fonks.cancelAppointment(id);
+      setState(() {
+        appointments.removeWhere((appointment) => appointment.appointmentId == id);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Randevu başarıyla iptal edildi.")),
+      );
+    } catch (e) {
+      print('Randevu iptal işlemi başarısız oldu. Hata: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Hata: Randevu iptal edilemedi.")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,13 +121,13 @@ class YaklasanRandevular extends StatelessWidget {
                         alignment: Alignment.bottomRight,
                         child: TextButton.icon(
                           onPressed: () {
-                            // İptal işlemi için onay dialog'u göster
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: const Text("Randevu İptali"),
-                                  content: const Text("Randevuyu iptal etmek istediğinize emin misiniz?"),
+                                  content: const Text(
+                                      "Randevuyu iptal etmek istediğinize emin misiniz?"),
                                   actions: [
                                     TextButton(
                                       child: const Text("Hayır"),
@@ -105,8 +138,8 @@ class YaklasanRandevular extends StatelessWidget {
                                     TextButton(
                                       child: const Text("Evet"),
                                       onPressed: () {
-                                        // İptal işlemi burada gerçekleştirilecek
                                         Navigator.of(context).pop();
+                                        _cancelAppointment(enYakinRandevu.appointmentId!);
                                       },
                                     ),
                                   ],
@@ -114,10 +147,12 @@ class YaklasanRandevular extends StatelessWidget {
                               },
                             );
                           },
-                          icon: const Icon(Icons.cancel, color: Colors.white70, size: 20),
+                          icon: const Icon(Icons.cancel,
+                              color: Colors.white70, size: 20),
                           label: const Text(
                             "İptal Et",
-                            style: TextStyle(color: Colors.white70, fontSize: 14),
+                            style:
+                                TextStyle(color: Colors.white70, fontSize: 14),
                           ),
                           style: TextButton.styleFrom(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -205,7 +240,8 @@ class YaklasanRandevular extends StatelessWidget {
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         title: const Text("Randevu İptali"),
-                                        content: const Text("Randevuyu iptal etmek istediğinize emin misiniz?"),
+                                        content: const Text(
+                                            "Randevuyu iptal etmek istediğinize emin misiniz?"),
                                         actions: [
                                           TextButton(
                                             child: const Text("Hayır"),
@@ -216,8 +252,9 @@ class YaklasanRandevular extends StatelessWidget {
                                           TextButton(
                                             child: const Text("Evet"),
                                             onPressed: () {
-                                              // İptal işlemi burada gerçekleştirilecek
                                               Navigator.of(context).pop();
+                                              _cancelAppointment(
+                                                  appointment.appointmentId!);
                                             },
                                           ),
                                         ],
@@ -225,13 +262,16 @@ class YaklasanRandevular extends StatelessWidget {
                                     },
                                   );
                                 },
-                                icon: const Icon(Icons.cancel, color: Colors.blue, size: 20),
+                                icon: const Icon(Icons.cancel,
+                                    color: Colors.blue, size: 20),
                                 label: const Text(
                                   "İptal Et",
-                                  style: TextStyle(color: Colors.blue, fontSize: 14),
+                                  style: TextStyle(
+                                      color: Colors.blue, fontSize: 14),
                                 ),
                                 style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
                                 ),
                               ),
                             ),

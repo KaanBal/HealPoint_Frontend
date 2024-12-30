@@ -28,7 +28,8 @@ class AppointmentsService {
     }
   }
 
-  Future<Response> createAppointment(Map<String, dynamic> appointmentData) async {
+  Future<Response> createAppointment(
+      Map<String, dynamic> appointmentData) async {
     try {
       final token = await tokenService.getToken();
 
@@ -139,4 +140,47 @@ class AppointmentsService {
     }
   }
 
+  Future<Response> cancelAppointment(int appointmentId) async {
+    try {
+      final token = await tokenService.getToken();
+
+      if (token == null) {
+        throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
+      }
+
+      final response = await apiClient.dio.put(
+        "appointments/cancel/$appointmentId",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Response> cancelAppointmentForDoctor(int appointmentId) async {
+    try {
+      final token = await tokenService.getToken();
+
+      if (token == null) {
+        throw Exception("Token bulunamadı. Lütfen tekrar giriş yapın.");
+      }
+
+      final response = await apiClient.dio.put(
+        "appointments/cancel-for-doctor/$appointmentId",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
