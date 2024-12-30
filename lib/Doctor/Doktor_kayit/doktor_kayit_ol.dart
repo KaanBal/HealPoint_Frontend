@@ -263,22 +263,37 @@ class _DoktorKayitOlState extends State<DoktorKayitOl> {
 
               const SizedBox(height: 10),
 
-              // Telefon
               TextFormField(
                 controller: telefonController,
                 decoration: const InputDecoration(
-                  labelText: "Telefon",
+                  labelText: "Telefon Numarası",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.phone,
+                maxLength: 10,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Lütfen telefon numaranızı girin.";
                   }
+                  if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                    return "Telefon numarası 10 haneli olmalı.";
+                  }
                   return null;
                 },
               ),
-
+              const SizedBox(height: 5),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Telefon numaranızın başında 0 olmadan yazınız.",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
               const SizedBox(height: 10),
 
               // İsim
