@@ -176,11 +176,11 @@ class _AnaEkranState extends State<AnaEkran> {
 
   @override
   void initState() {
-    _loadDataFromMockData();
-    //_loadData();
-    //_loadPatientName();
-    //_loadUpcomingAppointments();
-    //_getFavoritesDoctor();
+    //_loadDataFromMockData();
+    _loadData();
+    _loadPatientName();
+    _loadUpcomingAppointments();
+    _getFavoritesDoctor();
     super.initState();
   }
 
@@ -224,9 +224,12 @@ class _AnaEkranState extends State<AnaEkran> {
                 title: const Text('Geçmiş Randevular'),
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const GecmisRandevular()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const GecmisRandevular()))
+                      .then((_) {
+                    _loadData();
+                  });
                 },
               ),
               ListTile(

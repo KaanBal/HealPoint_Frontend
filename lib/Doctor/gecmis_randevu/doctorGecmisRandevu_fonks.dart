@@ -7,7 +7,7 @@ class DoctorGecmisRandevuFonks {
   Future<List<Appointments>> fetchPastAppointments() async {
     try {
       final response =
-          await appointmentsService.fetchCompletedAndCancelledAppointments();
+          await appointmentsService.fetchPastAppointmentsByDoctor();
       final List<dynamic> data = response.data;
 
       return data

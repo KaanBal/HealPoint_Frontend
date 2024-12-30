@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:yazilim_projesi/models/Patients.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 import 'package:yazilim_projesi/Hasta/yorum/hastaYorum_fonks.dart';
@@ -48,8 +49,9 @@ class _DoctorRatingScreenState extends State<DoctorRatingScreen> {
     setState(() {
       doctorName = appointment?.doctor?.name ?? "Doktor adı mevcut değil";
       branch = appointment?.doctor?.branch ?? "Bölüm mevcut değil";
-      appointmentDate =
-          appointment?.appointmentDate?.toString() ?? "Tarih mevcut değil";
+      appointmentDate = appointment?.appointmentDate != null
+          ? DateFormat('yyyy-MM-dd').format(appointment!.appointmentDate!)
+          : "Tarih mevcut değil";
     });
   }
 

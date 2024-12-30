@@ -192,47 +192,7 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
               ),
             ),
           ),
-        ),
-        const SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const AboneOl(),
-              ),
-            ).then((_) {
-              fetchDoctorSubPlan();
-            });
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,
-            padding: const EdgeInsets.symmetric(vertical: 17),
-            minimumSize: Size(buttonWidth, 50),
-            textStyle: const TextStyle(fontSize: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-          child: const Text(
-            'Aboneliği Düzenle',
-            style: TextStyle(color: Colors.white, fontFamily: "ABeeZee"),
-          ),
-        ),
-        const Spacer(),
-        Divider(color: Colors.grey[400], thickness: 1),
-        const SizedBox(height: 8),
-        const Center(
-          child: Text(
-            'Aboneliğinizi her zaman yönetebilirsiniz.',
-            style: TextStyle(
-              fontFamily: "PtSans",
-              fontSize: 14,
-              color: Colors.black,
-            ),
-          ),
-        ),
-        const SizedBox(height: 20),
+        )
       ],
     );
   }

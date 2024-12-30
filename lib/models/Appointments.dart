@@ -5,7 +5,7 @@ import 'package:yazilim_projesi/models/Patients.dart';
 enum AppointmentStatus { AKTIF, IPTAL, TAMAMLANDI }
 
 class Appointments {
-  final int? appointmentId; 
+  final int? appointmentId;
   final DateTime? appointmentDate;
   final TimeOfDay? appointmentTime;
   final AppointmentStatus appointmentStatus;
@@ -15,8 +15,6 @@ class Appointments {
   final Patients? patient;
   final String? patientTc;
   final String? status;
-
-
 
   Appointments({
     this.appointmentId,
@@ -32,19 +30,21 @@ class Appointments {
   });
 
   Color getStatusColor() {
-    if (status == "AKTIF") {
+    final effectiveStatus =
+        status ?? appointmentStatus.toString().split('.').last;
+
+    if (effectiveStatus == "AKTIF") {
       return Colors.green;
-    } else if (status == "IPTAL") {
+    } else if (effectiveStatus == "IPTAL") {
       return Colors.red;
-    } else if (status == null) {
-      return Colors.grey;
-    } else {
+    } else if (effectiveStatus == "TAMAMLANDI") {
       return Colors.blue;
+    } else {
+      return Colors.grey;
     }
   }
 
   factory Appointments.fromJson(Map<String, dynamic> json) {
-
     final timeParts = json['appointmentTime']?.split(':');
     final timeOfDay = timeParts != null && timeParts.length >= 2
         ? TimeOfDay(
