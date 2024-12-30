@@ -31,10 +31,6 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
         hasError = false;
       });
     } catch (e) {
-      print(e);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Abonelik Paketi Görünütülenemedi")),
-      );
       setState(() {
         hasError = true;
       });
@@ -55,6 +51,12 @@ class _AbonelikBilgiSayfasiState extends State<AbonelikBilgiSayfasi> {
   void initState() {
     super.initState();
     //_loadDataFromMockData();
+    fetchDoctorSubPlan();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     fetchDoctorSubPlan();
   }
 

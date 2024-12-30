@@ -97,9 +97,9 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
 
   @override
   void initState() {
-    _loadDataFromMockData();
-    //_fetchComments();
-    //_loadData();
+    //_loadDataFromMockData();
+    _fetchComments();
+    _loadData();
     super.initState();
   }
 
@@ -298,7 +298,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
-          horizontal: ekranGenisligi * 0.03, // Yanlardaki boşluğu azalttım
+          horizontal: ekranGenisligi * 0.03,
           vertical: ekranYuksekligi * 0.02,
         ),
         child: Column(
@@ -319,7 +319,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: ekranYuksekligi * 0.02),
+                          SizedBox(height: ekranYuksekligi * 0.01),
                           Text(
                             selectedDoctor?.name ?? "",
                             style: const TextStyle(
@@ -327,12 +327,19 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                                 fontFamily: "ABeeZee",
                                 fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            selectedDoctor?.branch ?? "",
-                            style: const TextStyle(
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width *
+                                0.6, // Adjust as needed
+                            child: Text(
+                              selectedDoctor?.branch ?? "",
+                              style: const TextStyle(
                                 fontSize: 17,
                                 fontFamily: "PtSans",
-                                color: Colors.grey),
+                                color: Colors.grey,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
                           ),
                           SizedBox(height: ekranYuksekligi * 0.01),
                           Row(
