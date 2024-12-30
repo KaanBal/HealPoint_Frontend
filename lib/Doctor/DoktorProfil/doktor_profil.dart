@@ -102,14 +102,8 @@ class _DoctorProfilState extends State<DoctorProfil> {
       try {
         await fonks.updateDoctor(doctor!);
         debugPrint("Doctor data updated successfully.");
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Doktor Bilgileri Güncellendi!")),
-        );
       } catch (e) {
         debugPrint("Error updating doctor data: $e");
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Doktor Bilgileri Güncellenemedi")),
-        );
       }
     }
   }
@@ -159,7 +153,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
                   _selectedDistrict = null;
                   doctor?.district = null;
                 });
-                setState(() {}); // Ana state'i güncelle
+                setState(() {});
               },
             );
           },
@@ -485,6 +479,7 @@ class _DoctorProfilState extends State<DoctorProfil> {
                     MaterialPageRoute(
                         builder: (context) => const AbonelikBilgiSayfasi()))
                 .then((_) {
+              _updateDoctorData();
               _fetchDoctorInfo();
             });
           },
