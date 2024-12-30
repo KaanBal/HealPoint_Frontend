@@ -63,20 +63,21 @@ class _DoctorProfilState extends State<DoctorProfil> {
   @override
   void initState() {
     super.initState();
-    _loadCityDistrictData();
-    _fetchDoctorInfo();
-    //_loadDataFromMockData();
+    //_loadCityDistrictData();
+    //_fetchDoctorInfo();
+    _loadDataFromMockData();
   }
 
   Future<void> _loadCityDistrictData() async {
     try {
       final String jsonString =
-          await rootBundle.loadString('assets/MockData/sehir_ilce.json');
+      await rootBundle.loadString('assets/MockData/sehir_ilce.json');
       final Map<String, dynamic> jsonData = json.decode(jsonString);
 
       setState(() {
         cityDistrictMap = jsonData.map(
-            (key, value) => MapEntry(key, List<String>.from(value as List)));
+                (key, value) =>
+                MapEntry(key, List<String>.from(value as List)));
       });
     } catch (e) {
       debugPrint("Error loading JSON data: $e");
@@ -129,55 +130,58 @@ class _DoctorProfilState extends State<DoctorProfil> {
   void showCityEditDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Şehir Seçin"),
-        content: StatefulBuilder(
-          builder: (context, setStateDialog) {
-            return DropdownButtonFormField<String>(
-              key: UniqueKey(),
-              value: _selectedCity,
-              decoration: const InputDecoration(
-                labelText: "Şehir",
-                border: OutlineInputBorder(),
-              ),
-              items: cityDistrictMap.keys.map((city) {
-                return DropdownMenuItem(
-                  value: city,
-                  child: Text(city),
+      builder: (context) =>
+          AlertDialog(
+            title: const Text("Şehir Seçin"),
+            content: StatefulBuilder(
+              builder: (context, setStateDialog) {
+                return DropdownButtonFormField<String>(
+                  key: UniqueKey(),
+                  value: _selectedCity,
+                  decoration: const InputDecoration(
+                    labelText: "Şehir",
+                    border: OutlineInputBorder(),
+                  ),
+                  items: cityDistrictMap.keys.map((city) {
+                    return DropdownMenuItem(
+                      value: city,
+                      child: Text(city),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setStateDialog(() {
+                      _selectedCity = value;
+                      _districts = cityDistrictMap[value] ?? [];
+                      _selectedDistrict = null;
+                      doctor?.district = null;
+                    });
+                    setState(() {});
+                  },
                 );
-              }).toList(),
-              onChanged: (value) {
-                setStateDialog(() {
-                  _selectedCity = value;
-                  _districts = cityDistrictMap[value] ?? [];
-                  _selectedDistrict = null;
-                  doctor?.district = null;
-                });
-                setState(() {});
               },
-            );
-          },
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text("İptal", style: TextStyle(color: Colors.black)),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                    "İptal", style: TextStyle(color: Colors.black)),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (_selectedCity != null) {
+                    setState(() {
+                      doctor?.city = _selectedCity!;
+                    });
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: const Text(
+                    "Kaydet", style: TextStyle(color: Colors.black)),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              if (_selectedCity != null) {
-                setState(() {
-                  doctor?.city = _selectedCity!;
-                });
-                Navigator.of(context).pop();
-              }
-            },
-            child: const Text("Kaydet", style: TextStyle(color: Colors.black)),
-          ),
-        ],
-      ),
     );
   }
 
@@ -185,99 +189,135 @@ class _DoctorProfilState extends State<DoctorProfil> {
   void showDistrictEditDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("İlçe Seçin"),
-        content: DropdownButtonFormField<String>(
-          value: _selectedDistrict,
-          decoration: const InputDecoration(
-            labelText: "İlçe",
-            border: OutlineInputBorder(),
-          ),
-          items: _districts.map((district) {
-            return DropdownMenuItem(
-              value: district,
-              child: Text(district),
-            );
-          }).toList(),
-          onChanged: (value) {
-            setState(() {
-              _selectedDistrict = value;
-            });
-          },
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "Lütfen bir ilçe seçin.";
-            }
-            return null;
-          },
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text("İptal", style: TextStyle(color: Colors.black)),
-          ),
-          TextButton(
-            onPressed: () {
-              if (_selectedDistrict != null) {
+      builder: (context) =>
+          AlertDialog(
+            title: const Text("İlçe Seçin"),
+            content: DropdownButtonFormField<String>(
+              value: _selectedDistrict,
+              decoration: const InputDecoration(
+                labelText: "İlçe",
+                border: OutlineInputBorder(),
+              ),
+              items: _districts.map((district) {
+                return DropdownMenuItem(
+                  value: district,
+                  child: Text(district),
+                );
+              }).toList(),
+              onChanged: (value) {
                 setState(() {
-                  doctor?.district = _selectedDistrict!;
+                  _selectedDistrict = value;
                 });
-                Navigator.of(context).pop();
-              }
-            },
-            child: const Text("Kaydet", style: TextStyle(color: Colors.black)),
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Lütfen bir ilçe seçin.";
+                }
+                return null;
+              },
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                    "İptal", style: TextStyle(color: Colors.black)),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (_selectedDistrict != null) {
+                    setState(() {
+                      doctor?.district = _selectedDistrict!;
+                    });
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: const Text(
+                    "Kaydet", style: TextStyle(color: Colors.black)),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    double screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
     double fontScaleFactor = 0.8;
 
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         backgroundColor: beyaz,
-        appBar: AppBar(
-          backgroundColor: acikKirmizi,
-          titleTextStyle: const TextStyle(
-            color: Colors.white,
-          ),
-          toolbarHeight: screenHeight * 0.35,
-          title: Padding(
-            padding: EdgeInsets.only(top: screenHeight * 0.05),
-            child: Column(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(screenHeight * 0.42),
+          // Sabit yükseklik
+          child: AppBar(
+            backgroundColor: acikKirmizi,
+            automaticallyImplyLeading: false, // Otomatik geri butonunu kapat
+            flexibleSpace: Stack(
               children: [
-                profilePhotos(fontScaleFactor),
-                profileName(fontScaleFactor),
-                hobbies(fontScaleFactor),
-                const Padding(
-                  padding: EdgeInsets.only(top: 10.0),
+                // Geri butonu varsa, en üstte konumlandır
+                Positioned(
+                  top: MediaQuery
+                      .of(context)
+                      .padding
+                      .top + 10,
+                  left: 10,
+                  child: Navigator.canPop(context)
+                      ? IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                  )
+                      : const SizedBox(),
+                ),
+                // Ana içerik - her zaman aynı pozisyonda
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: screenHeight * 0.05 + MediaQuery
+                        .of(context)
+                        .padding
+                        .top,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      profilePhotos(fontScaleFactor),
+                      profileName(fontScaleFactor),
+                      hobbies(fontScaleFactor),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ],
             ),
-          ),
-          bottom: TabBar(
-            indicatorColor: siyah,
-            labelColor: siyah,
-            unselectedLabelColor: beyaz,
-            indicatorSize: TabBarIndicatorSize.tab,
-            tabs: const [
-              Tab(
-                text: "Hakkında",
-                icon: Icon(Icons.account_box),
-              ),
-              Tab(
-                text: "Bilgiler",
-                icon: Icon(Icons.contact_page),
-              ),
-            ],
+            bottom:  TabBar(
+              indicatorColor: siyah,
+              labelColor: siyah,
+              unselectedLabelColor: beyaz,
+              indicatorSize: TabBarIndicatorSize.tab,
+              tabs: [
+                Tab(
+                  text: "Hakkında",
+                  icon: Icon(Icons.account_box),
+                ),
+                Tab(
+                  text: "Bilgiler",
+                  icon: Icon(Icons.contact_page),
+                ),
+              ],
+            ),
           ),
         ),
         body: TabBarView(
