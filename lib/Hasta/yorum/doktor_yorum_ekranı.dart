@@ -51,6 +51,7 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
       comments = reviewData.map((data) => Reviews.fromJson(data)).toList();
       setState(() {
         isLoading = false;
+        averageRating = widget.doctor.avgPoint ?? 0.0;
       });
     } catch (e) {
       print('Error loading mock data: $e');
@@ -113,7 +114,9 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
                               widget.doctor.avgPoint ?? 0.0), // Yıldızlar
                           const SizedBox(height: 8),
                           Text(
-                            averageRating.toStringAsFixed(2),
+                            widget.doctor.avgPoint != null
+                                ? widget.doctor.avgPoint!.toStringAsFixed(1)
+                                : "0.0", // Ortalama puan yoksa "0.0" göster
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -140,12 +143,6 @@ class _DoctorCommentsScreenState extends State<DoctorCommentsScreen> {
                               ),
                               subtitle:
                                   Text(comment.comments ?? "Yorum bulunamadı"),
-                              trailing: Text(
-                                comment.createdAt != null
-                                    ? DateFormat('yyyy-MM-dd')
-                                        .format(comment.createdAt!)
-                                    : "Tarih yok",
-                              ),
                             ),
                           );
                         },

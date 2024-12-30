@@ -265,7 +265,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                                 appointmentDate: selectedDate,
                                 appointmentTime: selectedTimeOfDay,
                                 doctor: selectedDoctor,
-                                doctorTc: selectedDoctor!.tc!);
+                                doctorTc: selectedDoctor!.tc!,
+                                appointmentText: appointmentText);
 
                             saveAppointments(appointment);
                           }
@@ -503,18 +504,7 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                             fontFamily: "PtSans",
                             color: Colors.black87,
                           ),
-                        ),
-                        SizedBox(height: ekranYuksekligi * 0.01),
-                        Text(
-                          review.createdAt != null
-                              ? DateFormat.y().format(review.createdAt!)
-                              : "",
-                          style: TextStyle(
-                            fontSize: fontSize * 0.8,
-                            fontFamily: "PtSans",
-                            color: Colors.grey,
-                          ),
-                        ),
+                        )
                       ],
                     ),
                   ),

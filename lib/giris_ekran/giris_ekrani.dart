@@ -126,7 +126,7 @@ class _GirisEkraniState extends State<GirisEkrani>
               decoration: InputDecoration(
                 labelText: "TC Kimlik Numarası",
                 labelStyle: TextStyle(color: koyuKirmizi),
-                prefixIcon: Icon(Icons.phone, color: koyuKirmizi),
+                prefixIcon: Icon(Icons.credit_card, color: koyuKirmizi),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide(color: koyuKirmizi),
