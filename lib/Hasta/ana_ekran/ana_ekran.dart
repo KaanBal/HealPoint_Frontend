@@ -34,6 +34,7 @@ class _AnaEkranState extends State<AnaEkran> {
   final PatientService patientService = PatientService();
   bool isFemale = true;
 
+
   final AnaEkranServiceFonks serviceFonks = AnaEkranServiceFonks();
 
   bool isLoggedOut = false;
