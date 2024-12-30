@@ -31,7 +31,6 @@ class _AnaEkranState extends State<AnaEkran> {
   final DoctorService doctorService = DoctorService();
   final AppointmentsService appointmentsService = AppointmentsService();
   final PatientService patientService = PatientService();
-  bool isFemale = true;
 
   final AnaEkranServiceFonks serviceFonks = AnaEkranServiceFonks();
 
@@ -177,11 +176,11 @@ class _AnaEkranState extends State<AnaEkran> {
 
   @override
   void initState() {
-    //_loadDataFromMockData();
-    _loadData();
-    _loadPatientName();
-    _loadUpcomingAppointments();
-    _getFavoritesDoctor();
+    _loadDataFromMockData();
+    //_loadData();
+    //_loadPatientName();
+    //_loadUpcomingAppointments();
+    //_getFavoritesDoctor();
     super.initState();
   }
 
@@ -397,8 +396,13 @@ class _AnaEkranState extends State<AnaEkran> {
                     children: [
                       CircleAvatar(
                         radius: avatarRadius,
-                        backgroundImage: AssetImage(
-                          isFemale ? 'resimler/img.png' : 'resimler/doktor.png',
+                        backgroundImage: AssetImage('resimler/doktor.png'),
+                        backgroundColor: Colors.transparent,
+                        child: ClipOval(
+                          child: Image.asset(
+                            'resimler/doktor.png',
+                            fit: BoxFit.cover, // Resmin sığması için
+                          ),
                         ),
                       ),
                       SizedBox(width: screenWidth * 0.04),

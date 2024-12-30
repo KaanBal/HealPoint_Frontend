@@ -10,6 +10,7 @@ import 'package:yazilim_projesi/models/Doctors.dart';
 import 'package:yazilim_projesi/models/Reviews.dart';
 import 'package:yazilim_projesi/renkler/renkler.dart';
 import 'package:yazilim_projesi/services/doctor_service.dart';
+import 'package:yazilim_projesi/models/Appointments.dart';
 
 class DoctorBilgiEkran extends StatefulWidget {
   final String doctorId;
@@ -26,6 +27,8 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
   Doctors? selectedDoctor;
   List<Reviews>? reviews = [];
   DoctorAvailability? doctorAvailability;
+  String appointmentText = '';
+
 
   void _loadDataFromMockData() async {
     const String jsonFile = 'assets/MockData/doctorInfo.json';
@@ -226,6 +229,27 @@ class _DoctorBilgiEkran extends State<DoctorBilgiEkran> {
                         ),
                     ],
                   ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    maxLines: 4,
+                    decoration: InputDecoration(
+                      hintText: 'Rahatsızlığınız hakkında bilgi verebilirsiniz...',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(color: Colors.grey),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: acikKirmizi),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      bottomSheetSetState(() {
+                        appointmentText = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 20),
                   const SizedBox(height: 20),
                   Center(
                     child: ElevatedButton(

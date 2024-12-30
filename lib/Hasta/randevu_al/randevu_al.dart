@@ -279,29 +279,6 @@ class _RandevuAlState extends State<RandevuAl> {
                 }).toList(),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Randevu Notları',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                maxLines: 4,
-                decoration: InputDecoration(
-                  hintText: 'Rahatsızlığınız hakkında bilgi verebilirsiniz...',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Colors.grey),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: acikKirmizi),
-                  ),
-                ),
-                onChanged: (value) {
-                  // Burada girilen notu saklayabilirsiniz
-                  filterValues.notes = value;
-                },
-              ),
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: _applyFilters,
