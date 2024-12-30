@@ -59,6 +59,24 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
     }
   }
 
+  Future<void> _cancelAppointment(int id) async {
+    try {
+      await fonks.cancelAppointment(id);
+      setState(() {
+        appointments
+            .removeWhere((appointment) => appointment.appointmentId == id);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Randevu başarıyla iptal edildi.")),
+      );
+    } catch (e) {
+      print('Randevu iptal işlemi başarısız oldu. Hata: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Hata: Randevu iptal edilemedi.")),
+      );
+    }
+  }
+
   @override
   void initState() {
     _loadDataFromMockData();
@@ -319,7 +337,8 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                                   TextButton(
                                     child: const Text("Evet"),
                                     onPressed: () {
-                                      // İptal işlemi burada gerçekleştirilecek
+                                      _cancelAppointment(
+                                          appointment.appointmentId!);
                                       Navigator.of(context).pop();
                                     },
                                   ),

@@ -21,7 +21,7 @@ class DoctorHomeScreenFonks {
     }
   }
 
-    Future<Doctors?> loadData() async {
+  Future<Doctors?> loadData() async {
     try {
       final response = await doctorService.getDoctorByToken();
       final Map<String, dynamic> data = response.data;
@@ -29,6 +29,14 @@ class DoctorHomeScreenFonks {
     } catch (e) {
       print("Hata oluştu: $e");
       return null;
+    }
+  }
+
+  Future<void> cancelAppointment(int id) async {
+    try {
+      await appointmentsService.cancelAppointmentForDoctor(id);
+    } catch (e) {
+      print(e);
     }
   }
 }
