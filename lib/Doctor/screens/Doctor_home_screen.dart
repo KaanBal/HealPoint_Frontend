@@ -61,9 +61,9 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
 
   @override
   void initState() {
-    //_loadDataFromMockData();
-    _loadData();
-    _fetchDoctorInfo();
+    _loadDataFromMockData();
+    //_loadData();
+    //_fetchDoctorInfo();
     super.initState();
   }
 
@@ -298,6 +298,47 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                             ),
                           )
                         : const SizedBox(),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: TextButton.icon(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Randevu İptali"),
+                                content: const Text(
+                                    "Randevuyu iptal etmek istediğinize emin misiniz?"),
+                                actions: [
+                                  TextButton(
+                                    child: const Text("Hayır"),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: const Text("Evet"),
+                                    onPressed: () {
+                                      // İptal işlemi burada gerçekleştirilecek
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        icon: const Icon(Icons.cancel,
+                            color: Colors.blue, size: 20),
+                        label: const Text(
+                          "İptal Et",
+                          style: TextStyle(color: Colors.blue, fontSize: 14),
+                        ),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

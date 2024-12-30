@@ -15,6 +15,7 @@ class Doctors {
   double? avgPoint;
   bool? isAccountActive;
 
+
   Doctors({
     this.tc,
     this.name,
